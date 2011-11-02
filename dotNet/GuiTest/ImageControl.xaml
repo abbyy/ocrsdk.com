@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="GuiTest.ImageControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Canvas Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Grid}},Path=ActualWidth}" 
+                    Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Grid}},Path=ActualHeight}" 
+                    Name="canvas" 
+                Background="Transparent"
+                AllowDrop="True">
+            
+            <Image Name="image" AllowDrop="True"
+                           MinHeight="100" Stretch="Uniform" 
+                       Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Grid}},Path=ActualWidth}" 
+                    Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Grid}},Path=ActualHeight}" 
+                           MouseLeftButtonUp="Image_MouseLeftButtonUp" MouseLeftButtonDown="Image_MouseDown" MouseMove="Image_MouseMove"/>
+
+            <Rectangle Name="selectBox"></Rectangle>
+        </Canvas>
+    </Grid>
+</UserControl>

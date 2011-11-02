@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbbyyOnlineSdk", "dotNetWrapper\AbbyyOnlineSdk.csproj", "{232FDDD8-AEF6-452E-AEBE-2D736521DC2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{266674FC-75A8-4FDC-86B8-6223DDE9DB12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuiTest", "GuiTest\GuiTest.csproj", "{4CD1FE79-8445-4260-8CDD-D9B28A58BBBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{232FDDD8-AEF6-452E-AEBE-2D736521DC2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{232FDDD8-AEF6-452E-AEBE-2D736521DC2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{232FDDD8-AEF6-452E-AEBE-2D736521DC2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{232FDDD8-AEF6-452E-AEBE-2D736521DC2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266674FC-75A8-4FDC-86B8-6223DDE9DB12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266674FC-75A8-4FDC-86B8-6223DDE9DB12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266674FC-75A8-4FDC-86B8-6223DDE9DB12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266674FC-75A8-4FDC-86B8-6223DDE9DB12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CD1FE79-8445-4260-8CDD-D9B28A58BBBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CD1FE79-8445-4260-8CDD-D9B28A58BBBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CD1FE79-8445-4260-8CDD-D9B28A58BBBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CD1FE79-8445-4260-8CDD-D9B28A58BBBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

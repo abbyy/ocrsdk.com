@@ -1,0 +1,4 @@
+﻿Things to add:
+
+- Ability to process password-protected pdf files
+- server processImage method can return not started tasks when there isn't enough pages on user's account. Support that.
