@@ -62,16 +62,18 @@ namespace AbbyyOnlineSdk
                                     allTasks[task.Id] = task;
                                 }
                             }
-                        }
 
-                        // There is no need to check for statuses of all the tasks on the server - just check
-                        // only those that have changed since last call
-                        // This trick should work even if local time is incorrect
-                        foreach (Task task in serverTasks)
-                        {
-                            if (task.StatusChangeTime > lastCheckTime)
-                                lastCheckTime = task.StatusChangeTime;
 
+                            // There is no need to check for statuses of all the tasks on the server - just check
+                            // only those that have changed since last call
+                            // This trick should work even if local time is incorrect
+                            if (allTasks.Count > 0)
+                                lastCheckTime = allTasks.Values.First().StatusChangeTime;
+                            foreach (Task task in allTasks.Values)
+                            {
+                                if (task.StatusChangeTime > lastCheckTime)
+                                    lastCheckTime = task.StatusChangeTime;
+                            }
                         }
 
                         // Slightly decrease lastCheckTime to avoid losing tasks

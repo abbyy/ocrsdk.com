@@ -61,13 +61,25 @@ namespace GuiTest.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://freservicealpha01.cloudapp.net/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://cloud.ocrsdk.com")]
         public string ServerAddress {
             get {
                 return ((string)(this["ServerAddress"]));
             }
             set {
                 this["ServerAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("checkmarkType=empty")]
+        public string CheckmarkOptions {
+            get {
+                return ((string)(this["CheckmarkOptions"]));
+            }
+            set {
+                this["CheckmarkOptions"] = value;
             }
         }
     }

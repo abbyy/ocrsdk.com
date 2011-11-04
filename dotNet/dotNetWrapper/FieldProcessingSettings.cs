@@ -28,9 +28,16 @@ namespace AbbyyOnlineSdk
 
     public class CheckmarkFieldProcessingSettings : IFieldProcessingSettings
     {
+        public string Params { get; set; }
         public string AsUrlParams
         {
-            get { return ""; }
+            get
+            {
+                if( String.IsNullOrEmpty( Params ) )
+                    return "";
+                else
+                    return "?" + Params;
+            }
         }
     }
 }

@@ -202,7 +202,7 @@ namespace AbbyyOnlineSdk
     {
         public RestServiceClient()
         {
-            ServerUrl = "http://freservicealpha01.cloudapp.net/";
+            ServerUrl = "http://cloud.ocrsdk.com/";
             IsSecureConnection = false;
             Proxy = WebRequest.DefaultWebProxy;
 

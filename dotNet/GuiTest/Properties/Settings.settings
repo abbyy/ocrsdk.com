@@ -12,7 +12,10 @@
       <Value Profile="(Default)">Results</Value>
     </Setting>
     <Setting Name="ServerAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://freservicealpha01.cloudapp.net/</Value>
+      <Value Profile="(Default)">http://cloud.ocrsdk.com</Value>
+    </Setting>
+    <Setting Name="CheckmarkOptions" Type="System.String" Scope="User">
+      <Value Profile="(Default)">checkmarkType=empty</Value>
     </Setting>
   </Settings>
 </SettingsFile>

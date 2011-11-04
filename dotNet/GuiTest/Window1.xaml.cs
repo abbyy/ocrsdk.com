@@ -376,6 +376,10 @@ namespace GuiTest
             else
             {
                 CheckmarkFieldProcessingSettings settings = new CheckmarkFieldProcessingSettings();
+                string userSettings = Properties.Settings.Default.CheckmarkOptions;
+                if (!String.IsNullOrEmpty(userSettings))
+                    settings.Params = userSettings;
+
                 restClientAsync.ProcessCheckmarkFieldAsync(tempFilePath, settings, task);
             }
 
