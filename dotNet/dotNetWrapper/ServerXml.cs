@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace AbbyyOnlineSdk
+namespace Abbyy.CloudOcrSdk
 {
     class ServerXml
     {

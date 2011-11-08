@@ -101,9 +101,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dotNetWrapper\AbbyyOnlineSdk.csproj">
+    <ProjectReference Include="..\dotNetWrapper\Abbyy.CloudOcrSdk.csproj">
       <Project>{232FDDD8-AEF6-452E-AEBE-2D736521DC2C}</Project>
-      <Name>AbbyyOnlineSdk</Name>
+      <Name>Abbyy.CloudOcrSdk</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

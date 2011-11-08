@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-using AbbyyOnlineSdk;
+using Abbyy.CloudOcrSdk;
 
 namespace ConsoleTest
 {

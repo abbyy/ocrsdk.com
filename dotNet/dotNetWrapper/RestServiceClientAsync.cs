@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace AbbyyOnlineSdk
+namespace Abbyy.CloudOcrSdk
 {
     public class UploadCompletedEventArgs : ProgressChangedEventArgs
     {

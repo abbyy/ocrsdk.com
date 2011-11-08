@@ -6,7 +6,7 @@ using System.IO;
 using System.Xml;
 
 using NDesk.Options;
-using AbbyyOnlineSdk;
+using Abbyy.CloudOcrSdk;
 
 namespace ConsoleTest
 {
@@ -69,7 +69,7 @@ namespace ConsoleTest
                 tester.ProcessPath(sourcePath, targetPath, settings, processAsDocument);
 
             }
-            catch (AbbyyOnlineSdk.ProcessingErrorException e)
+            catch (Abbyy.CloudOcrSdk.ProcessingErrorException e)
             {
                 Console.WriteLine("Cannot process.");
                 Console.WriteLine(e.ToString());
