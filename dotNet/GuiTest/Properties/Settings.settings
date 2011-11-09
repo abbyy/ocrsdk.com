@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="UserName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">login</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
-      <Value Profile="(Default)">pwd</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="OutputDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">Results</Value>

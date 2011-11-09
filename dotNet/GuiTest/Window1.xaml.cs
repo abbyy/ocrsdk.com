@@ -36,11 +36,19 @@ namespace GuiTest
             restClient.Proxy.Credentials = CredentialCache.DefaultCredentials;
             restClient.ServerUrl = Properties.Settings.Default.ServerAddress;
 
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserName))
-                restClient.UserName = Properties.Settings.Default.UserName;
+            if (String.IsNullOrEmpty(Properties.Settings.Default.UserName) || String.IsNullOrEmpty(Properties.Settings.Default.Password) )
+            {
+                CredentialsInputDialog dialog = new CredentialsInputDialog();
+                dialog.ShowDialog();
 
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.Password))
-                restClient.Password = Properties.Settings.Default.Password;
+                Properties.Settings.Default.UserName = dialog.ApplicationId.Text;
+                Properties.Settings.Default.Password = dialog.Password.Text;
+                Properties.Settings.Default.Save();
+            }
+
+
+            restClient.UserName = Properties.Settings.Default.UserName;
+            restClient.Password = Properties.Settings.Default.Password;
 
             restClientAsync = new RestServiceClientAsync(restClient);
 
