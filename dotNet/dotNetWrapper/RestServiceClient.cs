@@ -284,7 +284,7 @@ namespace Abbyy.CloudOcrSdk
             }
             catch (System.Net.WebException e )
             {
-                throw new ProcessingErrorException("Cannot upload file", e);
+                throw new ProcessingErrorException("Cannot upload file: " + e.Message, e);
             }
         }
 
