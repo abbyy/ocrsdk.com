@@ -69,6 +69,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="FieldLevelXml.cs" />
     <Compile Include="FieldProcessingSettings.cs" />
+    <Compile Include="ProcessingSettings.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

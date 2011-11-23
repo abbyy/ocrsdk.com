@@ -40,4 +40,38 @@ namespace Abbyy.CloudOcrSdk
             }
         }
     }
+
+    [Flags]
+    public enum TextType
+    {
+        Normal=0x01, 
+        Handprinted=0x02, // Works only for field-level recognition
+        Gothic=0x04
+    }
+
+    public static class TextTypesExtensions
+    {
+        private static void appendToResult(StringBuilder result, string value)
+        {
+            if (result.Length > 0)
+                result.Append(",");
+            result.Append(value);
+        }
+
+        public static string AsUrlParams(this TextType textTypes)
+        {
+            StringBuilder result = new StringBuilder();
+
+            if ( (textTypes & TextType.Normal) == TextType.Normal )
+                appendToResult(result, "normal");
+
+            if ((textTypes & TextType.Handprinted) == TextType.Handprinted)
+                appendToResult(result, "handprinted");
+
+            if ((textTypes & TextType.Gothic) == TextType.Gothic)
+                appendToResult(result, "gothic");
+
+            return result.ToString();
+        }
+    }
 }
