@@ -31,7 +31,7 @@ class Task:
 
 class AbbyyOnlineSdk:
 	ServerUrl = "http://cloud.ocrsdk.com/"
-	Username = "user"
+	ApplicationId = "user"
 	Password = "password"
 	Proxy = None
 	enableDebugging = 0
@@ -84,7 +84,7 @@ class AbbyyOnlineSdk:
 
 
 	def buildAuthInfo( self ):
-		return { "Authorization" : "Basic %s" % base64.encodestring( "%s:%s" % (self.Username, self.Password) ) }
+		return { "Authorization" : "Basic %s" % base64.encodestring( "%s:%s" % (self.ApplicationId, self.Password) ) }
 
 	def getOpener( self ):
 		if self.Proxy == None:

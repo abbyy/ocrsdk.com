@@ -6,16 +6,16 @@
 # do not forget to set http_proxy variable if necessary
 
 ServerUrl='http://cloud.ocrsdk.com'
-Login="_mylogin_"
+ApplicationId="_my_application_"
 Password="_mypassword_";
 
 
-if [ -n $FRE_LOGIN ]; then
-	Login="$FRE_LOGIN";
+if [ -n $ABBYY_APPID ]; then
+	ApplicationId="$ABBYY_APPID";
 fi;
 
-if [ -n $FRE_PWD ]; then
-	Password="$FRE_PWD";
+if [ -n $ABBYY_PWD ]; then
+	Password="$ABBYY_PWD";
 fi;
 
 
@@ -57,7 +57,7 @@ if [ -z $TargetFile ]; then
 fi
 
 echo "Uploading.."
-response=`curl -s -S --user $Login:$Password --form upload=@$SourceFile $ServerUrl/processImage?exportFormat=$OutFormat&language=$Language`
+response=`curl -s -S --user $ApplicationId:$Password --form upload=@$SourceFile $ServerUrl/processImage?exportFormat=$OutFormat&language=$Language`
 
 
 #Select guid from response string
@@ -76,7 +76,7 @@ while [ $taskStatus != "Completed" ]
 do
 	sleep 4
 	echo -n "."
-	response=`curl -s -S --user $Login:$Password $ServerUrl/getTaskStatus?taskId=$taskId`
+	response=`curl -s -S --user $ApplicationId:$Password $ServerUrl/getTaskStatus?taskId=$taskId`
 	taskStatus=`echo $response | grep -o -E 'status="[^"]+"' | cut -d '"' -f 2`
 done 
 

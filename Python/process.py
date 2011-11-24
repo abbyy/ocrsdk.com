@@ -18,11 +18,11 @@ from AbbyyOnlineSdk import *
 
 processor = AbbyyOnlineSdk()
 
-if "FRE_LOGIN" in os.environ:
-	processor.Username = os.environ["FRE_LOGIN"]
+if "ABBYY_APPID" in os.environ:
+	processor.ApplicationId = os.environ["ABBYY_APPID"]
 
-if "FRE_PWD" in os.environ:
-	processor.Password = os.environ["FRE_PWD"]
+if "ABBYY_PWD" in os.environ:
+	processor.Password = os.environ["ABBYY_PWD"]
 
 # Proxy settings
 if "http_proxy" in os.environ:

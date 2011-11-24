@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 public class Client {
-	public String AppId;
+	public String ApplicationId;
 	public String Password;
 	
 	public String ServerUrl = "http://cloud.ocrsdk.com";
@@ -107,7 +107,7 @@ public class Client {
 	
 	private String encodeUserPassword()
 	{
-		String toEncode = AppId + ":" + Password;
+		String toEncode = ApplicationId + ":" + Password;
 		return Base64.encode( toEncode );
 	}
 	

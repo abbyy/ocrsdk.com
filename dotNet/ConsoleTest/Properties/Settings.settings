@@ -2,14 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ConsoleTest.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="UserName" Type="System.String" Scope="User">
+    <Setting Name="ApplicationId" Type="System.String" Scope="User">
       <Value Profile="(Default)">User</Value>
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)">pwd</Value>
     </Setting>
     <Setting Name="ServerAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://freservicealpha01.cloudapp.net/</Value>
+      <Value Profile="(Default)">http://cloud.ocrsdk.com</Value>
     </Setting>
   </Settings>
 </SettingsFile>

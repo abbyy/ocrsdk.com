@@ -33,7 +33,7 @@ public class demoActivity extends Activity {
 				Thread.sleep(1000);
 				displayMessage( "Starting.." );
 				Client restClient = new Client();
-				restClient.AppId = "<your app_id>";
+				restClient.ApplicationId = "<your app_id>";
 				restClient.Password = "<your app_password>";
 				
 				String filePath = "/sdcard/00000001.jpg";

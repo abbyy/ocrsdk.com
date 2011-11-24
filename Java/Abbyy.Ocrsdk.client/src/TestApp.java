@@ -16,7 +16,7 @@ public class TestApp {
 		}
 		
 		Client restClient = new Client();
-		restClient.AppId = args[0];
+		restClient.ApplicationId = args[0];
 		restClient.Password = args[1];
 		
 		String filePath = args[2];

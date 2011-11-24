@@ -21,15 +21,15 @@ namespace ConsoleTest
             restClient.ServerUrl = Properties.Settings.Default.ServerAddress;
             restClient.Proxy.Credentials = CredentialCache.DefaultCredentials;
 
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.UserName))
-                restClient.UserName = Properties.Settings.Default.UserName;
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.ApplicationId))
+                restClient.ApplicationId = Properties.Settings.Default.ApplicationId;
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.Password))
                 restClient.Password = Properties.Settings.Default.Password;
 
             restClientAsync = new RestServiceClientAsync(restClient);
 
-            Console.WriteLine(String.Format("User: {0}\n", restClient.UserName));
+            Console.WriteLine(String.Format("Application id: {0}\n", restClient.ApplicationId));
         }
 
         /// <summary>

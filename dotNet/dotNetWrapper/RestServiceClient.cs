@@ -171,7 +171,7 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
-        public string UserName { get; set; }
+        public string ApplicationId { get; set; }
         public string Password { get; set; }
 
         public IWebProxy Proxy { get; set; }
@@ -424,10 +424,10 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
-        private string encodeUserPassword(string user, string pass)
+        private string encodeAppIdAndPassword(string applicationId, string pass)
         {
             Encoding encoding = Encoding.GetEncoding("iso-8859-1");
-            string toEncode = user + ":" + pass;
+            string toEncode = applicationId + ":" + pass;
             string baseEncoded = Convert.ToBase64String(encoding.GetBytes(toEncode));
             return baseEncoded;
         }
@@ -441,10 +441,10 @@ namespace Abbyy.CloudOcrSdk
             if (serverUrl.StartsWith(ServerUrl, StringComparison.InvariantCultureIgnoreCase))
             {
                 CredentialCache cache = new CredentialCache();
-                cache.Add(new Uri(serverUrl), "Digest", new NetworkCredential(UserName, Password));
+                cache.Add(new Uri(serverUrl), "Digest", new NetworkCredential(ApplicationId, Password));
                 request.Credentials = cache;
                 request.Timeout = 300 * 1000;
-                request.Headers.Add("Authorization", "Basic: " + encodeUserPassword(UserName, Password));
+                request.Headers.Add("Authorization", "Basic: " + encodeAppIdAndPassword(ApplicationId, Password));
             }
         }
 
