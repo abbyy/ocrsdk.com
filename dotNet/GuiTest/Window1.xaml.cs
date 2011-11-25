@@ -149,7 +149,7 @@ namespace GuiTest
         void moveTaskToCompleted(UserTask task)
         {
             _userTasks.Remove(task);
-            _completedTasks.Add(task);
+            _completedTasks.Insert(0, task);
         }
 
         void updateServerTasksList()
