@@ -81,8 +81,8 @@ namespace Abbyy.CloudOcrSdk
 
         // Delegates used to start execution on a worker thread
         private delegate void downloadWorkerEventHandler(Task task, string filePath, AsyncOperation asyncOp);
-        private delegate void processFileWorkerEventHandler(string filePath, ProcessingSettings settings, AsyncOperation asyncOp);
-        private delegate void processFieldWorkerEventHandler(string filePath, IFieldProcessingSettings settings, AsyncOperation asyncOp);
+        private delegate void processFileWorkerEventHandler(string filePath, IProcessingSettings settings, AsyncOperation asyncOp);
+        private delegate void processFieldWorkerEventHandler(string filePath, IProcessingSettings settings, AsyncOperation asyncOp);
         private delegate void listTasksWorkerEventHandler(AsyncOperation asyncOp);
 
 
@@ -118,7 +118,7 @@ namespace Abbyy.CloudOcrSdk
 
         // This method performs the actual prime number computation.
         // It is executed on the worker thread.
-        private void processFileWorker(string filePath, ProcessingSettings settings,
+        private void processFileWorker(string filePath, IProcessingSettings settings,
             AsyncOperation asyncOp)
         {
             Exception e = null;
@@ -130,7 +130,14 @@ namespace Abbyy.CloudOcrSdk
             Task task = null;
             try
             {
-                task = _syncClient.ProcessImage(filePath, settings);
+                if (settings is ProcessingSettings)
+                {
+                    task = _syncClient.ProcessImage(filePath, settings as ProcessingSettings);
+                }
+                else if (settings is BusCardProcessingSettings)
+                {
+                    task = _syncClient.ProcessBusinessCard(filePath, settings as BusCardProcessingSettings);
+                }
 
                 // Notify subscriber that upload completed
                 Task uploadedTask = new Task(task.Id, TaskStatus.Submitted);
@@ -151,7 +158,7 @@ namespace Abbyy.CloudOcrSdk
             processCompletionMethod(task, e, false, asyncOp);
         }
 
-        private void processFieldWorker(string filePath, IFieldProcessingSettings settings,
+        private void processFieldWorker(string filePath, IProcessingSettings settings,
             AsyncOperation asyncOp)
         {
             Exception e = null;
@@ -404,9 +411,44 @@ namespace Abbyy.CloudOcrSdk
         }
 
         /// <summary>
+        /// Upload file and start recognition asynchronously
+        /// Performs callbacks:
+        ///   UploadFileCompleted
+        ///   TaskProcessingCompleted
+        /// </summary>
+        private void processFileAsync(string filePath, IProcessingSettings settings, object taskId)
+        {
+            // Create an AsyncOperation for taskId.
+            AsyncOperation asyncOp =
+                AsyncOperationManager.CreateOperation(taskId);
+
+            // Multiple threads will access the task dictionary,
+            // so it must be locked to serialize access.
+            lock (processJobs.SyncRoot)
+            {
+                if (processJobs.Contains(taskId))
+                {
+                    throw new ArgumentException(
+                        "Task ID parameter must be unique",
+                        "taskId");
+                }
+
+                processJobs[taskId] = asyncOp;
+            }
+
+            // Start the asynchronous operation.
+            processFileWorkerEventHandler workerDelegate = new processFileWorkerEventHandler(processFileWorker);
+            workerDelegate.BeginInvoke(
+                filePath, settings,
+                asyncOp,
+                null,
+                null);
+        }
+
+        /// <summary>
         /// Start one of 3 possible field-processing tasks
         /// </summary>
-        private void processFieldAsync(string filePath, IFieldProcessingSettings settings, object taskId)
+        private void processFieldAsync(string filePath, IProcessingSettings settings, object taskId)
         {
             AsyncOperation asynOp = AsyncOperationManager.CreateOperation(taskId);
             lock (processJobs.SyncRoot)
@@ -453,33 +495,13 @@ namespace Abbyy.CloudOcrSdk
 
         public void UploadFileAsync(string filePath, ProcessingSettings settings, object taskId)
         {
-            // Create an AsyncOperation for taskId.
-            AsyncOperation asyncOp =
-                AsyncOperationManager.CreateOperation(taskId);
-
-            // Multiple threads will access the task dictionary,
-            // so it must be locked to serialize access.
-            lock (processJobs.SyncRoot)
-            {
-                if (processJobs.Contains(taskId))
-                {
-                    throw new ArgumentException(
-                        "Task ID parameter must be unique",
-                        "taskId");
-                }
-
-                processJobs[taskId] = asyncOp;
-            }
-
-            // Start the asynchronous operation.
-            processFileWorkerEventHandler workerDelegate = new processFileWorkerEventHandler(processFileWorker);
-            workerDelegate.BeginInvoke(
-                filePath, settings,
-                asyncOp,
-                null,
-                null);
+            processFileAsync(filePath, settings, taskId);
         }
 
+        public void ProcessBusinessCardAsync(string filePath, BusCardProcessingSettings settings, object taskId)
+        {
+            processFileAsync(filePath, settings, taskId);
+        }
 
         /// <summary>
         /// Call ProcessTextField asynchronously.

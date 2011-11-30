@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Abbyy.CloudOcrSdk
 {
-    interface IFieldProcessingSettings
+    interface IProcessingSettings
     {
         string AsUrlParams { get; }
     }
 
-    public class TextFieldProcessingSettings : IFieldProcessingSettings
+    public class TextFieldProcessingSettings : IProcessingSettings
     {
         public string AsUrlParams
         {
@@ -18,7 +18,7 @@ namespace Abbyy.CloudOcrSdk
         }
     }
 
-    public class BarcodeFieldProcessingSettings : IFieldProcessingSettings
+    public class BarcodeFieldProcessingSettings : IProcessingSettings
     {
         public string AsUrlParams
         {
@@ -26,7 +26,7 @@ namespace Abbyy.CloudOcrSdk
         }
     }
 
-    public class CheckmarkFieldProcessingSettings : IFieldProcessingSettings
+    public class CheckmarkFieldProcessingSettings : IProcessingSettings
     {
         public string Params { get; set; }
         public string AsUrlParams

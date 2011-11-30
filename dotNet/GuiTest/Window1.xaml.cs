@@ -128,21 +128,41 @@ namespace GuiTest
             // Initialize output directory
             string outputDir = getOutputDir();
 
-            ProcessingSettings settings = GetProcessingSettings();
+            // Different behavior for full-text recognition and business card recognition
 
-            UserTask task = new UserTask(filePath);
-            task.TaskStatus = "Uploading";
-            task.OutputFilePath = System.IO.Path.Combine(
-                outputDir,
-                System.IO.Path.GetFileNameWithoutExtension(filePath) + settings.OutputFileExt);
+            if (formatVCard.IsChecked == false)
+            {
+                ProcessingSettings settings = GetProcessingSettings();
 
-            _userTasks.Add(task);
+                UserTask task = new UserTask(filePath);
+                task.TaskStatus = "Uploading";
+                task.OutputFilePath = System.IO.Path.Combine(
+                    outputDir,
+                    System.IO.Path.GetFileNameWithoutExtension(filePath) + settings.OutputFileExt);
 
-            settings.Description = String.Format("{0} -> {1}", 
-                System.IO.Path.GetFileName(filePath),
-                settings.OutputFileExt);
+                _userTasks.Add(task);
 
-            restClientAsync.UploadFileAsync(filePath, settings, task);
+                settings.Description = String.Format("{0} -> {1}",
+                    System.IO.Path.GetFileName(filePath),
+                    settings.OutputFileExt);
+
+                restClientAsync.UploadFileAsync(filePath, settings, task);
+            }
+            else
+            {
+                // Business-card recognition
+                BusCardProcessingSettings settings = GetBusCardProcessingSettings();
+
+                UserTask task = new UserTask(filePath);
+                task.TaskStatus = "Uploading";
+                task.OutputFilePath = System.IO.Path.Combine(
+                    outputDir,
+                    System.IO.Path.GetFileNameWithoutExtension(filePath) + ".vcf");
+
+                _userTasks.Add(task);
+                
+                restClientAsync.ProcessBusinessCardAsync(filePath, settings, task);
+            }
         }
 
         // Move task from _userTasks to _completedTasks
@@ -255,6 +275,14 @@ namespace GuiTest
             ProcessingSettings result = new ProcessingSettings();
             result.Language = getLanguage();
             result.OutputFormat = getOutputFormat();
+            return result;
+        }
+
+        BusCardProcessingSettings GetBusCardProcessingSettings()
+        {
+            BusCardProcessingSettings result = new BusCardProcessingSettings();
+            result.Language = getLanguage().ToString();
+
             return result;
         }
 

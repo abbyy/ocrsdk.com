@@ -15,7 +15,7 @@ namespace Abbyy.CloudOcrSdk
         English, French, Italian, German, Spanish, Russian, ChinesePRC, Japanese, Korean
     };
 
-    public class ProcessingSettings
+    public class ProcessingSettings : IProcessingSettings
     {
         public ProcessingSettings()
         {
@@ -92,4 +92,29 @@ namespace Abbyy.CloudOcrSdk
         private string _language = "english";
     }
 
+
+    /// <summary>
+    /// Settings used to recognize business cards
+    /// </summary>
+    public class BusCardProcessingSettings : IProcessingSettings
+    {
+        public BusCardProcessingSettings()
+        {
+            Language = "English";
+        }
+
+        /// <summary>
+        /// Language used for business card recognition.
+        /// You can set several languages like "English,Russian" 
+        /// </summary>
+        public string Language { get; set; }
+
+        public string AsUrlParams
+        {
+            get
+            {
+                return String.Format("language={0}", Uri.EscapeDataString(Language));
+            }
+        }
+    }
 }

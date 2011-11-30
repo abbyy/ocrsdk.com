@@ -312,6 +312,20 @@ namespace Abbyy.CloudOcrSdk
             return taskId;
         }
 
+        public Task ProcessBusinessCard(string filePath, BusCardProcessingSettings settings)
+        {
+            string url = String.Format("{0}/processBusinessCard?{1}", ServerUrl, settings.AsUrlParams);
+
+            // Build post request
+            WebRequest request = WebRequest.Create(url);
+            setupPostRequest(url, request);
+            writeFileToRequest(filePath, request);
+
+            XDocument response = performRequest(request);
+            Task serverTask = ServerXml.GetTaskStatus(response);
+            return serverTask;
+        }
+
         /// <summary>
         /// Download filePath that has finished processing and save it to given path
         /// </summary>

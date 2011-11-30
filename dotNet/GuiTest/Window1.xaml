@@ -11,7 +11,7 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" MinWidth="400"/>
+                        <ColumnDefinition Width="*" MinWidth="450"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
@@ -77,6 +77,7 @@
                                     <RadioButton GroupName="format" IsChecked="False" Name="formatRtf">Rtf</RadioButton>
                                     <RadioButton GroupName="format" IsChecked="False" Name="formatXlsx">XlsX</RadioButton>
                                     <RadioButton GroupName="format" IsChecked="False" Name="formatXml">XML</RadioButton>
+                                    <RadioButton GroupName="format" IsChecked="False" Name="formatVCard">VCard</RadioButton>
                                 </StackPanel>
                             </GroupBox>
                         </StackPanel>
