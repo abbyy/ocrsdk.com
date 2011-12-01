@@ -56,7 +56,7 @@ if [ -z $TargetFile ]; then
 fi
 
 echo "Uploading.."
-response=`curl -s -S --user $ApplicationId:$Password --form upload=@$SourceFile "$ServerUrl/processImage?exportFormat=$OutFormat&language=$Language"`
+response=`curl -s -S --user $ApplicationId:$Password --form "upload=@$SourceFile" "$ServerUrl/processImage?exportFormat=$OutFormat&language=$Language"`
 
 
 #Select guid from response string
