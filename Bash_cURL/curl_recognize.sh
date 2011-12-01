@@ -85,6 +85,8 @@ echo
 # Get result url
 resultUrl=`echo $response | grep -o -E 'resultUrl="[^"]+"' | cut -d '"' -f 2`
 
+echo "Downloading result from $resultUrl"
+
 # Get result
 response=`curl -s -S -o $TargetFile $resultUrl`
 echo "Done."
