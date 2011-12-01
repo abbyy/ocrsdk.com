@@ -10,11 +10,11 @@ ApplicationId="_my_application_"
 Password="_mypassword_";
 
 
-if [ -n $ABBYY_APPID ]; then
+if [ -n "$ABBYY_APPID" ]; then
     ApplicationId="$ABBYY_APPID";
 fi;
 
-if [ -n $ABBYY_PWD ]; then
+if [ -n "$ABBYY_PWD" ]; then
     Password="$ABBYY_PWD";
 fi;
 
