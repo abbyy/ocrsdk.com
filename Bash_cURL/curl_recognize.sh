@@ -3,27 +3,45 @@
 # Convert an image file by Abbyy Cloud OCR SDK using cURL
 # Usage: cloud_recognize <input> <output> [-l language] [-f txt|rtf|docx|xlsx|pptx|pdfSearchable|pdfTextAndImages|xml]
 
-# do not forget to set http_proxy variable if necessary
+# before calling this script, set ABBYY_APPID and ABBYY_PWD environment variables
+# do not forget to set http_proxy and https_proxy variables if necessary
 
 ServerUrl='http://cloud.ocrsdk.com'
 ApplicationId="_my_application_"
 Password="_mypassword_";
 
+echo "ABBYY Cloud OCR SDK demo recognition script"
+echo
 
 if [ -n "$ABBYY_APPID" ]; then
     ApplicationId="$ABBYY_APPID";
+else
+    echo "No application id specified. Please execute"
+    echo "\"export ABBYY_APPID=<your app id>\""
+    exit 1
 fi;
 
 if [ -n "$ABBYY_PWD" ]; then
     Password="$ABBYY_PWD";
+else 
+    echo "No application password specified. Plese execute"
+    echo "\"export ABBYY_PWD=<your app password>\""
+    exit 1
 fi;
 
+echo
+
+function printUsage {
+    echo "Usage:" 
+    echo "$0 <input> <output> [-f output_format] [-l language]"
+    echo "output_format: txt|rtf|docx|xlsx|pptx|pdfSearchable|pdfTextAndImages|xml"
+    echo "Some language examples: Russian Russian,English English,ChinesePRC etc. For full list see ocrsdk documentation"
+}
 
 params=`getopt -o f:l: -- "$@"`
 if [ $? != 0 ] ; then
-    echo "Invalid arguments. Usage:"
-    echo "$0 <input> <output> [-f output_format] [-l language]"
-    echo "output_format: txt|rtf|docx|xlsx|pptx|pdfSearchable|pdfTextAndImages|xml"
+    echo "Invalid arguments."
+    printUsage >&2
     exit 1;
 fi
 
@@ -44,6 +62,7 @@ while true; do
             TargetFile=$1;
         else
             echo "Invalid argument: $1" >&2;
+            printUsage
             exit 1;
         fi
         shift;;
@@ -51,7 +70,13 @@ while true; do
 done
 
 if [ -z $TargetFile ]; then
-    echo "Invalid arguments" >&2;
+    echo "Invalid arguments." >&2;
+    printUsage >&2;
+    exit 1;
+fi
+
+if [ ! -e "$SourceFile" ]; then
+    echo "Source file $SourceFile doesn't exist";
     exit 1;
 fi
 
