@@ -38,7 +38,12 @@ function printUsage {
     echo "Some language examples: Russian Russian,English English,ChinesePRC etc. For full list see ocrsdk documentation"
 }
 
-params=`getopt -o f:l: -- "$@"`
+if [ `uname -a | grep -i darwin | wc -l` == "1" ]; then
+    params=`getopt f:l: -- "$@"`
+else
+    params=`getopt -o f:l: -- "$@"`
+fi
+
 if [ $? != 0 ] ; then
     echo "Invalid arguments."
     printUsage >&2
