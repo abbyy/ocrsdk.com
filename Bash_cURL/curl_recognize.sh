@@ -7,15 +7,15 @@
 # do not forget to set http_proxy and https_proxy variables if necessary
 
 ServerUrl='http://cloud.ocrsdk.com'
-ApplicationId="_my_application_"
-Password="_mypassword_";
+ApplicationId=""
+Password=""
 
 echo "ABBYY Cloud OCR SDK demo recognition script"
 echo
 
 if [ -n "$ABBYY_APPID" ]; then
     ApplicationId="$ABBYY_APPID";
-else
+elif [ -z $ApplicationId ]; then
     echo "No application id specified. Please execute"
     echo "\"export ABBYY_APPID=<your app id>\""
     exit 1
@@ -23,13 +23,11 @@ fi;
 
 if [ -n "$ABBYY_PWD" ]; then
     Password="$ABBYY_PWD";
-else 
+elif [ -z $Password ]; then 
     echo "No application password specified. Plese execute"
     echo "\"export ABBYY_PWD=<your app password>\""
     exit 1
 fi;
-
-echo
 
 function printUsage {
     echo "Usage:" 
@@ -79,6 +77,9 @@ if [ ! -e "$SourceFile" ]; then
     echo "Source file $SourceFile doesn't exist";
     exit 1;
 fi
+
+sourceFileName=`basename "$SourceFile"`
+echo "Recognizing $sourceFileName with $Language language. Result will be saved in $OutFormat format.."
 
 echo "Uploading.."
 response=`curl -s -S --user $ApplicationId:$Password --form "upload=@$SourceFile" "$ServerUrl/processImage?exportFormat=$OutFormat&language=$Language"`
