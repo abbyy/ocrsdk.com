@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -75,9 +74,9 @@ namespace Abbyy.CloudOcrSdk
         private RestServiceClient _syncClient;
         private TaskList _taskList;
 
-        private HybridDictionary processJobs = new HybridDictionary();
-        private HybridDictionary downloadJobs = new HybridDictionary();
-        private HybridDictionary taskListJobs = new HybridDictionary();
+        private Dictionary<object, AsyncOperation> processJobs = new Dictionary<object, AsyncOperation>();
+        private Dictionary<object, AsyncOperation> downloadJobs = new Dictionary<object, AsyncOperation>();
+        private Dictionary<object, AsyncOperation> taskListJobs = new Dictionary<object, AsyncOperation>();
 
         // Delegates used to start execution on a worker thread
         private delegate void downloadWorkerEventHandler(Task task, string filePath, AsyncOperation asyncOp);
@@ -199,7 +198,7 @@ namespace Abbyy.CloudOcrSdk
                 e = ex;
             }
 
-            lock (processJobs.SyncRoot)
+            lock (processJobs)
             {
                 processJobs.Remove(asyncOp.UserSuppliedState);
             }
@@ -245,7 +244,7 @@ namespace Abbyy.CloudOcrSdk
                 e = ex;
             }
 
-            lock (downloadJobs.SyncRoot)
+            lock (downloadJobs)
             {
                 taskListJobs.Remove(asyncOp.UserSuppliedState);
             }
@@ -271,7 +270,7 @@ namespace Abbyy.CloudOcrSdk
             // remove the task from the lifetime collection.
             if (!canceled)
             {
-                lock (processJobs.SyncRoot)
+                lock (processJobs)
                 {
                     processJobs.Remove(asyncOp.UserSuppliedState);
                 }
@@ -297,7 +296,7 @@ namespace Abbyy.CloudOcrSdk
         {
             if (!canceled)
             {
-                lock (downloadJobs.SyncRoot)
+                lock (downloadJobs)
                 {
                     downloadJobs.Remove(asyncOp.UserSuppliedState);
                 }
@@ -424,9 +423,9 @@ namespace Abbyy.CloudOcrSdk
 
             // Multiple threads will access the task dictionary,
             // so it must be locked to serialize access.
-            lock (processJobs.SyncRoot)
+            lock (processJobs)
             {
-                if (processJobs.Contains(taskId))
+                if (processJobs.ContainsKey(taskId))
                 {
                     throw new ArgumentException(
                         "Task ID parameter must be unique",
@@ -451,9 +450,9 @@ namespace Abbyy.CloudOcrSdk
         private void processFieldAsync(string filePath, IProcessingSettings settings, object taskId)
         {
             AsyncOperation asynOp = AsyncOperationManager.CreateOperation(taskId);
-            lock (processJobs.SyncRoot)
+            lock (processJobs)
             {
-                if (processJobs.Contains(taskId))
+                if (processJobs.ContainsKey(taskId))
                 {
                     throw new ArgumentException("Task ID parameter must be unique", "taskId");
                 }
@@ -493,7 +492,7 @@ namespace Abbyy.CloudOcrSdk
 
         public event EventHandler<ListTaskEventArgs> ListTasksCompleted;
 
-        public void UploadFileAsync(string filePath, ProcessingSettings settings, object taskId)
+        public void ProcessImageAsync(string filePath, ProcessingSettings settings, object taskId)
         {
             processFileAsync(filePath, settings, taskId);
         }
@@ -544,9 +543,9 @@ namespace Abbyy.CloudOcrSdk
         {
             AsyncOperation asyncOp = AsyncOperationManager.CreateOperation(userTaskId);
 
-            lock (downloadJobs.SyncRoot)
+            lock (downloadJobs)
             {
-                if (downloadJobs.Contains(userTaskId))
+                if (downloadJobs.ContainsKey(userTaskId))
                 {
                     throw new ArgumentException("Task ID parameter must be unique", "userTaskId");
                 }
@@ -563,9 +562,9 @@ namespace Abbyy.CloudOcrSdk
         {
             AsyncOperation asyncOp = AsyncOperationManager.CreateOperation(userTaskId);
 
-            lock (taskListJobs.SyncRoot)
+            lock (taskListJobs)
             {
-                if (taskListJobs.Contains(userTaskId))
+                if (taskListJobs.ContainsKey(userTaskId))
                 {
                     throw new ArgumentException("Task ID parameter must be unique", "userTaskId");
                 }
