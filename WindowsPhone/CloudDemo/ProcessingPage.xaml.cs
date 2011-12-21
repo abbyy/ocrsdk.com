@@ -27,8 +27,8 @@ namespace CloudDemo
             InitializeComponent();
 
             RestServiceClient syncClient = new RestServiceClient();
-            syncClient.ApplicationId = "panferov-3";
-            syncClient.Password = "FXUru5SRwacG33zPbZ58K7ZF";
+            syncClient.ApplicationId = "";
+            syncClient.Password = "";
 
             abbyyClient = new RestServiceClientAsync(syncClient);
 

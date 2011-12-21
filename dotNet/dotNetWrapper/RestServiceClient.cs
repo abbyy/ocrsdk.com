@@ -203,8 +203,54 @@ namespace Abbyy.CloudOcrSdk
             }
             catch (System.Net.WebException e )
             {
-                throw new ProcessingErrorException("Cannot upload file: " + e.Message, e);
+                String friendlyMessage = retrieveFriendlyMessage( e );
+				if (friendlyMessage != null)
+				{
+					throw new ProcessingErrorException(friendlyMessage, e);
+				}
+				throw new ProcessingErrorException("Cannot upload file", e);
             }
+        }
+
+        private string retrieveFriendlyMessage( System.Net.WebException fromException )
+        {
+            try
+            {
+                using (HttpWebResponse result = (HttpWebResponse)fromException.Response)
+                {
+                    // try extract the user-friendly text that might have been supplied
+                    // by the service.
+                    try
+                    {
+                        using (Stream stream = result.GetResponseStream())
+                        {
+                            XDocument responseXml = XDocument.Load( new XmlTextReader( stream ) );
+                            XElement messageElement = responseXml.Root.Element("message");
+                            String serviceMessage = messageElement.Value;
+                            if (!String.IsNullOrEmpty(serviceMessage))
+                            {
+                                return serviceMessage;
+                            }
+                        }
+                    } catch
+                    {
+                    }
+                    try
+                    {
+                        String protocolMessage = result.StatusDescription;
+                        if (!String.IsNullOrEmpty(protocolMessage))
+                        {
+                            return protocolMessage;
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            } catch
+            {
+            }
+            return null;
         }
 
         /// <summary>
