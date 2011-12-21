@@ -132,14 +132,6 @@ namespace Abbyy.CloudOcrSdk
             ServerUrl = "http://cloud.ocrsdk.com/";
             IsSecureConnection = false;
             Proxy = WebRequest.DefaultWebProxy;
-
-            // FIXME: remove this after server has valid certificate
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += 
-                (se, cert, chain, sslerror) =>
-            {
-                return true;
-            };
-
         }
 
         /// <summary>
@@ -500,11 +492,7 @@ namespace Abbyy.CloudOcrSdk
             // Support authentication in case url is ABBYY SDK
             if (serverUrl.StartsWith(ServerUrl, StringComparison.InvariantCultureIgnoreCase))
             {
-                CredentialCache cache = new CredentialCache();
-                cache.Add(new Uri(serverUrl), "Digest", new NetworkCredential(ApplicationId, Password));
-                request.Credentials = cache;
-                request.Timeout = 300 * 1000;
-                request.Headers.Add("Authorization", "Basic: " + encodeAppIdAndPassword(ApplicationId, Password));
+                request.Credentials = new NetworkCredential(ApplicationId, Password);
             }
         }
 

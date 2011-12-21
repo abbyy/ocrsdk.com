@@ -146,7 +146,7 @@ namespace GuiTest
                     System.IO.Path.GetFileName(filePath),
                     settings.OutputFileExt);
 
-                restClientAsync.UploadFileAsync(filePath, settings, task);
+                restClientAsync.ProcessImageAsync(filePath, settings, task);
             }
             else
             {
