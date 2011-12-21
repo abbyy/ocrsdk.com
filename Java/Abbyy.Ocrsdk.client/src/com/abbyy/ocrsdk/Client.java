@@ -44,7 +44,6 @@ public class Client {
 		
 		URL url = new URL( task.DownloadUrl );
 		URLConnection connection = url.openConnection(); // do not use authenticated connection
-		connection.setDoOutput(true);
 		
 		BufferedInputStream reader = new BufferedInputStream( connection.getInputStream());
 				
@@ -64,7 +63,7 @@ public class Client {
 		connection.setDoOutput(true);
 		connection.setDoInput(true);
 		connection.setRequestMethod("POST");
-		connection.addRequestProperty( "Authorization", "Basic: " + encodeUserPassword());
+		setupAuthorization( connection );
 		connection.setRequestProperty("Content-Type", "applicaton/octet-stream" );
 		
 		return connection;
@@ -73,11 +72,14 @@ public class Client {
 	private URLConnection openGetConnection( URL url ) throws Exception
 	{
 		URLConnection connection = url.openConnection();
-		connection.setDoOutput(true);
 		//connection.setRequestMethod("GET");
-		connection.addRequestProperty( "Authorization", "Basic: " + encodeUserPassword());
-		
+		setupAuthorization( connection );
 		return connection;
+	}
+	
+	private void setupAuthorization( URLConnection connection )
+	{
+		connection.addRequestProperty( "Authorization", "Basic: " + encodeUserPassword());	
 	}
 	
 	private byte[] readDataFromFile( String filePath ) throws Exception
