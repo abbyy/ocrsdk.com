@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudDemo", "CloudDemo\CloudDemo.csproj", "{F1C573AF-2E21-4990-B944-941334BB8754}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abbyy.CloudOcrSdk", "Abbyy.CloudOcrSdk\Abbyy.CloudOcrSdk.csproj", "{BE083030-14CD-407A-ACA4-A0F5217AD8C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1C573AF-2E21-4990-B944-941334BB8754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1C573AF-2E21-4990-B944-941334BB8754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1C573AF-2E21-4990-B944-941334BB8754}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F1C573AF-2E21-4990-B944-941334BB8754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1C573AF-2E21-4990-B944-941334BB8754}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1C573AF-2E21-4990-B944-941334BB8754}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BE083030-14CD-407A-ACA4-A0F5217AD8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE083030-14CD-407A-ACA4-A0F5217AD8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE083030-14CD-407A-ACA4-A0F5217AD8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE083030-14CD-407A-ACA4-A0F5217AD8C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
