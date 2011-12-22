@@ -12,7 +12,11 @@
   // Get path to file that we are going to recognize
   $local_directory=dirname(__FILE__).'/images/';
 
-  $url = 'http://cloud.ocrsdk.com/processImage';
+  // Recognizing with English language to rtf
+  // You can use combination of languages like ?language=english,russian or
+  // ?language=english,french,dutch
+  // For details, see API reference for processImage method
+  $url = 'http://cloud.ocrsdk.com/processImage?language=english&exportFormat=rtf';
   
   // Send HTTP POST request and ret xml response
   $ch = curl_init();
