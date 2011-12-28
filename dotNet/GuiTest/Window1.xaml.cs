@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -136,7 +137,7 @@ namespace GuiTest
                 _userTasks.Add(task);
 
                 settings.Description = String.Format("{0} -> {1}",
-                    System.IO.Path.GetFileName(filePath),
+                    Path.GetFileName(filePath),
                     settings.OutputFileExt);
 
                 restClientAsync.ProcessImageAsync(filePath, settings, task);
@@ -281,39 +282,32 @@ namespace GuiTest
 
         string getLanguages()
         {
-            var result = new StringBuilder();
+            var result = new List<string>();
             if (langEn.IsChecked == true)
-                addLanguage(result, "english");
+                result.Add("english");
             if (langFr.IsChecked == true)
-                addLanguage(result, "french");
+                result.Add("french");
             if (langIt.IsChecked == true)
-                addLanguage(result, "italian");
+                result.Add("italian");
             if (langDe.IsChecked == true)
-                addLanguage(result, "german");
+                result.Add("german");
             if (langEs.IsChecked == true)
-                addLanguage(result, "spanish");
+                result.Add("spanish");
             if (langRu.IsChecked == true)
-                addLanguage(result, "russian");
+                result.Add("russian");
             if (langZh.IsChecked == true)
-                addLanguage(result, "chinesePRC");
+                result.Add("chinesePRC");
             if (langJa.IsChecked == true)
-                addLanguage(result, "japanese");
+                result.Add("japanese");
             if (langKo.IsChecked == true)
-                addLanguage(result, "korean");
+                result.Add("korean");
 
-            if (result.Length == 0)
+            if (result.Count == 0)
                 return "english";
-            return result.ToString();
-        }
 
-        StringBuilder addLanguage(StringBuilder result, string languageName)
-        {
-            if (result.Length > 0)
-                result.Append(",");
-            result.Append(languageName);
-            return result;
+            return String.Join(",", result.ToArray());
         }
-
+       
         OutputFormat getOutputFormat()
         {
             if( formatPdfSearchable.IsChecked == true )
