@@ -52,19 +52,22 @@
                                 <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="RadioButton">
                                     <Setter Property="Margin" Value="5,0" />
                                 </Style>
+                                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="CheckBox">
+                                    <Setter Property="Margin" Value="5,0" />
+                                </Style>
                             </StackPanel.Resources>
 
                             <GroupBox Header="Language">
                                 <WrapPanel>
-                                    <RadioButton GroupName="lang" IsChecked="True" Name="langEn" >EN</RadioButton>
-                                    <RadioButton GroupName="lang" IsChecked="False" Name="langFr" >FR</RadioButton>
-                                    <RadioButton GroupName="lang" IsChecked="False" Name="langIt">IT</RadioButton>
-                                    <RadioButton GroupName="lang" IsChecked="False" Name="langDe">DE</RadioButton>
-                                    <RadioButton GroupName="lang" IsChecked="False" Name="langEs">ES</RadioButton>
-                                    <RadioButton GroupName="lang" IsChecked="False" Name="langRu">RU</RadioButton>
-                                    <RadioButton GroupName="lang" IsChecked="False" Name="langZh">ZH</RadioButton>
-                                    <RadioButton GroupName="lang" IsChecked="False" Name="langJa">JA</RadioButton>
-                                    <RadioButton GroupName="lang" IsChecked="False" Name="langKo">KO</RadioButton>
+                                    <CheckBox IsChecked="True" Name="langEn" >EN</CheckBox>
+                                    <CheckBox IsChecked="False" Name="langFr" >FR</CheckBox>
+                                    <CheckBox IsChecked="False" Name="langIt">IT</CheckBox>
+                                    <CheckBox IsChecked="False" Name="langDe">DE</CheckBox>
+                                    <CheckBox IsChecked="False" Name="langEs">ES</CheckBox>
+                                    <CheckBox IsChecked="False" Name="langRu">RU</CheckBox>
+                                    <CheckBox IsChecked="False" Name="langZh">ZH</CheckBox>
+                                    <CheckBox IsChecked="False" Name="langJa">JA</CheckBox>
+                                    <CheckBox IsChecked="False" Name="langKo">KO</CheckBox>
                                 </WrapPanel>
                             </GroupBox>
                             <GroupBox Header="Output format">

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -8,13 +7,7 @@ using System.Net;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Abbyy.CloudOcrSdk;
 
 namespace GuiTest
@@ -273,7 +266,7 @@ namespace GuiTest
         ProcessingSettings GetProcessingSettings()
         {
             ProcessingSettings result = new ProcessingSettings();
-            result.Language = getLanguage();
+            result.SetLanguage(getLanguages());
             result.OutputFormat = getOutputFormat();
             return result;
         }
@@ -281,33 +274,44 @@ namespace GuiTest
         BusCardProcessingSettings GetBusCardProcessingSettings()
         {
             BusCardProcessingSettings result = new BusCardProcessingSettings();
-            result.Language = getLanguage().ToString();
+            result.Language = getLanguages();
 
             return result;
         }
 
-        RecognitionLanguage getLanguage()
+        string getLanguages()
         {
-            if( langEn.IsChecked == true )
-                return RecognitionLanguage.English;
-            else if( langFr.IsChecked == true )
-                return RecognitionLanguage.French;
-            else if( langIt.IsChecked == true )
-                return RecognitionLanguage.Italian;
-            else if( langDe.IsChecked == true )
-                return RecognitionLanguage.German;
-            else if( langEs.IsChecked == true )
-                return RecognitionLanguage.Spanish;
-            else if( langRu.IsChecked == true )
-                return RecognitionLanguage.Russian;
-            else if( langZh.IsChecked == true )
-                return RecognitionLanguage.ChinesePRC;
-            else if( langJa.IsChecked == true )
-                return RecognitionLanguage.Japanese;
-            else if( langKo.IsChecked == true )
-                return RecognitionLanguage.Korean;
+            var result = new StringBuilder();
+            if (langEn.IsChecked == true)
+                addLanguage(result, "english");
+            if (langFr.IsChecked == true)
+                addLanguage(result, "french");
+            if (langIt.IsChecked == true)
+                addLanguage(result, "italian");
+            if (langDe.IsChecked == true)
+                addLanguage(result, "german");
+            if (langEs.IsChecked == true)
+                addLanguage(result, "spanish");
+            if (langRu.IsChecked == true)
+                addLanguage(result, "russian");
+            if (langZh.IsChecked == true)
+                addLanguage(result, "chinesePRC");
+            if (langJa.IsChecked == true)
+                addLanguage(result, "japanese");
+            if (langKo.IsChecked == true)
+                addLanguage(result, "korean");
 
-            return RecognitionLanguage.English;
+            if (result.Length == 0)
+                return "english";
+            return result.ToString();
+        }
+
+        StringBuilder addLanguage(StringBuilder result, string languageName)
+        {
+            if (result.Length > 0)
+                result.Append(",");
+            result.Append(languageName);
+            return result;
         }
 
         OutputFormat getOutputFormat()
