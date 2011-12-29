@@ -1,6 +1,9 @@
 #import "RecognitionViewController.h"
 #import "AppDelegate.h"
 
+// !!!!! Important !!!!!
+// Please provide your Cloud OCR SDK credentials before 
+// compiling and running
 static NSString* MyApplicationID = @"my_app_id";
 static NSString* MyPassword = @"my_password";
 
