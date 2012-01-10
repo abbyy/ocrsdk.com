@@ -1,0 +1,12 @@
+This folder contains demo sample for Java
+
+!!! IMPORTANT !!!
+
+== Recognition language ==
+
+The sample is pre-configured to recognize English texts. If you
+recognize text in other language, you need to change the behaviour using 
+ProcessingSettings.AsUrlParams() method.
+
+See src\com\abbyy\ocrsdk\ProcessingSettings.java
+
