@@ -27,16 +27,26 @@ public class TestApp {
 		try {
 			System.out.println( "Uploading.." );
 			Task task = null;
-			if(outputFile.endsWith("xml")){
+			if(outputFile.endsWith("xml")) {
+				System.out.println( "Recognizing barcodes in image" );
 				task = restClient.processBarcodeField(filePath, settings);				
-			}else if(outputFile.endsWith("vcf")){
+			} else if(outputFile.endsWith("vcf")) {
+				System.out.println( "Recognition of business card" );
 				task = restClient.processBusinessCard(filePath, settings);
-			}else if(outputFile.endsWith("pdf")){
+			} else {
+				if(outputFile.endsWith("pdf")) {
+					System.out.println( "Image will be converted to searchable pdf" );
+					settings.setOutputFormat( ProcessingSettings.OutputFormat.pdfSearchable );
+				} else if(outputFile.endsWith("txt")) {
+					System.out.println( "Image will be converted to plain text" );
+					settings.setOutputFormat( ProcessingSettings.OutputFormat.txt );
+				}
+				else {
+					System.out.println( "Seems that the output format is unknown. Trying to convert the image to searchable pdf.");
+				}			
+				System.out.println( "Recognition with English language. If your documents contain other languages, please specify them." );
 				task = restClient.processImage(filePath, settings);
-			}else{
-				System.out.println( "Seems that the output format is unknown. Trying to process the Image.");
-				task = restClient.processImage(filePath, settings);
-			}			
+			}
 			
 			while( task.IsTaskActive() ) {
 				Thread.sleep(2000);
