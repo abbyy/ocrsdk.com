@@ -4,14 +4,14 @@ import java.io.*;
 import java.net.*;
 
 public class Client {
-	public String ApplicationId;
-	public String Password;
+	public String applicationId;
+	public String password;
 	
-	public String ServerUrl = "http://cloud.ocrsdk.com";
+	public String serverUrl = "http://cloud.ocrsdk.com";
 	
-	public Task ProcessImage( String filePath, ProcessingSettings settings) throws Exception
+	public Task processImage( String filePath, ProcessingSettings settings) throws Exception
 	{
-		URL url = new URL(ServerUrl + "/processImage?" + settings.AsUrlParams());
+		URL url = new URL(serverUrl + "/processImage?" + settings.AsUrlParams());
 		byte[] fileContents = readDataFromFile( filePath );
 		
 		HttpURLConnection connection = openPostConnection(url);
@@ -23,16 +23,44 @@ public class Client {
 		return new Task(reader);
 	}
 	
-	public Task GetTaskStatus( String taskId ) throws Exception
+	public Task processBusinessCard( String filePath, ProcessingSettings settings) throws Exception
 	{
-		URL url = new URL( ServerUrl + "/getTaskStatus?taskId=" + taskId );
+		URL url = new URL(serverUrl + "/processBusinessCard?language=English");
+		byte[] fileContents = readDataFromFile( filePath );
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length", Integer.toString(fileContents.length));
+		connection.getOutputStream().write( fileContents );
+		
+		BufferedReader reader = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+		return new Task(reader);
+	}
+	
+	public Task processBarcodeField( String filePath, ProcessingSettings settings) throws Exception
+	{
+		URL url = new URL(serverUrl + "/processBarcodeField");
+		byte[] fileContents = readDataFromFile( filePath );
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length", Integer.toString(fileContents.length));
+		connection.getOutputStream().write( fileContents );
+		
+		BufferedReader reader = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+		return new Task(reader);
+	}
+	
+	public Task getTaskStatus( String taskId ) throws Exception
+	{
+		URL url = new URL( serverUrl + "/getTaskStatus?taskId=" + taskId );
 		
 		URLConnection connection = openGetConnection( url );
 		BufferedReader reader = new BufferedReader( new InputStreamReader( connection.getInputStream()));
 		return new Task(reader);
 	}
 	
-	public void DownloadResult( Task task, String outputFile ) throws Exception
+	public void downloadResult( Task task, String outputFile ) throws Exception
 	{
 		if( task.Status != Task.TaskStatus.Completed ) {
 			throw new IllegalArgumentException("Invalid task status");
@@ -109,7 +137,7 @@ public class Client {
 	
 	private String encodeUserPassword()
 	{
-		String toEncode = ApplicationId + ":" + Password;
+		String toEncode = applicationId + ":" + password;
 		return Base64.encode( toEncode );
 	}
 	

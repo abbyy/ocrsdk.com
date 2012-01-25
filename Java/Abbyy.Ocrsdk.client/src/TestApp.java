@@ -16,8 +16,8 @@ public class TestApp {
 		}
 		
 		Client restClient = new Client();
-		restClient.ApplicationId = args[0];
-		restClient.Password = args[1];
+		restClient.applicationId = args[0];
+		restClient.password = args[1];
 		
 		String filePath = args[2];
 		String outputFile = args[3];
@@ -26,18 +26,28 @@ public class TestApp {
 		
 		try {
 			System.out.println( "Uploading.." );
-			Task task = restClient.ProcessImage(filePath, settings);
+			Task task = null;
+			if(outputFile.endsWith("xml")){
+				task = restClient.processBarcodeField(filePath, settings);				
+			}else if(outputFile.endsWith("vcf")){
+				task = restClient.processBusinessCard(filePath, settings);
+			}else if(outputFile.endsWith("pdf")){
+				task = restClient.processImage(filePath, settings);
+			}else{
+				System.out.println( "Seems that the output format is unknown. Trying to process the Image.");
+				task = restClient.processImage(filePath, settings);
+			}			
 			
 			while( task.IsTaskActive() ) {
 				Thread.sleep(2000);
 				
 				System.out.println( "Waiting.." );
-				task = restClient.GetTaskStatus(task.Id);
+				task = restClient.getTaskStatus(task.Id);
 			}
 			
 			if( task.Status == Task.TaskStatus.Completed ) {
 				System.out.println( "Downloading.." );
-				restClient.DownloadResult(task, outputFile);
+				restClient.downloadResult(task, outputFile);
 			} else {
 				System.out.println( "Task failed" );
 			}
