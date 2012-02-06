@@ -208,10 +208,8 @@ namespace Abbyy.CloudOcrSdk
 
         public Task GetTaskStatus(TaskId task)
         {
-            // FIXME: add some unique text to avoid request caching
-            string url = String.Format("{0}/getTaskStatus?taskId={1}&uid={2}", ServerUrl,
-                           Uri.EscapeDataString(task.ToString()),
-                           Guid.NewGuid());
+            string url = String.Format("{0}/getTaskStatus?taskId={1}", ServerUrl,
+                           Uri.EscapeDataString(task.ToString()));
 
             WebRequest request = WebRequest.Create(url);
             setupGetRequest(url, request);
