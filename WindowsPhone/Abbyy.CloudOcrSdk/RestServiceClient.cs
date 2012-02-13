@@ -202,7 +202,7 @@ namespace Abbyy.CloudOcrSdk
             }
             catch (System.Net.WebException e)
             {
-                throw new ProcessingErrorException("Cannot upload file: " + e.Message, e);
+                throw new ProcessingErrorException("Cannot upload file: " + e.Message + ". Please make sure that application Id and password are correct.", e);
             }
         }
 
