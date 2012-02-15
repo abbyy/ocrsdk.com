@@ -71,9 +71,12 @@ namespace GuiTest
             double newWidth = width * scaleX;
             double newHeight = height * scaleY;
 
+            if ((int)newWidth == 0 || (int)newHeight == 0)
+                // Doesn't make sense, further code can't handle this.
+                return;
+
             double newX = (visualLeft - imageOffset.X) * scaleX;
             double newY = (visualTop - imageOffset.Y) * scaleY;
-
 
             System.Drawing.Bitmap src = System.Drawing.Image.FromFile(_sourceFile) as System.Drawing.Bitmap;
             var target = new System.Drawing.Bitmap((int)newWidth, (int)newHeight);
@@ -86,9 +89,6 @@ namespace GuiTest
                                  rect,
                                  System.Drawing.GraphicsUnit.Pixel);
             }
-
-           
-
 
             RegionSelectedEventArgs ev = new RegionSelectedEventArgs(new Rect(newX, newY, newWidth, newHeight), target);
             OnRegionSelected(ev);
