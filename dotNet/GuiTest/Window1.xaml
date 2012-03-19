@@ -6,7 +6,21 @@
     Title="ABBYY Cloud OCR SDK Demo" Height="418" Width="849"
         MinWidth="800">
     <Grid>
-        <TabControl SelectionChanged="TabControl_SelectionChanged">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" IsMainMenu="True" >
+            <MenuItem Header="_File">
+                <MenuItem Header="Connection settings.." Name="SettingsMenu" Click="SettingsMenu_Click" />
+                <Separator/>
+                <MenuItem Header="E_xit" Click="CloseButton_Click" />
+            </MenuItem>
+        </Menu>
+
+
+        <TabControl Grid.Row="1" SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="Process files">
 
                 <Grid>

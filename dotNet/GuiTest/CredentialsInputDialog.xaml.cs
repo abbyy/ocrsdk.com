@@ -21,6 +21,9 @@ namespace GuiTest
         public CredentialsInputDialog()
         {
             InitializeComponent();
+
+            ApplicationId.Text = Properties.Settings.Default.ApplicationId;
+            Password.Text = Properties.Settings.Default.Password;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -28,12 +31,12 @@ namespace GuiTest
             if( String.IsNullOrEmpty( ApplicationId.Text ) || String.IsNullOrEmpty( Password.Text ) )
                 return;
 
-            this.DialogResult = true;
+            DialogResult = true;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false;
+            DialogResult = false;
         }
 
 

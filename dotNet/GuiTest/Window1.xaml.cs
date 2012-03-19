@@ -32,12 +32,7 @@ namespace GuiTest
 
             if (String.IsNullOrEmpty(Properties.Settings.Default.ApplicationId) || String.IsNullOrEmpty(Properties.Settings.Default.Password) )
             {
-                CredentialsInputDialog dialog = new CredentialsInputDialog();
-                dialog.ShowDialog();
-
-                Properties.Settings.Default.ApplicationId = dialog.ApplicationId.Text;
-                Properties.Settings.Default.Password = dialog.Password.Text;
-                Properties.Settings.Default.Save();
+                changeAppIdAndPwd();
             }
 
 
@@ -90,6 +85,19 @@ namespace GuiTest
         public ObservableCollection<UserTask> FieldLevelTasks
         {
             get { return _fieldLevelTasks; }
+        }
+
+        private void changeAppIdAndPwd()
+        {
+            CredentialsInputDialog dialog = new CredentialsInputDialog();
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult == true)
+            {
+                Properties.Settings.Default.ApplicationId = dialog.ApplicationId.Text;
+                Properties.Settings.Default.Password = dialog.Password.Text;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void activeTaskList_Drop(object sender, DragEventArgs e)
@@ -421,6 +429,16 @@ namespace GuiTest
         }
 
         #endregion
+
+        private void SettingsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            changeAppIdAndPwd();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
 
     }
 
