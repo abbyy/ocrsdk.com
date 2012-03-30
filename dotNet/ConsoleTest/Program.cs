@@ -12,22 +12,30 @@ namespace ConsoleTest
 {
     class Program
     {
+       
+    
 
         static void Main(string[] args)
         {
-            bool processAsDocument = false;
+
+            ProcessingModeEnum processingMode = ProcessingModeEnum.SinglePage;
             bool showHelp = false;
 
-            string outFormat = "pdfSearchable";
+            string outFormat = null;
             string language = "english";
+            string customOptions = "";
 
             var p = new OptionSet() {
-                { "asDocument", "Process given files as single multi-page document", 
-                    v => processAsDocument = true },
+                { "asDocument", "Process given files using submitImage/processDocument", 
+                    v => processingMode = ProcessingModeEnum.MultiPage },
+                { "asTextField", "Process file using processTextField", 
+                    v => processingMode = ProcessingModeEnum.ProcessTextField},
                 { "out=", "Create output in specified {format}: txt, rtf, docx, xlsx, pptx, pdfSearchable, pdfTextAndImages, xml",
                     (string v) => outFormat = v },
                 { "lang=", "Recognize with specified {language}",
                     (string v) => language = v },
+                { "options=", "Recognize with specified custom options",
+                    (string v) => customOptions = v },
                 { "h|help", "Show this message and exit", 
                      v => showHelp = v != null }
             };
@@ -48,8 +56,6 @@ namespace ConsoleTest
                 showHelp = true;
             }
 
-            ProcessingSettings settings = buildSettings(language, outFormat);
-
             if (showHelp)
             {
                 Console.WriteLine("Process images with ABBYY Cloud OCR SDK");
@@ -60,19 +66,43 @@ namespace ConsoleTest
                 return;
             }
 
+            if (processingMode != ProcessingModeEnum.ProcessTextField && !String.IsNullOrEmpty(customOptions))
+            {
+                Console.WriteLine("Custom options are not supported with current recognition settings. TODO");
+            }
+
+            if (String.IsNullOrEmpty(outFormat))
+            {
+                outFormat = "txt";
+            }
+            else if (processingMode == ProcessingModeEnum.ProcessTextField)
+            {
+                Console.WriteLine("Only xml is supported as output format for field-level recognition.");
+            }
+
             string sourcePath = additionalArgs[0];
             string targetPath = additionalArgs[1];
 
             try
             {
                 Test tester = new Test();
-                tester.ProcessPath(sourcePath, targetPath, settings, processAsDocument);
+
+                if (processingMode == ProcessingModeEnum.SinglePage || processingMode == ProcessingModeEnum.MultiPage)
+                {
+                    ProcessingSettings settings = buildSettings(language, outFormat);
+                    tester.ProcessPath(sourcePath, targetPath, settings, processingMode);
+                }
+                else if (processingMode == ProcessingModeEnum.ProcessTextField)
+                {
+                    TextFieldProcessingSettings settings = buildTextFieldSettings(language, customOptions);
+                    tester.ProcessPath(sourcePath, targetPath, settings, processingMode);
+                }
 
             }
-            catch (Abbyy.CloudOcrSdk.ProcessingErrorException e)
+            catch (Exception e)
             {
-                Console.WriteLine("Cannot process.");
-                Console.WriteLine(e.ToString());
+                Console.WriteLine("Error: ");
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -94,6 +124,14 @@ namespace ConsoleTest
                     throw new ArgumentException("Invalid output format");
             }
 
+            return settings;
+        }
+
+        private static TextFieldProcessingSettings buildTextFieldSettings(string language, string customOptions)
+        {
+            TextFieldProcessingSettings settings = new TextFieldProcessingSettings();
+            settings.Language = language;
+            settings.CustomOptions = customOptions;
             return settings;
         }
     }

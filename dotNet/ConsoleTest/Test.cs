@@ -10,10 +10,16 @@ using Abbyy.CloudOcrSdk;
 
 namespace ConsoleTest
 {
+    public enum ProcessingModeEnum
+    {
+        SinglePage,
+        MultiPage,
+        ProcessTextField
+    };
+
     class Test
     {
         private RestServiceClient restClient;
-        private RestServiceClientAsync restClientAsync;
 
         public Test()
         {
@@ -27,21 +33,20 @@ namespace ConsoleTest
             if (!String.IsNullOrEmpty(Properties.Settings.Default.Password))
                 restClient.Password = Properties.Settings.Default.Password;
 
-            restClientAsync = new RestServiceClientAsync(restClient);
-
             Console.WriteLine(String.Format("Application id: {0}\n", restClient.ApplicationId));
         }
 
         /// <summary>
         /// Process directory or file with given path
         /// </summary>
-        /// <param name="sourcePath"></param>
-        /// <param name="outputFilePath">Path to directory to store results
+        /// <param name="sourcePath">File or directory to be processed</param>
+        /// <param name="outputPath">Path to directory to store results
         /// Will be created if it doesn't exist
         /// </param>
         /// <param name="processAsDocument">If true, all images are processed as a single document</param>
-        public void ProcessPath(string sourcePath, string outputPath, ProcessingSettings settings,
-            bool processAsDocument)
+        public void ProcessPath(string sourcePath, string outputPath, 
+            IProcessingSettings settings,
+            ProcessingModeEnum processingMode)
         {
             List<string> sourceFiles = new List<string>();
             if (Directory.Exists(sourcePath))
@@ -64,26 +69,44 @@ namespace ConsoleTest
                 Directory.CreateDirectory(outputPath);
             }
 
-            if (!processAsDocument || sourceFiles.Count == 1)
+            if (processingMode == ProcessingModeEnum.SinglePage || 
+                (processingMode == ProcessingModeEnum.MultiPage && sourceFiles.Count == 1) )
             {
+                ProcessingSettings fullTextSettings = settings as ProcessingSettings;
                 foreach (string filePath in sourceFiles)
                 {
                     string outputFileName = Path.GetFileNameWithoutExtension(filePath);
-                    string ext = settings.OutputFileExt;
+                    string ext = fullTextSettings.OutputFileExt;
                     string outputFilePath = Path.Combine(outputPath, outputFileName + ext);
 
                     Console.WriteLine("Processing " + Path.GetFileName(filePath));
 
-                    ProcessFile(filePath, outputFilePath, settings);
+                    ProcessFile(filePath, outputFilePath, fullTextSettings);
                 }
             }
-            else
+            else if(processingMode == ProcessingModeEnum.MultiPage)
             {
+                ProcessingSettings fullTextSettings = settings as ProcessingSettings;
                 string outputFileName = "document";
-                string ext = settings.OutputFileExt;
+                string ext = fullTextSettings.OutputFileExt;
                 string outputFilePath = Path.Combine(outputPath, outputFileName + ext);
 
-                ProcessDocument(sourceFiles, outputFilePath, settings);
+                ProcessDocument(sourceFiles, outputFilePath, fullTextSettings);
+            }
+            else if (processingMode == ProcessingModeEnum.ProcessTextField)
+            {
+                TextFieldProcessingSettings fieldSettings = settings as TextFieldProcessingSettings;
+                foreach (string filePath in sourceFiles)
+                {
+                    string outputFileName = Path.GetFileNameWithoutExtension(filePath);
+                    string ext = ".xml";
+                    string outputFilePath = Path.Combine(outputPath, outputFileName + ext);
+
+                    Console.WriteLine("Processing " + Path.GetFileName(filePath));
+
+                    ProcessTextField(filePath, outputFilePath, fieldSettings);
+                }
+
             }
         }
 
@@ -143,6 +166,41 @@ namespace ConsoleTest
             restClient.StartProcessingTask(taskId, settings);
 
             Task task = null;
+            while (true)
+            {
+                task = restClient.GetTaskStatus(taskId);
+                if (!Task.IsTaskActive(task.Status))
+                    break;
+
+                Console.WriteLine(String.Format("Task status: {0}", task.Status));
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            if (task.Status == TaskStatus.Completed)
+            {
+                Console.WriteLine("Processing completed.");
+                restClient.DownloadResult(task, outputFilePath);
+                Console.WriteLine("Download completed.");
+            }
+            else
+            {
+                Console.WriteLine("Error while processing the task");
+            }
+        }
+
+        public void ProcessTextField(string sourceFilePath, string outputFilePath, TextFieldProcessingSettings settings)
+        {
+            Console.WriteLine("Uploading..");
+            Task task = restClient.ProcessTextField(sourceFilePath, settings);
+
+            // For field-level
+            /*
+            var flSettings = new TextFieldProcessingSettings();
+            TaskId taskId = restClient.ProcessTextField(sourceFilePath, flSettings);
+             */
+
+            TaskId taskId = task.Id;
+
             while (true)
             {
                 task = restClient.GetTaskStatus(taskId);

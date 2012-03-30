@@ -300,7 +300,7 @@ namespace Abbyy.CloudOcrSdk
         /// Throws an exception if something goes wrong
         /// </summary>
         /// <returns>Id of created task</returns>
-        public TaskId ProcessTextField(string filePath, TextFieldProcessingSettings settings)
+        public Task ProcessTextField(string filePath, TextFieldProcessingSettings settings)
         {
             string url = String.Format("{0}/processTextField{1}", ServerUrl, settings.AsUrlParams);
 
@@ -310,9 +310,9 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            TaskId taskId = ServerXml.GetTaskId(response);
+            Task task = ServerXml.GetTaskStatus(response);
 
-            return taskId;
+            return task;
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace Abbyy.CloudOcrSdk
         /// Throws an exception if something goes wrong
         /// </summary>
         /// <returns>Id of created task</returns>
-        public TaskId ProcessBarcodeField(string filePath, BarcodeFieldProcessingSettings settings)
+        public Task ProcessBarcodeField(string filePath, BarcodeFieldProcessingSettings settings)
         {
             string url = String.Format("{0}/processBarcodeField{1}", ServerUrl, settings.AsUrlParams);
 
@@ -330,12 +330,12 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            TaskId taskId = ServerXml.GetTaskId(response);
+            Task task = ServerXml.GetTaskStatus(response);
 
-            return taskId;
+            return task;
         }
 
-        public TaskId ProcessCheckmarkField(string filePath, CheckmarkFieldProcessingSettings settings)
+        public Task ProcessCheckmarkField(string filePath, CheckmarkFieldProcessingSettings settings)
         {
             string url = String.Format("{0}/processCheckmarkField{1}", ServerUrl, settings.AsUrlParams);
 
@@ -345,9 +345,9 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            TaskId taskId = ServerXml.GetTaskId(response);
+            Task task = ServerXml.GetTaskStatus(response);
 
-            return taskId;
+            return task;
         }
 
         public Task ProcessBusinessCard(string filePath, BusCardProcessingSettings settings)

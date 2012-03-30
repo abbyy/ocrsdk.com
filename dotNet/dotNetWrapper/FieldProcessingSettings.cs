@@ -5,17 +5,36 @@ using System.Text;
 
 namespace Abbyy.CloudOcrSdk
 {
-    interface IProcessingSettings
+    public interface IProcessingSettings
     {
         string AsUrlParams { get; }
     }
 
     public class TextFieldProcessingSettings : IProcessingSettings
     {
+        public TextFieldProcessingSettings()
+        {
+            Language = "english";
+            TextType = TextType.Normal | TextType.Handprinted;
+        }
+
         public string AsUrlParams
         {
-            get { return "?language=english&textType=normal,handprinted"; }
+            get
+            {
+                string result = "?language=" + Language + "&textType=" + TextType.AsUrlParams();
+                if (!String.IsNullOrEmpty(CustomOptions))
+                {
+                    result += "&" + CustomOptions;
+                }
+                return result;
+            }
         }
+
+        public string Language { get; set; }
+        public TextType TextType { get; set; }
+
+        public String CustomOptions { get; set; }
     }
 
     public class BarcodeFieldProcessingSettings : IProcessingSettings

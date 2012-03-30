@@ -167,15 +167,15 @@ namespace Abbyy.CloudOcrSdk
             {
                 if (settings is TextFieldProcessingSettings)
                 {
-                    task.Id = _syncClient.ProcessTextField(filePath, settings as TextFieldProcessingSettings);
+                    task = _syncClient.ProcessTextField(filePath, settings as TextFieldProcessingSettings);
                 }
                 else if (settings is BarcodeFieldProcessingSettings)
                 {
-                    task.Id = _syncClient.ProcessBarcodeField(filePath, settings as BarcodeFieldProcessingSettings);
+                    task = _syncClient.ProcessBarcodeField(filePath, settings as BarcodeFieldProcessingSettings);
                 }
                 else if (settings is CheckmarkFieldProcessingSettings)
                 {
-                    task.Id = _syncClient.ProcessCheckmarkField(filePath, settings as CheckmarkFieldProcessingSettings);
+                    task = _syncClient.ProcessCheckmarkField(filePath, settings as CheckmarkFieldProcessingSettings);
                 }
                 else
                 {
