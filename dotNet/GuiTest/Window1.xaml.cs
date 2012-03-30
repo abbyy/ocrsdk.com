@@ -97,6 +97,9 @@ namespace GuiTest
                 Properties.Settings.Default.ApplicationId = dialog.ApplicationId.Text;
                 Properties.Settings.Default.Password = dialog.Password.Text;
                 Properties.Settings.Default.Save();
+
+                restClient.ApplicationId = Properties.Settings.Default.ApplicationId;
+                restClient.Password = Properties.Settings.Default.Password;
             }
         }
 
