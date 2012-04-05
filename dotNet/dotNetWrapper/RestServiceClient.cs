@@ -494,6 +494,9 @@ namespace Abbyy.CloudOcrSdk
             {
                 request.Credentials = new NetworkCredential(ApplicationId, Password);
             }
+
+            // Set user agent string so that server is able to collect statistics
+            ((HttpWebRequest)request).UserAgent = ".Net Cloud OCR SDK client";
         }
 
         private void setupPostRequest(string serverUrl, WebRequest request)
