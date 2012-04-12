@@ -43,6 +43,15 @@ namespace Abbyy.CloudOcrSdk
         }
 
         /// <summary>
+        /// Any Url parameters that are passed as-is to the server
+        /// </summary>
+        public String CustomOptions
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets default extension for given output format
         /// </summary>
         public string OutputFileExt
@@ -84,6 +93,9 @@ namespace Abbyy.CloudOcrSdk
                 string textType = TextTypes.AsUrlParams();
                 if (!String.IsNullOrEmpty(textType))
                     result.AppendFormat("&textType={0}", textType);
+
+                if (!String.IsNullOrEmpty(CustomOptions))
+                    result.Append("&"+CustomOptions);
 
                 return result.ToString();
             }

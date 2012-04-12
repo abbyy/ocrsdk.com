@@ -66,11 +66,6 @@ namespace ConsoleTest
                 return;
             }
 
-            if (processingMode != ProcessingModeEnum.ProcessTextField && !String.IsNullOrEmpty(customOptions))
-            {
-                Console.WriteLine("Custom options are not supported with current recognition settings. TODO");
-            }
-
             if (String.IsNullOrEmpty(outFormat))
             {
                 outFormat = "txt";
@@ -90,6 +85,7 @@ namespace ConsoleTest
                 if (processingMode == ProcessingModeEnum.SinglePage || processingMode == ProcessingModeEnum.MultiPage)
                 {
                     ProcessingSettings settings = buildSettings(language, outFormat);
+                    settings.CustomOptions = customOptions;
                     tester.ProcessPath(sourcePath, targetPath, settings, processingMode);
                 }
                 else if (processingMode == ProcessingModeEnum.ProcessTextField)
