@@ -213,6 +213,9 @@ namespace GuiTest
             if (e.Result.Status == TaskStatus.NotEnoughCredits)
             {
                 task.TaskStatus = "Not enough credits";
+                task.OutputFilePath = "<not enough credits>";
+                MessageBox.Show("Not enough credits to process the file.\nPlease add more pages to your application's account.",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 moveTaskToCompleted(task);
                 return;
             }

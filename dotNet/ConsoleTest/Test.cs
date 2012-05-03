@@ -139,6 +139,10 @@ namespace ConsoleTest
                 restClient.DownloadResult(task, outputFilePath);
                 Console.WriteLine("Download completed.");
             }
+            else if (task.Status == TaskStatus.NotEnoughCredits)
+            {
+                Console.WriteLine("Not enough credits to process the file. Please add more pages to your application balance.");
+            }
             else
             {
                 Console.WriteLine("Error while processing the task");
