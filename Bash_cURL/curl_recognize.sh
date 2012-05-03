@@ -15,7 +15,7 @@ echo
 
 if [ -n "$ABBYY_APPID" ]; then
     ApplicationId="$ABBYY_APPID";
-elif [ -z $ApplicationId ]; then
+elif [ -z "$ApplicationId" ]; then
     echo "No application id specified. Please execute"
     echo "\"export ABBYY_APPID=<your app id>\""
     exit 1
@@ -82,7 +82,7 @@ sourceFileName=`basename "$SourceFile"`
 echo "Recognizing $sourceFileName with $Language language. Result will be saved in $OutFormat format.."
 
 echo "Uploading.."
-response=`curl -s -S --user $ApplicationId:$Password --form "upload=@$SourceFile" "$ServerUrl/processImage?exportFormat=$OutFormat&language=$Language"`
+response=`curl -s -S --user "$ApplicationId:$Password" --form "upload=@$SourceFile" "$ServerUrl/processImage?exportFormat=$OutFormat&language=$Language"`
 
 
 #Select guid from response string
@@ -90,6 +90,12 @@ taskId=`echo $response | grep -o -E 'task id="[^"]*"' | cut -d '"' -f 2`
 if [ -z $taskId ]; then
     echo "Error uploading file" >&2;
     exit 1;
+fi
+
+taskStatus=`echo $response | grep -o -E 'status="[^"]+"' | cut -d '"' -f 2`
+if [ $taskStatus == "NotEnoughCredits" ]; then
+	echo "Not enough credits to process the document. Please add more pages to your application's account."
+	exit 1
 fi
 
 echo "Uploaded, task id is '$taskId'"
@@ -101,7 +107,7 @@ while [ $taskStatus != "Completed" ]
 do
     sleep 4
     echo -n "."
-    response=`curl -s -S --user $ApplicationId:$Password $ServerUrl/getTaskStatus?taskId=$taskId`
+    response=`curl -s -S --user "$ApplicationId:$Password" $ServerUrl/getTaskStatus?taskId=$taskId`
     taskStatus=`echo $response | grep -o -E 'status="[^"]+"' | cut -d '"' -f 2`
 done
 
