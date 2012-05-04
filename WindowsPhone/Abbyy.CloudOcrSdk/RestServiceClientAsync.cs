@@ -93,6 +93,11 @@ namespace Abbyy.CloudOcrSdk
                             Thread.Sleep(1000);
                         }
 
+                        if (task.Status == TaskStatus.NotEnoughCredits)
+                        {
+                            throw new Exception("Not enough credits to process image. Please add more pages to your application's account.");
+                        }
+
                         TaskEventArgs taskArgs = new TaskEventArgs(task, null, false, userState);
 
                         onProcessingCompleted(sender, taskArgs);
