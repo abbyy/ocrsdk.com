@@ -25,7 +25,6 @@ public class TestApp {
 		ProcessingSettings settings = new ProcessingSettings();
 		
 		try {
-			System.out.println( "Uploading.." );
 			Task task = null;
 			if(outputFile.endsWith("xml")) {
 				System.out.println( "Recognizing barcodes in image" );
@@ -45,6 +44,7 @@ public class TestApp {
 					System.out.println( "Seems that the output format is unknown. Trying to convert the image to searchable pdf.");
 				}			
 				System.out.println( "Recognition with English language. If your documents contain other languages, please specify them." );
+				System.out.println( "Uploading.." );
 				task = restClient.processImage(filePath, settings);
 			}
 			
@@ -58,11 +58,13 @@ public class TestApp {
 			if( task.Status == Task.TaskStatus.Completed ) {
 				System.out.println( "Downloading.." );
 				restClient.downloadResult(task, outputFile);
+				System.out.println( "Ready" );
+			} else if( task.Status == Task.TaskStatus.NotEnoughCredits ) {
+				System.out.println( "Not enough credits to process document. Please add more pages to your application's account." );
 			} else {
 				System.out.println( "Task failed" );
 			}
 			
-			System.out.println( "Ready" );
 			
 		} catch( Exception e) {
 			System.out.println( "Exception occured:" + e.getMessage() );
