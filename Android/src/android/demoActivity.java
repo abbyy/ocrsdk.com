@@ -55,6 +55,8 @@ public class demoActivity extends Activity {
 				if( task.Status == Task.TaskStatus.Completed ) {
 					displayMessage( "Downloading.." );
 					restClient.DownloadResult(task, outputFile);
+				} else if( task.Status = Task.TaskStatus.NotEnoughCredits ) {
+					displayMessage( "Not enough credits to process task. Add more pages to your application's account." );
 				} else {
 					displayMessage( "Task failed" );
 				}
