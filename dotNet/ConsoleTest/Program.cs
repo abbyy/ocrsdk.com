@@ -12,32 +12,45 @@ namespace ConsoleTest
 {
     class Program
     {
-       
-    
+        private static void displayHelp()
+        {
+            Console.WriteLine(
+@"Usage:
+ConsoleTest.exe [common options] <source_dir|file> <target>
+  Perform full-text recognition of document
+
+ConsoleTest.exe --asDocument [common options] <source_dir|file> <target_dir>
+  Recognize file or directory treating each subdirectory as a single document
+
+ConsoleTest.exe --asTextField [common options] <source_dir|file> <target_dir>
+  Perform recognition via processTextField call
+
+ConsoleTest.exe --asFields <source_file> <settings.xml> <target_dir>
+  Perform recognition via processFields call. Processing settings should be specified in xml file.
+          
+Common options description:
+--lang=<languages>: Recognize with specified language. Examples: --lang=English --lang=English,German,French
+--out=<output format>: Create output in specified format: txt, rtf, docx, xlsx, pptx, pdfSearchable, pdfTextAndImages, xml
+--options=<string>: Pass additional arguments to RESTful calls
+");    
+        }
 
         static void Main(string[] args)
         {
 
             ProcessingModeEnum processingMode = ProcessingModeEnum.SinglePage;
-            bool showHelp = false;
 
             string outFormat = null;
             string language = "english";
             string customOptions = "";
 
             var p = new OptionSet() {
-                { "asDocument", "Process given files using submitImage/processDocument", 
-                    v => processingMode = ProcessingModeEnum.MultiPage },
-                { "asTextField", "Process file using processTextField", 
-                    v => processingMode = ProcessingModeEnum.ProcessTextField},
-                { "out=", "Create output in specified {format}: txt, rtf, docx, xlsx, pptx, pdfSearchable, pdfTextAndImages, xml",
-                    (string v) => outFormat = v },
-                { "lang=", "Recognize with specified {language}",
-                    (string v) => language = v },
-                { "options=", "Recognize with specified custom options",
-                    (string v) => customOptions = v },
-                { "h|help", "Show this message and exit", 
-                     v => showHelp = v != null }
+                { "asDocument", v => processingMode = ProcessingModeEnum.MultiPage },
+                { "asTextField", v => processingMode = ProcessingModeEnum.ProcessTextField},
+                { "asFields", v => processingMode = ProcessingModeEnum.ProcessFields},
+                { "out=", (string v) => outFormat = v },
+                { "lang=", (string v) => language = v },
+                { "options=", (string v) => customOptions = v }
             };
 
             List<string> additionalArgs = null;
@@ -48,35 +61,57 @@ namespace ConsoleTest
             catch (OptionException)
             {
                 Console.WriteLine("Invalid arguments.");
-                showHelp = true;
-            }
-
-            if (additionalArgs != null && additionalArgs.Count != 2)
-            {
-                showHelp = true;
-            }
-
-            if (showHelp)
-            {
-                Console.WriteLine("Process images with ABBYY Cloud OCR SDK");
-                Console.WriteLine("Usage:");
-                Console.WriteLine("ConsoleTest.exe [options] <input dir|file> <output dir>");
-                Console.WriteLine("Options:");
-                p.WriteOptionDescriptions(Console.Out);
+                displayHelp();
                 return;
+            }
+
+            string sourcePath = null;
+            string xmlPath = null;
+            string targetPath = null;
+
+            if (processingMode != ProcessingModeEnum.ProcessFields)
+            {
+                if (additionalArgs.Count != 2)
+                {
+                    displayHelp();
+                    return;
+                }
+
+                sourcePath = additionalArgs[0];
+                targetPath = additionalArgs[1];
+            }
+            else
+            {
+                if (additionalArgs.Count != 3)
+                {
+                    displayHelp();
+                    return;
+                }
+
+                sourcePath = additionalArgs[0];
+                xmlPath = additionalArgs[1];
+                targetPath = additionalArgs[2];
+            }
+
+            if (!Directory.Exists(targetPath))
+            {
+                Directory.CreateDirectory(targetPath);
             }
 
             if (String.IsNullOrEmpty(outFormat))
             {
-                outFormat = "txt";
-            }
-            else if (processingMode == ProcessingModeEnum.ProcessTextField)
-            {
-                Console.WriteLine("Only xml is supported as output format for field-level recognition.");
+                if (processingMode == ProcessingModeEnum.ProcessFields || processingMode == ProcessingModeEnum.ProcessTextField)
+                    outFormat = "xml";
+                else 
+                    outFormat = "txt";
             }
 
-            string sourcePath = additionalArgs[0];
-            string targetPath = additionalArgs[1];
+            if (outFormat != "xml" &&
+                (processingMode == ProcessingModeEnum.ProcessFields || processingMode == ProcessingModeEnum.ProcessTextField))
+            {
+                Console.WriteLine("Only xml is supported as output format for field-level recognition.");
+                outFormat = "xml";
+            }
 
             try
             {
@@ -93,7 +128,13 @@ namespace ConsoleTest
                     TextFieldProcessingSettings settings = buildTextFieldSettings(language, customOptions);
                     tester.ProcessPath(sourcePath, targetPath, settings, processingMode);
                 }
+                else if (processingMode == ProcessingModeEnum.ProcessFields)
+                {
+                    string outputFilePath = Path.Combine(targetPath, Path.GetFileName(sourcePath) + ".xml");
+                    tester.ProcessFields(sourcePath, xmlPath, outputFilePath);
+                }
 
+                
             }
             catch (Exception e)
             {

@@ -14,7 +14,8 @@ namespace ConsoleTest
     {
         SinglePage,
         MultiPage,
-        ProcessTextField
+        ProcessTextField,
+        ProcessFields
     };
 
     class Test
@@ -156,23 +157,22 @@ namespace ConsoleTest
             Console.WriteLine(String.Format("Recognizing {0} images as a document",
                 sourceFiles.Length));
 
-            TaskId taskId = null;
+            Task task = null;
             for (int fileIndex = 0; fileIndex < sourceFiles.Length; fileIndex++)
             {
                 string filePath = sourceFiles[fileIndex];
                 Console.WriteLine("{0}: uploading {1}", fileIndex + 1, Path.GetFileName(filePath));
 
-                taskId = restClient.UploadAndAddFileToTask(filePath, taskId);
+                task = restClient.UploadAndAddFileToTask(filePath, task == null ? null : task.Id);
             }
 
             // Start task
             Console.WriteLine("Starting task..");
-            restClient.StartProcessingTask(taskId, settings);
+            restClient.StartProcessingTask(task.Id, settings);
 
-            Task task = null;
             while (true)
             {
-                task = restClient.GetTaskStatus(taskId);
+                task = restClient.GetTaskStatus(task.Id);
                 if (!Task.IsTaskActive(task.Status))
                     break;
 
@@ -208,6 +208,35 @@ namespace ConsoleTest
             while (true)
             {
                 task = restClient.GetTaskStatus(taskId);
+                if (!Task.IsTaskActive(task.Status))
+                    break;
+
+                Console.WriteLine(String.Format("Task status: {0}", task.Status));
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            if (task.Status == TaskStatus.Completed)
+            {
+                Console.WriteLine("Processing completed.");
+                restClient.DownloadResult(task, outputFilePath);
+                Console.WriteLine("Download completed.");
+            }
+            else
+            {
+                Console.WriteLine("Error while processing the task");
+            }
+        }
+
+        public void ProcessFields(string sourceFilePath, string xmlSettingsPath, string outputFilePath)
+        {
+            Console.WriteLine("Uploading");
+            Task task = restClient.UploadAndAddFileToTask(sourceFilePath, null);
+            Console.WriteLine("Processing..");
+            task = restClient.ProcessFields(task, xmlSettingsPath);
+
+            while (true)
+            {
+                task = restClient.GetTaskStatus(task.Id);
                 if (!Task.IsTaskActive(task.Status))
                     break;
 

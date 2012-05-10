@@ -259,7 +259,7 @@ namespace Abbyy.CloudOcrSdk
         /// <param name="filePath">Path to an image to process</param>
         /// <param name="taskToAddFile">Id of multipage document. If null, a new document is created</param>
         /// <returns>Id of document to which image was added</returns>
-        public TaskId UploadAndAddFileToTask(string filePath, TaskId taskToAddFile )
+        public Task UploadAndAddFileToTask(string filePath, TaskId taskToAddFile )
         {
             string url = String.Format("{0}/submitImage", ServerUrl );
             if (taskToAddFile != null)
@@ -271,9 +271,9 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            TaskId taskId = ServerXml.GetTaskId(response);
+            Task task = ServerXml.GetTaskStatus(response);
 
-            return taskId;
+            return task;
         }
 
         public Task StartProcessingTask(TaskId taskId, ProcessingSettings settings)
@@ -365,6 +365,28 @@ namespace Abbyy.CloudOcrSdk
         }
 
         /// <summary>
+        /// Perform fields recognition of uploaded document.
+        /// </summary>
+        /// <param name="task">Task created by UploadAndAddFileToTask method</param>
+        /// <param name="settingsPath">Path to file with xml processing settings.</param>
+        public Task ProcessFields(Task task, string settingsPath)
+        {
+            if (!File.Exists(settingsPath))
+                throw new FileNotFoundException("Settings file doesn't exist.", settingsPath);
+
+            string url = String.Format("{0}/processFields?taskId={1}", ServerUrl, task.Id);
+
+            WebRequest request = WebRequest.Create(url);
+            setupPostRequest(url, request);
+            writeFileToRequest(settingsPath, request);
+
+            XDocument response = performRequest(request);
+            Task result = ServerXml.GetTaskStatus(response);
+
+            return result;
+        }
+
+        /// <summary>
         /// Download filePath that has finished processing and save it to given path
         /// </summary>
         /// <param name="task">Id of a task</param>
@@ -452,6 +474,45 @@ namespace Abbyy.CloudOcrSdk
             Task[] tasks = ServerXml.GetAllTasks(response);
             return tasks;
         }
+
+        /// <summary>
+        /// Get list of tasks that are no more queued on a server.
+        /// The tasks can be processed, failed, or not started becuase there is 
+        /// not enough credits to process them.
+        /// </summary>
+        public Task[] ListFinishedTasks()
+        {
+            string url = String.Format("{0}/listFinishedTasks", ServerUrl);
+            WebRequest request = WebRequest.Create(url);
+            setupGetRequest(url, request);
+            XDocument response = performRequest(request);
+
+            Task[] tasks = ServerXml.GetAllTasks(response);
+            return tasks;
+        }
+
+        /// <summary>
+        /// Delete task on a server. This function cannot delete tasks that are being processed.
+        /// </summary>
+        public Task DeleteTask(Task task)
+        {
+            switch (task.Status)
+            {
+                case TaskStatus.Deleted:
+                case TaskStatus.InProgress:
+                case TaskStatus.Unknown:
+                    throw new ArgumentException("Invalid task status: " + task.Status + ". Cannot delete");
+            }
+
+            string url = String.Format("{0}/deleteTask?taskId={1}", ServerUrl, Uri.EscapeDataString(task.Id.ToString()));
+            WebRequest request = WebRequest.Create(url);
+            setupGetRequest(url, request);
+
+            XDocument response = performRequest(request);
+            Task serverTask = ServerXml.GetTaskStatus(response);
+            return serverTask;
+        }
+
 
         #region Request management functions
 
