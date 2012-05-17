@@ -1,24 +1,20 @@
+/**
+ * 
+ */
 package com.abbyy.ocrsdk;
 
-public class ProcessingSettings {
+/**
+ * Business card processing settings.
+ *
+ * For all possible settings see http://ocrsdk.com/documentation/apireference/processBusinessCard/
+ */
+public class BusCardSettings {
 	
-	public String AsUrlParams()
+	public String asUrlParams()
 	{
-		return String.format("language=%s&exportFormat=%s", language, outputFormat );
-	}
-	
-	public enum OutputFormat {
-		txt, rtf, docx, xlsx, pptx, pdfSearchable, pdfTextAndImages, xml
-	}
-	
-	public void setOutputFormat( OutputFormat format ) 
-	{
-		outputFormat = format;
-	}
-	
-	public OutputFormat getOutputFormat() 
-	{
-		return outputFormat;
+		// For all possible parameters, see documentation at 
+		// http://ocrsdk.com/documentation/apireference/processTextField/
+		return String.format("language=%s", language);
 	}
 	
 	/*
@@ -41,5 +37,4 @@ public class ProcessingSettings {
 	}
 	
 	private String language = "English";
-	private OutputFormat outputFormat = OutputFormat.pdfSearchable;
 }

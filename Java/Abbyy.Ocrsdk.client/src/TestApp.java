@@ -6,8 +6,6 @@ public class TestApp {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println( "App started" );
 		
 		if( args.length != 4 ) {
 			System.out.println( "Invalid arugments. Usage:" );
@@ -22,17 +20,22 @@ public class TestApp {
 		String filePath = args[2];
 		String outputFile = args[3];
 		
-		ProcessingSettings settings = new ProcessingSettings();
+		
 		
 		try {
 			Task task = null;
+			
 			if(outputFile.endsWith("xml")) {
 				System.out.println( "Recognizing barcodes in image" );
+				BarcodeSettings settings = new BarcodeSettings();
 				task = restClient.processBarcodeField(filePath, settings);				
 			} else if(outputFile.endsWith("vcf")) {
 				System.out.println( "Recognition of business card" );
+				BusCardSettings settings = new BusCardSettings();
 				task = restClient.processBusinessCard(filePath, settings);
 			} else {
+				ProcessingSettings settings = new ProcessingSettings();
+				
 				if(outputFile.endsWith("pdf")) {
 					System.out.println( "Image will be converted to searchable pdf" );
 					settings.setOutputFormat( ProcessingSettings.OutputFormat.pdfSearchable );

@@ -9,6 +9,25 @@ public class Client {
 	
 	public String serverUrl = "http://cloud.ocrsdk.com";
 	
+	/*
+	 * Upload image to server and optionally append it to existing task.
+	 * If taskId is null, creates new task.
+	 */
+	public Task submitImage(String filePath, String taskId ) throws Exception
+	{
+		URL url = new URL(serverUrl + "/submitImage");
+		
+		byte[] fileContents = readDataFromFile( filePath );
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length", Integer.toString(fileContents.length));
+		connection.getOutputStream().write( fileContents );
+		
+		BufferedReader reader = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+		return new Task(reader);
+	}
+	
 	public Task processImage( String filePath, ProcessingSettings settings) throws Exception
 	{
 		URL url = new URL(serverUrl + "/processImage?" + settings.AsUrlParams());
@@ -23,9 +42,9 @@ public class Client {
 		return new Task(reader);
 	}
 	
-	public Task processBusinessCard( String filePath, ProcessingSettings settings) throws Exception
+	public Task processBusinessCard( String filePath, BusCardSettings settings) throws Exception
 	{
-		URL url = new URL(serverUrl + "/processBusinessCard?language=English");
+		URL url = new URL(serverUrl + "/processBusinessCard?" + settings.asUrlParams());
 		byte[] fileContents = readDataFromFile( filePath );
 		
 		HttpURLConnection connection = openPostConnection(url);
@@ -37,10 +56,60 @@ public class Client {
 		return new Task(reader);
 	}
 	
-	public Task processBarcodeField( String filePath, ProcessingSettings settings) throws Exception
+	
+	public Task processTextField( String filePath, TextFieldSettings settings ) throws Exception
 	{
-		URL url = new URL(serverUrl + "/processBarcodeField");
+		URL url = new URL(serverUrl + "/processTextField?" + settings.asUrlParams());
 		byte[] fileContents = readDataFromFile( filePath );
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length", Integer.toString(fileContents.length));
+		connection.getOutputStream().write( fileContents );
+		
+		BufferedReader reader = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+		return new Task(reader);
+	}
+	
+	public Task processBarcodeField( String filePath, BarcodeSettings settings) throws Exception
+	{
+		URL url = new URL(serverUrl + "/processBarcodeField?" + settings.asUrlParams());
+		byte[] fileContents = readDataFromFile( filePath );
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length", Integer.toString(fileContents.length));
+		connection.getOutputStream().write( fileContents );
+		
+		BufferedReader reader = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+		return new Task(reader);
+	}
+	
+	public Task processCheckmarkField( String filePath ) throws Exception
+	{
+		URL url = new URL(serverUrl + "/processCheckmarkField");
+		byte[] fileContents = readDataFromFile( filePath );
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length", Integer.toString(fileContents.length));
+		connection.getOutputStream().write( fileContents );
+		
+		BufferedReader reader = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+		return new Task(reader);
+	}
+	
+	/**
+	 * Recognize multiple text, barcode and checkmark fields at one call.
+	 * 
+	 * For details see http://ocrsdk.com/documentation/apireference/processFields/
+	 * 
+	 * @param settingsPath path to xml file describing processing settings 
+	 */
+	public Task processFields( String taskId, String settingsPath ) throws Exception
+	{
+		URL url = new URL(serverUrl + "/processFields?taskId=" + taskId);
+		byte[] fileContents = readDataFromFile( settingsPath );
 		
 		HttpURLConnection connection = openPostConnection(url);
 		
