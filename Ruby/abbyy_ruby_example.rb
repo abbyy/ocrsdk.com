@@ -19,6 +19,15 @@ PASSWORD = "my_password"
 # Specify path to image file you want to recognize
 FILE_NAME = "/path/to/my/image.jpg"
 
+# IMPORTANT!
+# Specify recognition languages of document. For full list of available languaes see
+# http://ocrsdk.com/documentation/apireference/processImage/
+# Examples: 
+#   English
+#   English,German
+#   English,German,Spanish
+LANGUAGE = "English"
+
 # OCR SDK base url with application id and password
 BASE_URL = "http://#{APPLICATION_ID}:#{PASSWORD}@cloud.ocrsdk.com"
 
@@ -30,9 +39,10 @@ def output_response_error(response)
 end
 
 # Upload and process the image (see http://ocrsdk.com/documentation/apireference/processImage)
+puts "Image will be recognized with #{LANGUAGE} language."
 puts "Uploading file.."
 begin
-  response = RestClient.post("#{BASE_URL}/processImage?language=english&exportFormat=txt", :upload => { 
+  response = RestClient.post("#{BASE_URL}/processImage?language=#{LANGUAGE}&exportFormat=txt", :upload => { 
     :file => File.new(FILE_NAME, 'rb') 
   })  
 rescue RestClient::ExceptionWithResponse => e
