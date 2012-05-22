@@ -25,7 +25,7 @@
   curl_setopt($ch, CURLOPT_USERPWD, "$applicationId:$password");
   curl_setopt($ch, CURLOPT_POST, 1);
   $post_array = array(
-      "my_file"=>"@".$local_directory.$fileName,
+      "my_file"=>"@".$local_directory.'/'.$fileName,
   );
   curl_setopt($ch, CURLOPT_POSTFIELDS, $post_array); 
   $response = curl_exec($ch);
