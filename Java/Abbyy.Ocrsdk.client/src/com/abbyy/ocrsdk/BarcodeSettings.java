@@ -4,26 +4,24 @@
 package com.abbyy.ocrsdk;
 
 /**
- * Barcode recognition settings
- *
- * For all possible parameters see http://ocrsdk.com/documentation/apireference/processBarcodeField/
+ * Barcode recognition settings.
+ * 
+ * For all possible parameters see
+ * http://ocrsdk.com/documentation/apireference/processBarcodeField/
  */
 public class BarcodeSettings {
-	
-	public String asUrlParams()
-	{
+
+	public String asUrlParams() {
 		return "barcodeType=" + barcodeType;
 	}
-	
-	public String getType()
-	{
+
+	public String getType() {
 		return barcodeType;
 	}
-	
-	public void setType( String newType ) 
-	{
+
+	public void setType(String newType) {
 		barcodeType = newType;
 	}
-	
-	private String barcodeType = "autodetect"; 
+
+	private String barcodeType = "autodetect";
 }
