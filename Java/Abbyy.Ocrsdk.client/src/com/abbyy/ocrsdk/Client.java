@@ -14,7 +14,11 @@ public class Client {
 	 * taskId is null, creates new task.
 	 */
 	public Task submitImage(String filePath, String taskId) throws Exception {
-		URL url = new URL(serverUrl + "/submitImage");
+		String taskPart = "";
+		if (taskId != null && !taskId.isEmpty()) {
+			taskPart = "?taskId=" + taskId;
+		}
+		URL url = new URL(serverUrl + "/submitImage" + taskPart);
 
 		byte[] fileContents = readDataFromFile(filePath);
 
@@ -39,6 +43,18 @@ public class Client {
 		connection.setRequestProperty("Content-Length",
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				connection.getInputStream()));
+		return new Task(reader);
+	}
+
+	public Task processDocument(String taskId, ProcessingSettings settings)
+			throws Exception {
+		URL url = new URL(serverUrl + "/processDocument?taskId=" + taskId + "&"
+				+ settings.asUrlParams());
+
+		URLConnection connection = openGetConnection(url);
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				connection.getInputStream()));
