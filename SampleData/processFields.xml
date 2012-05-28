@@ -1,0 +1,33 @@
+<document xmlns="http://ocrsdk.com/schema/taskDescription-1.0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ocrsdk.com/schema/taskDescription-1.0.xsd http://ocrsdk.com/schema/taskDescription-1.0.xsd">
+
+<fieldTemplates>
+	<checkmark id="defaultCheckmark">
+		<type>square</type>
+	</checkmark>
+	
+	<text id="dateText">
+		<language>English</language>
+		<letterSet>0123456789/</letterSet>
+		<regExp>(([0-9][0-9])|[1-9])/(([0-9][0-9])|([1-9]))/(([0-9][0-9][0-9][0-9])|([0-9][0-9]))</regExp>
+		<textType>handprinted</textType>
+		<oneTextLine>true</oneTextLine>
+		<oneWordPerTextLine>true</oneWordPerTextLine>
+	</text>
+</fieldTemplates>
+
+<page applyTo="0">
+	<checkmark id="basic_card" template="defaultCheckmark" left="1866" top="407" right="1922" bottom="469"/>
+	<checkmark id="issue_card" template="defaultCheckmark" left="1561" top="856" right="1619" bottom="916" />
+
+	<barcode id="bottom" left="358" top="3200" right="1118" bottom="3582">
+		<type>ean13</type>
+	</barcode>
+	
+	<text id="customer birth date" template="dateText" left="510" top="710" right="1190" bottom="834" />
+	<text id="document date" template="dateText" left="568" top="1998" right="1242" bottom="2098" />
+	
+</page>
+
+</document>
