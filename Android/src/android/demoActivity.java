@@ -33,28 +33,39 @@ public class demoActivity extends Activity {
 				Thread.sleep(1000);
 				displayMessage( "Starting.." );
 				Client restClient = new Client();
-				restClient.ApplicationId = "<your app_id>";
-				restClient.Password = "<your app_password>";
+
+				restClient.applicationId = "<your app_id>";
+				restClient.password = "<your app_password>";
 				
 				String filePath = "/sdcard/00000001.jpg";
 				String outputFile = "/sdcard/result.txt";
+				String language = "English"; // Comma-separated list: Japanese,English or German,French,Spanish etc.
 				
 				ProcessingSettings settings = new ProcessingSettings();
 				settings.setOutputFormat( ProcessingSettings.OutputFormat.txt );
+				settings.setLanguage(language);
 				
 				displayMessage( "Uploading.." );
-				Task task = restClient.ProcessImage(filePath, settings);
+				Task task = restClient.processImage(filePath, settings);
 				
-				while( task.IsTaskActive() ) {
+				// If you want to process business cards, uncomment this
+				/*
+				BusCardSettings busCardSettings = new BusCardSettings();
+				busCardSettings.setLanguage(language);
+				busCardSettings.setOutputFormat(BusCardSettings.OutputFormat.xml);
+				Task task = restClient.processBusinessCard(filePath, busCardSettings);
+				*/
+				
+				while( task.isTaskActive() ) {
 					Thread.sleep(2000);
 					
 					displayMessage( "Waiting.." );
-					task = restClient.GetTaskStatus(task.Id);
+					task = restClient.getTaskStatus(task.Id);
 				}
 				
 				if( task.Status == Task.TaskStatus.Completed ) {
 					displayMessage( "Downloading.." );
-					restClient.DownloadResult(task, outputFile);
+					restClient.downloadResult(task, outputFile);
 				} else if( task.Status == Task.TaskStatus.NotEnoughCredits ) {
 					displayMessage( "Not enough credits to process task. Add more pages to your application's account." );
 				} else {

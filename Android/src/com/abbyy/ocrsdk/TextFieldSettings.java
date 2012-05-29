@@ -1,22 +1,13 @@
 package com.abbyy.ocrsdk;
 
-public class ProcessingSettings {
-
+/*
+ * Settings for processing text field via processTextField call
+ */
+public class TextFieldSettings {
 	public String asUrlParams() {
-		return String.format("language=%s&exportFormat=%s", language,
-				outputFormat);
-	}
-
-	public enum OutputFormat {
-		txt, rtf, docx, xlsx, pptx, pdfSearchable, pdfTextAndImages, xml
-	}
-
-	public void setOutputFormat(OutputFormat format) {
-		outputFormat = format;
-	}
-
-	public OutputFormat getOutputFormat() {
-		return outputFormat;
+		// For all possible parameters, see documentation at
+		// http://ocrsdk.com/documentation/apireference/processTextField/
+		return String.format("language=%s&textType=%s", language, textType);
 	}
 
 	/*
@@ -34,6 +25,14 @@ public class ProcessingSettings {
 		return language;
 	}
 
+	public String getTextType() {
+		return textType;
+	}
+
+	public void setTextType(String newTextType) {
+		textType = newTextType;
+	}
+
 	private String language = "English";
-	private OutputFormat outputFormat = OutputFormat.pdfSearchable;
+	private String textType = "normal,handprinted";
 }
