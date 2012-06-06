@@ -28,11 +28,18 @@ namespace ConsoleTest
             restClient.ServerUrl = Properties.Settings.Default.ServerAddress;
             restClient.Proxy.Credentials = CredentialCache.DefaultCredentials;
 
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.ApplicationId))
-                restClient.ApplicationId = Properties.Settings.Default.ApplicationId;
+            // !!! Please provide your application id and password here !!!
+            /*
+            restClient.ApplicationId = "<your application id>";
+            restClient.Password = "<your password>";
+             */
 
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.Password))
-                restClient.Password = Properties.Settings.Default.Password;
+            // Display hint to provide credentials
+            if (String.IsNullOrEmpty(restClient.ApplicationId) ||
+                String.IsNullOrEmpty(restClient.Password))
+            {
+                throw new Exception("Please provide access credentials to Cloud OCR SDK service!");
+            }
 
             Console.WriteLine(String.Format("Application id: {0}\n", restClient.ApplicationId));
         }

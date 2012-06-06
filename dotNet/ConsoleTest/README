@@ -1,0 +1,10 @@
+This folder contains console sample for .Net platform
+
+!!! IMPORTANT !!!
+
+== Access credentials == 
+
+You need to provide your credentials to connect to Cloud OCR SDK. 
+
+Please change Test.cs, class Test constructor
+
