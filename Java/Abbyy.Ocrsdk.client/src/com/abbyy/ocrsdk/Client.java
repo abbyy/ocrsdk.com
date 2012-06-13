@@ -3,6 +3,14 @@ package com.abbyy.ocrsdk;
 import java.io.*;
 import java.net.*;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
 public class Client {
 	public String applicationId;
 	public String password;
@@ -28,9 +36,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return getResponse(connection);
 	}
 
 	public Task processImage(String filePath, ProcessingSettings settings)
@@ -44,9 +50,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return getResponse(connection);
 	}
 
 	public Task processDocument(String taskId, ProcessingSettings settings)
@@ -54,11 +58,8 @@ public class Client {
 		URL url = new URL(serverUrl + "/processDocument?taskId=" + taskId + "&"
 				+ settings.asUrlParams());
 
-		URLConnection connection = openGetConnection(url);
-
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		HttpURLConnection connection = openGetConnection(url);
+		return getResponse(connection);
 	}
 
 	public Task processBusinessCard(String filePath, BusCardSettings settings)
@@ -73,9 +74,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return getResponse(connection);
 	}
 
 	public Task processTextField(String filePath, TextFieldSettings settings)
@@ -90,9 +89,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return getResponse(connection);
 	}
 
 	public Task processBarcodeField(String filePath, BarcodeSettings settings)
@@ -107,9 +104,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return getResponse(connection);
 	}
 
 	public Task processCheckmarkField(String filePath) throws Exception {
@@ -122,9 +117,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return getResponse(connection);
 	}
 
 	/**
@@ -147,18 +140,14 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return getResponse(connection);
 	}
 
 	public Task getTaskStatus(String taskId) throws Exception {
 		URL url = new URL(serverUrl + "/getTaskStatus?taskId=" + taskId);
 
-		URLConnection connection = openGetConnection(url);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		HttpURLConnection connection = openGetConnection(url);
+		return getResponse(connection);
 	}
 
 	public void downloadResult(Task task, String outputFile) throws Exception {
@@ -200,8 +189,8 @@ public class Client {
 		return connection;
 	}
 
-	private URLConnection openGetConnection(URL url) throws Exception {
-		URLConnection connection = url.openConnection();
+	private HttpURLConnection openGetConnection(URL url) throws Exception {
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		// connection.setRequestMethod("GET");
 		setupAuthorization(connection);
 		return connection;
@@ -241,6 +230,51 @@ public class Client {
 	private String encodeUserPassword() {
 		String toEncode = applicationId + ":" + password;
 		return Base64.encode(toEncode);
+	}
+
+	/**
+	 * Read server response from HTTP connection and return task description.
+	 * 
+	 * @throws Exception
+	 *             in case of error
+	 */
+	private Task getResponse(HttpURLConnection connection) throws Exception {
+		int responseCode = connection.getResponseCode();
+		if (responseCode == 200) {
+			InputStream inputStream = connection.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					inputStream));
+			return new Task(reader);
+		} else if (responseCode == 401) {
+			throw new Exception(
+					"HTTP 401 Unauthorized. Please check your application id and password");
+		} else if (responseCode == 407) {
+			throw new Exception("HTTP 407. Proxy authentication error");
+		} else {
+			String message = "";
+			try {
+				InputStream errorStream = connection.getErrorStream();
+
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(errorStream));
+
+				// Parse xml error response
+				InputSource source = new InputSource();
+				source.setCharacterStream(reader);
+				DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+						.newDocumentBuilder();
+				Document doc = builder.parse(source);
+				
+				NodeList error = doc.getElementsByTagName("error");
+				Element err = (Element) error.item(0);
+				
+				message = err.getTextContent();
+			} catch (Exception e) {
+				throw new Exception("Error getting server response");
+			}
+
+			throw new Exception("Error: " + message);
+		}
 	}
 
 }

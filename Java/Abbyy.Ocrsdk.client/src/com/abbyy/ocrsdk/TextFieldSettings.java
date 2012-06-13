@@ -7,7 +7,13 @@ public class TextFieldSettings {
 	public String asUrlParams() {
 		// For all possible parameters, see documentation at
 		// http://ocrsdk.com/documentation/apireference/processTextField/
-		return String.format("language=%s&textType=%s", language, textType);
+		String params = String.format("language=%s&textType=%s", language,
+				textType);
+		if (options != null && !options.isEmpty()) {
+			params += "&" + options;
+		}
+
+		return params;
 	}
 
 	/*
@@ -33,6 +39,22 @@ public class TextFieldSettings {
 		textType = newTextType;
 	}
 
+	/**
+	 * Set extra options directly passed to RESTful call.
+	 */
+	public void setOptions(String newOptions) {
+		options = newOptions;
+	}
+
+	public String getOptions() {
+		return options;
+	}
+
 	private String language = "English";
 	private String textType = "normal,handprinted";
+
+	/**
+	 * Extra options passed directly to RESTful call.
+	 */
+	private String options = null;
 }

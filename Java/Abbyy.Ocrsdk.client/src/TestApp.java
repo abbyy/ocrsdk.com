@@ -19,6 +19,8 @@ public class TestApp {
 			return;
 		}
 
+		ClientSettings.setupProxy();
+		
 		restClient = new Client();
 		restClient.applicationId = ClientSettings.APPLICATION_ID;
 		restClient.password = ClientSettings.PASSWORD;
@@ -44,12 +46,11 @@ public class TestApp {
 				performFieldsRecognition(argList);
 			} else {
 				System.out.println("Unknown mode: " + mode);
+				return;
 			}
-
-			// FIXME: remove
-			return;
 		} catch (Exception e) {
 			System.out.println("Exception occured:" + e.getMessage());
+			//e.printStackTrace();
 		}
 	}
 
@@ -235,20 +236,28 @@ public class TestApp {
 				.println("Recognize printed or handprinted text field.\n"
 						+ "\n"
 						+ "Usage:\n"
-						+ "java TestApp textField [--lang=<languages>] <file> <output file>\n"
-						+ "\n" + "Examples:\n"
-						+ "java TestApp textField image.tif result.xml\n");
+						+ "java TestApp textField [--lang=<languages>] [--options=<options] <file> <output file>\n"
+						+ "\n"
+						+ "<options> - options passed directly to processTextField RESTful call\n"
+						+ "\n"
+						+ "Examples:\n"
+						+ "java TestApp textField image.tif result.xml\n"
+						+ "java TestApp textField --options='letterSet=0123456789/&regExp=[0-9][0-9]' image.tif result.xml\n");
 	}
 
 	private static void performTextFieldRecognition(Vector<String> argList)
 			throws Exception {
 		String language = extractRecognitionLanguage(argList);
+		String options = extractExtraOptions(argList);
 		String outputPath = argList.lastElement();
 		argList.remove(argList.size() - 1);
 		// argList now contains list of source images to process
 
 		TextFieldSettings settings = new TextFieldSettings();
 		settings.setLanguage(language);
+		if (options != null) {
+			settings.setOptions(options);
+		}
 
 		// TODO - different processing options
 
@@ -309,7 +318,7 @@ public class TestApp {
 	}
 
 	/**
-	 * Perform field-level recognition using processFields call
+	 * Perform field-level recognition using processFields call.
 	 * 
 	 * For details see
 	 * http://ocrsdk.com/documentation/apireference/processFields/
@@ -377,6 +386,28 @@ public class TestApp {
 	}
 
 	/**
+	 * Extract value of given parameter from command-line parameters. Parameter
+	 * is removed after extraction
+	 * 
+	 * @return value of parameter or null
+	 */
+	private static String extractParameterValue(String parameterName,
+			Vector<String> args) {
+		String prefix = "--" + parameterName + "=";
+
+		for (int i = 0; i < args.size(); i++) {
+			String arg = args.elementAt(i);
+			if (arg.startsWith(prefix)) {
+				String value = arg.substring(prefix.length());
+				args.remove(i);
+				return value;
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Extract recognition language from command-line parameters. After
 	 * extraction parameter is removed
 	 * 
@@ -384,15 +415,10 @@ public class TestApp {
 	 */
 	private static String extractRecognitionLanguage(Vector<String> args) {
 		// Recognition language parameter has form --lang=<languges>
-		String prefix = "--lang=";
 
-		for (int i = 0; i < args.size(); i++) {
-			String arg = args.elementAt(i);
-			if (arg.startsWith(prefix)) {
-				String lang = arg.substring(prefix.length());
-				args.remove(i);
-				return lang;
-			}
+		String lang = extractParameterValue("lang", args);
+		if (lang != null) {
+			return lang;
 		}
 
 		System.out
@@ -400,6 +426,17 @@ public class TestApp {
 						+ "To change this, specify --lang=<languages> option.\n");
 
 		return "English";
+	}
+
+	/**
+	 * Extract extra RESTful options from command-line parameters. Parameter is
+	 * removed after extraction
+	 * 
+	 * @return extra options string or null
+	 */
+	private static String extractExtraOptions(Vector<String> args) {
+		// Extra options parameter has from --options=<options>
+		return extractParameterValue("options", args);
 	}
 
 	/**
