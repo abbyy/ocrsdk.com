@@ -11,6 +11,11 @@
 
   // Get path to file that we are going to recognize
   $local_directory=dirname(__FILE__).'/images/';
+  $filePath = $local_directory.'/'.$fileName;
+  if(!file_exists($filePath))
+  {
+    die('File '.$filePath.' not found.');
+  }
 
   // Recognizing with English language to rtf
   // You can use combination of languages like ?language=english,russian or
@@ -25,7 +30,7 @@
   curl_setopt($ch, CURLOPT_USERPWD, "$applicationId:$password");
   curl_setopt($ch, CURLOPT_POST, 1);
   $post_array = array(
-      "my_file"=>"@".$local_directory.'/'.$fileName,
+      "my_file"=>"@".$filePath,
   );
   curl_setopt($ch, CURLOPT_POSTFIELDS, $post_array); 
   $response = curl_exec($ch);
