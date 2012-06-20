@@ -24,17 +24,22 @@
   $url = 'http://cloud.ocrsdk.com/processImage?language=english&exportFormat=rtf';
   
   // Send HTTP POST request and ret xml response
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $url);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($ch, CURLOPT_USERPWD, "$applicationId:$password");
-  curl_setopt($ch, CURLOPT_POST, 1);
+  $curlHandle = curl_init();
+  curl_setopt($curlHandle, CURLOPT_URL, $url);
+  curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curlHandle, CURLOPT_USERPWD, "$applicationId:$password");
+  curl_setopt($curlHandle, CURLOPT_POST, 1);
   $post_array = array(
       "my_file"=>"@".$filePath,
   );
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $post_array); 
-  $response = curl_exec($ch);
-  curl_close($ch);
+  curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $post_array); 
+  $response = curl_exec($curlHandle);
+  if($response == FALSE) {
+    $errorText = curl_error($curlHandle);
+    curl_close($curlHandle);
+    die($errorText);
+  }
+  curl_close($curlHandle);
 
   // Parse xml response
   $xml = simplexml_load_string($response);
@@ -55,12 +60,12 @@
   do
   {
     sleep(5);
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url.$qry_str);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_USERPWD, "$applicationId:$password");
-    $response = curl_exec($ch);
-    curl_close($ch);
+    $curlHandle = curl_init();
+    curl_setopt($curlHandle, CURLOPT_URL, $url.$qry_str);
+    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curlHandle, CURLOPT_USERPWD, "$applicationId:$password");
+    $response = curl_exec($curlHandle);
+    curl_close($curlHandle);
   
     // parse xml
     $xml = simplexml_load_string($response);
@@ -71,11 +76,11 @@
   // Result is ready. Download it
 
   $url = $arr["resultUrl"];   
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $url);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  $response = curl_exec($ch);
-  curl_close($ch);
+  $curlHandle = curl_init();
+  curl_setopt($curlHandle, CURLOPT_URL, $url);
+  curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+  $response = curl_exec($curlHandle);
+  curl_close($curlHandle);
  
   // Let user donwload rtf result
   header('Content-type: application/rtf');
