@@ -79,6 +79,11 @@
   $curlHandle = curl_init();
   curl_setopt($curlHandle, CURLOPT_URL, $url);
   curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+  // Warning! This is for easier out-of-the box usage of the sample only.
+  // The URL to the result has https:// prefix, so SSL is required to
+  // download from it. For whatever reason PHP runtime fails to perform
+  // a request unless SSL certificate verification is off.
+  curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, false);
   $response = curl_exec($curlHandle);
   curl_close($curlHandle);
  
