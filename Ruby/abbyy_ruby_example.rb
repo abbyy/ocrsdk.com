@@ -12,8 +12,10 @@ require "rexml/document"
 
 # IMPORTANT!
 # Provide your OCR SDK ApplicationID and Password here
-APPLICATION_ID = "my_application_id"
-PASSWORD = "my_password"
+# CGI.escape is needed to escape whitespaces, slashes and other symbols
+# that could invalidate the URI if any
+APPLICATION_ID = CGI.escape("my_application_id")
+PASSWORD = CGI.escape("my_password")
 
 # IMPORTANT!
 # Specify path to image file you want to recognize
