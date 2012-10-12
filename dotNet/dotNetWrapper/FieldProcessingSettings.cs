@@ -64,8 +64,15 @@ namespace Abbyy.CloudOcrSdk
     public enum TextType
     {
         Normal=0x01, 
-        Handprinted=0x02, // Works only for field-level recognition
-        Gothic=0x04
+        Typewriter=0x02,
+        Matrix=0x04,
+        Index=0x08,
+        Handprinted=0x10, // Works only for field-level recognition
+        OcrA = 0x20,
+        OcrB = 0x40,
+        E13b = 0x80,
+        Cmc7 = 0x100,
+        Gothic=0x200
     }
 
     public static class TextTypesExtensions
@@ -81,14 +88,38 @@ namespace Abbyy.CloudOcrSdk
         {
             StringBuilder result = new StringBuilder();
 
-            if ( (textTypes & TextType.Normal) == TextType.Normal )
+            if ((textTypes & TextType.Normal) != 0)
                 appendToResult(result, "normal");
 
-            if ((textTypes & TextType.Handprinted) == TextType.Handprinted)
+            if ((textTypes & TextType.Typewriter) != 0)
+                appendToResult(result, "typewriter");
+
+            if ((textTypes & TextType.Matrix) != 0)
+                appendToResult(result, "matrix");
+
+            if ((textTypes & TextType.Index) != 0)
+                appendToResult(result, "index");
+
+            if ((textTypes & TextType.Handprinted) != 0)
                 appendToResult(result, "handprinted");
 
-            if ((textTypes & TextType.Gothic) == TextType.Gothic)
+            if ((textTypes & TextType.OcrA) != 0)
+                appendToResult(result, "ocrA");
+
+            if ((textTypes & TextType.OcrB) != 0)
+                appendToResult(result, "ocrB");
+
+            if ((textTypes & TextType.E13b) != 0)
+                appendToResult(result, "e13b");
+
+            if ((textTypes & TextType.Cmc7) != 0)
+                appendToResult(result, "cmc7");
+
+            if ((textTypes & TextType.Gothic) != 0)
                 appendToResult(result, "gothic");
+
+            if (result.Length == 0)
+                return "normal";
 
             return result.ToString();
         }
