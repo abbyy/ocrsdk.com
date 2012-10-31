@@ -1,6 +1,7 @@
 #import "Client.h"
 #import "ProcessingOperation.h"
 #import "Task.h"
+#import "NSString+Base64.h"
 
 @implementation Client
 
@@ -26,6 +27,13 @@
 	return self;
 }
 
+- (NSString*)authString
+{
+	NSString *encodedCredentials = [[NSString stringWithFormat:@"%@:%@", self.applicationID, self.password] base64EncodedString];
+	
+	return [NSString stringWithFormat:@"Basic %@", encodedCredentials];
+}
+
 - (void)processImage:(UIImage*)image withParams:(ProcessingParams*)params
 {		
 	NSParameterAssert(image);
@@ -37,6 +45,8 @@
 	[processingRequest setHTTPMethod:@"POST"];
 	[processingRequest setValue:@"applicaton/octet-stream" forHTTPHeaderField:@"Content-Type"];
 	[processingRequest setHTTPBody:UIImageJPEGRepresentation(image, 0.5)];
+	
+	[processingRequest setValue:[self authString] forHTTPHeaderField:@"Authorization"];
 	
 	HTTPOperation *uploadOperation = [[HTTPOperation alloc] initWithRequest:processingRequest 
 																	 target:self 
@@ -65,7 +75,9 @@
 		
 		NSURL* processingURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://cloud.ocrsdk.com/getTaskStatus?taskId=%@", task.ID]];
 		
-		NSURLRequest *request = [NSURLRequest requestWithURL:processingURL];
+		NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:processingURL];
+		
+		[request setValue:[self authString] forHTTPHeaderField:@"Authorization"];
 		
 		ProcessingOperation *processingOperation = [[ProcessingOperation alloc] initWithRequest:request 
 																						 target:self 
@@ -73,7 +85,6 @@
 		[processingOperation setAuthenticationDelegate:self];
 		
 		[processingOperation start];
-		
 	}
 }
 
@@ -98,8 +109,7 @@
 		HTTPOperation *downloadOperation = [[ProcessingOperation alloc] initWithRequest:request 
 																				 target:self 
 																		 finishedAction:@selector(downloadFinished:)];
-		[downloadOperation setAuthenticationDelegate:self];
-		
+
 		[downloadOperation start];
 	}
 }

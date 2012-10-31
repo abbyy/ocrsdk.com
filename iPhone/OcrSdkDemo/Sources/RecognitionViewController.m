@@ -104,6 +104,9 @@ static NSString* MyPassword = @"my_password";
 										  otherButtonTitles:nil, nil];
 	
 	[alert show];
+	
+	statusLabel.text = [error localizedDescription];
+	statusIndicator.hidden = YES;
 }
 
 @end

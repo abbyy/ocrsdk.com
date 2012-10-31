@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		492386421640113700D178F6 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 4923863F1640113700D178F6 /* NSData+Base64.m */; };
+		492386431640113700D178F6 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 492386411640113700D178F6 /* NSString+Base64.m */; };
 		49B675B2148604A700F853E4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B675B1148604A700F853E4 /* UIKit.framework */; };
 		49B675B4148604A700F853E4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B675B3148604A700F853E4 /* Foundation.framework */; };
 		49B675B6148604A700F853E4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B675B5148604A700F853E4 /* CoreGraphics.framework */; };
@@ -25,6 +27,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4923863E1640113700D178F6 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		4923863F1640113700D178F6 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		492386401640113700D178F6 /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Base64.h"; sourceTree = "<group>"; };
+		492386411640113700D178F6 /* NSString+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
 		49B675AD148604A700F853E4 /* OcrSdkDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OcrSdkDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B675B1148604A700F853E4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49B675B3148604A700F853E4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -67,6 +73,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4923863D1640113700D178F6 /* Base64 */ = {
+			isa = PBXGroup;
+			children = (
+				4923863E1640113700D178F6 /* NSData+Base64.h */,
+				4923863F1640113700D178F6 /* NSData+Base64.m */,
+				492386401640113700D178F6 /* NSString+Base64.h */,
+				492386411640113700D178F6 /* NSString+Base64.m */,
+			);
+			name = Base64;
+			path = Sources/Base64;
+			sourceTree = SOURCE_ROOT;
+		};
 		49B675A2148604A600F853E4 = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +135,7 @@
 		49B675E914864A9D00F853E4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				4923863D1640113700D178F6 /* Base64 */,
 				49B675EA148660EB00F853E4 /* AppDelegate.h */,
 				49B675EB148660EC00F853E4 /* AppDelegate.m */,
 				49B675EC148660EE00F853E4 /* Client.h */,
@@ -212,6 +231,8 @@
 				49B67600148660FE00F853E4 /* RecognitionViewController.m in Sources */,
 				49B67601148660FE00F853E4 /* Task.m in Sources */,
 				E52F4996148666A000DB5C75 /* ImageViewController.m in Sources */,
+				492386421640113700D178F6 /* NSData+Base64.m in Sources */,
+				492386431640113700D178F6 /* NSString+Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
