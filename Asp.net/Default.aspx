@@ -252,10 +252,13 @@
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        // !!! Provide your credentials here !!!
+        !!! Provide your credentials here and remove this line !!!
+		// Name of application you created
         ApplicationId = "myApplicationId";
+		// The password from e-mail sent by server after application was created
         Password = "myApplicationPassword";
         
+		!!! Provide your file here and remove this line !!!
         FilePath = "FileToRecognize.png";
 
         GetResult(ApplicationId, Password, FilePath, "English,German", "txt");

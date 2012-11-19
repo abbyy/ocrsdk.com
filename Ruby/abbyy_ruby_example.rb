@@ -11,10 +11,12 @@ require "rest_client"
 require "rexml/document"
 
 # IMPORTANT!
-# Provide your OCR SDK ApplicationID and Password here
+!!! Please provide your application id and password and remove this line !!!
 # CGI.escape is needed to escape whitespaces, slashes and other symbols
 # that could invalidate the URI if any
+# Name of application you created
 APPLICATION_ID = CGI.escape("my_application_id")
+# Password should be sent to your e-mail after application was created
 PASSWORD = CGI.escape("my_password")
 
 # IMPORTANT!

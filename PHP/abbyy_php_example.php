@@ -4,8 +4,10 @@
   // 2.	Get response as xml
   // 3.	Read taskId from xml
 
-  // !!!!!!!!!! Enter your data here !!!!!!!!!!
+  !!! Please provide your application id and password and remove this line !!!
+  // Name of application you created
   $applicationId = 'my_application_id';
+  // Password should be sent to your e-mail after application was created
   $password = 'my_application_password';
   $fileName = 'myfile.jpg';
 

@@ -5,7 +5,9 @@
  * Please provide your application id and password here.
  */
 public class ClientSettings {
+	// Name of application you created
 	public static final String APPLICATION_ID = "";
+	// Password should be sent to your e-mail after application was created
 	public static final String PASSWORD = "";
 	
 	public static void setupProxy()

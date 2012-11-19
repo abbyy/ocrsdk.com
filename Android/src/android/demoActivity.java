@@ -34,10 +34,16 @@ public class demoActivity extends Activity {
 				displayMessage( "Starting.." );
 				Client restClient = new Client();
 
+				- Please provide credentials and remove this line.
+				
+				// Name of application you created
 				restClient.applicationId = "<your app_id>";
+				// You should get e-mail from ABBYY Cloud OCR SDK service with the application password
 				restClient.password = "<your app_password>";
 				
+				- Upload test image to sd card or modify sample to get image from camera. Remove this line afterwards.
 				String filePath = "/sdcard/00000001.jpg";
+				
 				String outputFile = "/sdcard/result.txt";
 				String language = "English"; // Comma-separated list: Japanese,English or German,French,Spanish etc.
 				

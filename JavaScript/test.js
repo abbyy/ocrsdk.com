@@ -1,7 +1,9 @@
 // Demo sample using ABBYY Cloud OCR SDK from Node.js
 
-// Please provide your application id and password here!
+!!! Please provide your application id and password and remove this line !!!
+// Name of application you created
 var appId = '';
+// Password should be sent to your e-mail after application was created
 var password = '';
 
 var imagePath = 'myFile.jpg';

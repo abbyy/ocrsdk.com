@@ -28,9 +28,11 @@ namespace ConsoleTest
             restClient.ServerUrl = Properties.Settings.Default.ServerAddress;
             restClient.Proxy.Credentials = CredentialCache.DefaultCredentials;
 
-            // !!! Please provide your application id and password here !!!
+            !!! Please provide your application id and password and remove this line !!!
             /*
+			// Name of application you created
             restClient.ApplicationId = "<your application id>";
+			// Password should be sent to your e-mail after application was created
             restClient.Password = "<your password>";
              */
 
