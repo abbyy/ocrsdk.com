@@ -142,6 +142,26 @@ public class Client {
 
 		return getResponse(connection);
 	}
+	
+	/**
+	 * Create captureData task.
+	 * @param filePath 			File with image to process
+	 * @param templateName		Name of template. Possible values are: MRZ, more to come.
+	 * @return					Task created
+	 */
+	public Task captureData(String filePath, String templateName) throws Exception {
+		URL url = new URL(serverUrl + "/captureData?template=" + templateName );
+		byte[] fileContents = readDataFromFile(filePath);
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length",
+				Integer.toString(fileContents.length));
+		connection.getOutputStream().write(fileContents);
+
+		return getResponse(connection);
+	}
+	
 
 	public Task getTaskStatus(String taskId) throws Exception {
 		URL url = new URL(serverUrl + "/getTaskStatus?taskId=" + taskId);

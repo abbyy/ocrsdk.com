@@ -22,6 +22,8 @@ public class TestApp {
 		ClientSettings.setupProxy();
 		
 		restClient = new Client();
+		// replace with 'https://cloud.ocrsdk.com' to enable secure connection
+		restClient.serverUrl = "http://cloud.ocrsdk.com";
 		restClient.applicationId = ClientSettings.APPLICATION_ID;
 		restClient.password = ClientSettings.PASSWORD;
 
@@ -44,6 +46,8 @@ public class TestApp {
 				performBarcodeRecognition(argList);
 			} else if (mode.equalsIgnoreCase("processFields")) {
 				performFieldsRecognition(argList);
+			} else if (mode.equalsIgnoreCase("captureData")) {
+				performCaptureData(argList);
 			} else {
 				System.out.println("Unknown mode: " + mode);
 				return;
@@ -95,6 +99,8 @@ public class TestApp {
 						+ "5. Many different snippets on document\n"
 						+ "  java TestApp processFields image1.jpg image2.jpg image3.tif settings.xml result.xml\n"
 						+ "\n"
+						+ "6. Machine-Readable Zones (MRZ) of different official documents\n"
+						+ "  java TestApp captureData image.jpg MRZ result.xml\n"
 						+ "\n"
 						+ "For detailed help, call\n"
 						+ "  java TestApp help <mode>\n"
@@ -115,6 +121,8 @@ public class TestApp {
 			displayBarcodeHelp();
 		} else if (mode.equalsIgnoreCase("processFields")) {
 			displayProcessFieldsHelp();
+		} else if (mode.equalsIgnoreCase("captureData")) {
+			displayCaptureDataHelp();
 		} else {
 			System.out.println("Unknown processing mode.");
 		}
@@ -271,7 +279,7 @@ public class TestApp {
 
 		waitAndDownloadResult(task, outputPath);
 	}
-
+	
 	private static void displayBarcodeHelp() {
 		System.out
 				.println("Recognize barcode.\n" + "\n" + "Usage:\n"
@@ -359,6 +367,39 @@ public class TestApp {
 
 		waitAndDownloadResult(task, outputPath);
 	}
+	
+	private static void displayCaptureDataHelp() {
+		System.out
+				.println("Recognize Machine-Readable Zones of official documents\n"
+						+ "Both 2 and 3-line MRZ are supported."
+						+ "\n" + "Usage:\n"
+						+ "java TestApp captureData <file> MRZ <output file>\n" + "\n"
+						+ "Examples:\n"
+						+ "java TestApp captureData image.tif MRZ result.xml\n");
+	}
+	
+	private static void performCaptureData(Vector<String> argList)
+			throws Exception {
+		String outputPath = argList.lastElement();
+		argList.remove(argList.size() - 1);
+		
+		String templateName = argList.lastElement();
+		argList.remove(argList.size()-1 );
+		
+		// argList now contains list of source images to process
+
+		if (argList.size() != 1) {
+			System.out.println("Invalid number of files to process.");
+			return;
+		}
+
+		System.out.println("Uploading..");
+		Task task = restClient.captureData(argList.elementAt(0), templateName);
+
+		waitAndDownloadResult(task, outputPath);
+	}
+	
+	
 
 	/**
 	 * Wait until task processing finishes and download result.
