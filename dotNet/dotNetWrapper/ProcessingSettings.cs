@@ -110,9 +110,15 @@ namespace Abbyy.CloudOcrSdk
     /// </summary>
     public class BusCardProcessingSettings : IProcessingSettings
     {
+        public enum OutputFormatEnum
+        {
+            vCard, xml, csv
+        };
+
         public BusCardProcessingSettings()
         {
             Language = "English";
+            OutputFormat = OutputFormatEnum.vCard;
         }
 
         /// <summary>
@@ -121,11 +127,32 @@ namespace Abbyy.CloudOcrSdk
         /// </summary>
         public string Language { get; set; }
 
+        public OutputFormatEnum OutputFormat
+        {
+            get;
+            set; 
+        }
+
+        /// <summary>
+        /// Any Url parameters that are passed as-is to the server
+        /// </summary>
+        public String CustomOptions
+        {
+            get;
+            set;
+        }
+
         public string AsUrlParams
         {
             get
             {
-                return String.Format("language={0}", Uri.EscapeDataString(Language));
+                StringBuilder result = new StringBuilder();
+                result.AppendFormat("language={0}&exportFormat={1}", Uri.EscapeDataString(Language), OutputFormat.ToString());
+
+                if (!String.IsNullOrEmpty(CustomOptions))
+                    result.Append("&" + CustomOptions);
+
+                return result.ToString();
             }
         }
     }

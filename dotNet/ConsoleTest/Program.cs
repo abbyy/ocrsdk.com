@@ -28,6 +28,10 @@ ConsoleTest.exe --asTextField [common options] <source_dir|file> <target_dir>
 ConsoleTest.exe --asFields <source_file> <settings.xml> <target_dir>
   Perform recognition via processFields call. Processing settings should be specified in xml file.
           
+ConsoleTest.exe --captureData <source_file> <template name> <target_dir>
+  Perform data capture for specific document types. Possible template names are:
+    * MRZ - perform Machine-Readable Zone extraction
+
 Common options description:
 --lang=<languages>: Recognize with specified language. Examples: --lang=English --lang=English,German,French
 --out=<output format>: Create output in specified format: txt, rtf, docx, xlsx, pptx, pdfSearchable, pdfTextAndImages, xml
@@ -48,6 +52,7 @@ Common options description:
                 { "asDocument", v => processingMode = ProcessingModeEnum.MultiPage },
                 { "asTextField", v => processingMode = ProcessingModeEnum.ProcessTextField},
                 { "asFields", v => processingMode = ProcessingModeEnum.ProcessFields},
+                { "captureData", v => processingMode = ProcessingModeEnum.CaptureData},
                 { "out=", (string v) => outFormat = v },
                 { "lang=", (string v) => language = v },
                 { "options=", (string v) => customOptions = v }
@@ -68,29 +73,46 @@ Common options description:
             string sourcePath = null;
             string xmlPath = null;
             string targetPath = null;
+            string templateName = null;
 
-            if (processingMode != ProcessingModeEnum.ProcessFields)
+            switch (processingMode)
             {
-                if (additionalArgs.Count != 2)
-                {
-                    displayHelp();
-                    return;
-                }
+                case ProcessingModeEnum.SinglePage:
+                case ProcessingModeEnum.MultiPage:
+                case ProcessingModeEnum.ProcessTextField:
+                    if (additionalArgs.Count != 2)
+                    {
+                        displayHelp();
+                        return;
+                    }
 
-                sourcePath = additionalArgs[0];
-                targetPath = additionalArgs[1];
-            }
-            else
-            {
-                if (additionalArgs.Count != 3)
-                {
-                    displayHelp();
-                    return;
-                }
+                    sourcePath = additionalArgs[0];
+                    targetPath = additionalArgs[1];
+                    break;
 
-                sourcePath = additionalArgs[0];
-                xmlPath = additionalArgs[1];
-                targetPath = additionalArgs[2];
+                case ProcessingModeEnum.ProcessFields:
+                    if (additionalArgs.Count != 3)
+                    {
+                        displayHelp();
+                        return;
+                    }
+
+                    sourcePath = additionalArgs[0];
+                    xmlPath = additionalArgs[1];
+                    targetPath = additionalArgs[2];
+                    break;
+
+                case ProcessingModeEnum.CaptureData:
+                    if (additionalArgs.Count != 3)
+                    {
+                        displayHelp();
+                        return;
+                    }
+
+                    sourcePath = additionalArgs[0];
+                    templateName = additionalArgs[1];
+                    targetPath = additionalArgs[2];
+                    break;
             }
 
             if (!Directory.Exists(targetPath))
@@ -100,14 +122,18 @@ Common options description:
 
             if (String.IsNullOrEmpty(outFormat))
             {
-                if (processingMode == ProcessingModeEnum.ProcessFields || processingMode == ProcessingModeEnum.ProcessTextField)
+                if (processingMode == ProcessingModeEnum.ProcessFields || 
+                    processingMode == ProcessingModeEnum.ProcessTextField ||
+                    processingMode == ProcessingModeEnum.CaptureData)
                     outFormat = "xml";
                 else 
                     outFormat = "txt";
             }
 
             if (outFormat != "xml" &&
-                (processingMode == ProcessingModeEnum.ProcessFields || processingMode == ProcessingModeEnum.ProcessTextField))
+                (processingMode == ProcessingModeEnum.ProcessFields || 
+                processingMode == ProcessingModeEnum.ProcessTextField) ||
+                processingMode == ProcessingModeEnum.CaptureData)
             {
                 Console.WriteLine("Only xml is supported as output format for field-level recognition.");
                 outFormat = "xml";
@@ -133,8 +159,13 @@ Common options description:
                     string outputFilePath = Path.Combine(targetPath, Path.GetFileName(sourcePath) + ".xml");
                     tester.ProcessFields(sourcePath, xmlPath, outputFilePath);
                 }
+                else if (processingMode == ProcessingModeEnum.CaptureData)
+                {
+                    string outputFilePath = Path.Combine(targetPath, Path.GetFileName(sourcePath) + ".xml");
+                    tester.CaptureData(sourcePath, templateName, outputFilePath);
+                }
 
-                
+
             }
             catch (Exception e)
             {

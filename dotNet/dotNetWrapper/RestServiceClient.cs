@@ -386,6 +386,20 @@ namespace Abbyy.CloudOcrSdk
             return result;
         }
 
+        public Task CaptureData(string filePath, string templateName)
+        {
+            string url = String.Format("{0}/captureData?template={1}", ServerUrl, templateName);
+
+            // Build post request
+            WebRequest request = WebRequest.Create(url);
+            setupPostRequest(url, request);
+            writeFileToRequest(filePath, request);
+
+            XDocument response = performRequest(request);
+            Task serverTask = ServerXml.GetTaskStatus(response);
+            return serverTask;
+        }
+
         /// <summary>
         /// Download filePath that has finished processing and save it to given path
         /// </summary>
