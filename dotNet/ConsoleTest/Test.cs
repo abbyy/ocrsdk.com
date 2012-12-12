@@ -29,7 +29,7 @@ namespace ConsoleTest
             restClient.ServerUrl = Properties.Settings.Default.ServerAddress;
             restClient.Proxy.Credentials = CredentialCache.DefaultCredentials;
 
-            !!! Please provide your application id and password and remove this line !!!
+            //!!! Please provide your application id and password here
             /*
 			// Name of application you created
             restClient.ApplicationId = "<your application id>";
@@ -41,7 +41,7 @@ namespace ConsoleTest
             if (String.IsNullOrEmpty(restClient.ApplicationId) ||
                 String.IsNullOrEmpty(restClient.Password))
             {
-                throw new Exception("Please provide access credentials to Cloud OCR SDK service!");
+                throw new Exception("Please provide access credentials to Cloud OCR SDK service! See Test.cs file for details!");
             }
 
             Console.WriteLine(String.Format("Application id: {0}\n", restClient.ApplicationId));

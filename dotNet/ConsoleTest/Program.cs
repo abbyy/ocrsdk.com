@@ -41,14 +41,18 @@ Common options description:
 
         static void Main(string[] args)
         {
+            try
+            {
 
-            ProcessingModeEnum processingMode = ProcessingModeEnum.SinglePage;
+                Test tester = new Test();
 
-            string outFormat = null;
-            string language = "english";
-            string customOptions = "";
+                ProcessingModeEnum processingMode = ProcessingModeEnum.SinglePage;
 
-            var p = new OptionSet() {
+                string outFormat = null;
+                string language = "english";
+                string customOptions = "";
+
+                var p = new OptionSet() {
                 { "asDocument", v => processingMode = ProcessingModeEnum.MultiPage },
                 { "asTextField", v => processingMode = ProcessingModeEnum.ProcessTextField},
                 { "asFields", v => processingMode = ProcessingModeEnum.ProcessFields},
@@ -58,90 +62,86 @@ Common options description:
                 { "options=", (string v) => customOptions = v }
             };
 
-            List<string> additionalArgs = null;
-            try
-            {
-                additionalArgs = p.Parse(args);
-            }
-            catch (OptionException)
-            {
-                Console.WriteLine("Invalid arguments.");
-                displayHelp();
-                return;
-            }
+                List<string> additionalArgs = null;
+                try
+                {
+                    additionalArgs = p.Parse(args);
+                }
+                catch (OptionException)
+                {
+                    Console.WriteLine("Invalid arguments.");
+                    displayHelp();
+                    return;
+                }
 
-            string sourcePath = null;
-            string xmlPath = null;
-            string targetPath = null;
-            string templateName = null;
+                string sourcePath = null;
+                string xmlPath = null;
+                string targetPath = null;
+                string templateName = null;
 
-            switch (processingMode)
-            {
-                case ProcessingModeEnum.SinglePage:
-                case ProcessingModeEnum.MultiPage:
-                case ProcessingModeEnum.ProcessTextField:
-                    if (additionalArgs.Count != 2)
-                    {
-                        displayHelp();
-                        return;
-                    }
+                switch (processingMode)
+                {
+                    case ProcessingModeEnum.SinglePage:
+                    case ProcessingModeEnum.MultiPage:
+                    case ProcessingModeEnum.ProcessTextField:
+                        if (additionalArgs.Count != 2)
+                        {
+                            displayHelp();
+                            return;
+                        }
 
-                    sourcePath = additionalArgs[0];
-                    targetPath = additionalArgs[1];
-                    break;
+                        sourcePath = additionalArgs[0];
+                        targetPath = additionalArgs[1];
+                        break;
 
-                case ProcessingModeEnum.ProcessFields:
-                    if (additionalArgs.Count != 3)
-                    {
-                        displayHelp();
-                        return;
-                    }
+                    case ProcessingModeEnum.ProcessFields:
+                        if (additionalArgs.Count != 3)
+                        {
+                            displayHelp();
+                            return;
+                        }
 
-                    sourcePath = additionalArgs[0];
-                    xmlPath = additionalArgs[1];
-                    targetPath = additionalArgs[2];
-                    break;
+                        sourcePath = additionalArgs[0];
+                        xmlPath = additionalArgs[1];
+                        targetPath = additionalArgs[2];
+                        break;
 
-                case ProcessingModeEnum.CaptureData:
-                    if (additionalArgs.Count != 3)
-                    {
-                        displayHelp();
-                        return;
-                    }
+                    case ProcessingModeEnum.CaptureData:
+                        if (additionalArgs.Count != 3)
+                        {
+                            displayHelp();
+                            return;
+                        }
 
-                    sourcePath = additionalArgs[0];
-                    templateName = additionalArgs[1];
-                    targetPath = additionalArgs[2];
-                    break;
-            }
+                        sourcePath = additionalArgs[0];
+                        templateName = additionalArgs[1];
+                        targetPath = additionalArgs[2];
+                        break;
+                }
 
-            if (!Directory.Exists(targetPath))
-            {
-                Directory.CreateDirectory(targetPath);
-            }
+                if (!Directory.Exists(targetPath))
+                {
+                    Directory.CreateDirectory(targetPath);
+                }
 
-            if (String.IsNullOrEmpty(outFormat))
-            {
-                if (processingMode == ProcessingModeEnum.ProcessFields || 
-                    processingMode == ProcessingModeEnum.ProcessTextField ||
+                if (String.IsNullOrEmpty(outFormat))
+                {
+                    if (processingMode == ProcessingModeEnum.ProcessFields ||
+                        processingMode == ProcessingModeEnum.ProcessTextField ||
+                        processingMode == ProcessingModeEnum.CaptureData)
+                        outFormat = "xml";
+                    else
+                        outFormat = "txt";
+                }
+
+                if (outFormat != "xml" &&
+                    (processingMode == ProcessingModeEnum.ProcessFields ||
+                    processingMode == ProcessingModeEnum.ProcessTextField) ||
                     processingMode == ProcessingModeEnum.CaptureData)
+                {
+                    Console.WriteLine("Only xml is supported as output format for field-level recognition.");
                     outFormat = "xml";
-                else 
-                    outFormat = "txt";
-            }
-
-            if (outFormat != "xml" &&
-                (processingMode == ProcessingModeEnum.ProcessFields || 
-                processingMode == ProcessingModeEnum.ProcessTextField) ||
-                processingMode == ProcessingModeEnum.CaptureData)
-            {
-                Console.WriteLine("Only xml is supported as output format for field-level recognition.");
-                outFormat = "xml";
-            }
-
-            try
-            {
-                Test tester = new Test();
+                }
 
                 if (processingMode == ProcessingModeEnum.SinglePage || processingMode == ProcessingModeEnum.MultiPage)
                 {
