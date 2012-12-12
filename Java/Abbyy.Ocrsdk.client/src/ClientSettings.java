@@ -1,6 +1,6 @@
 
 /**
- * Authentification settings for Cloud OCR SDK client.
+ * Authentication settings for Cloud OCR SDK client.
  * 
  * Please provide your application id and password here.
  */
