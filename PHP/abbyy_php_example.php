@@ -18,6 +18,10 @@
   {
     die('File '.$filePath.' not found.');
   }
+  if(!is_readable($filePath) )
+  {
+     die('Access to file '.$filePath.' denied.');
+  }
 
   // Recognizing with English language to rtf
   // You can use combination of languages like ?language=english,russian or
