@@ -45,10 +45,18 @@
     curl_close($curlHandle);
     die($errorText);
   }
+  $httpCode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
   curl_close($curlHandle);
 
   // Parse xml response
   $xml = simplexml_load_string($response);
+  if($httpCode != 200) {
+    if(property_exists($xml, "message")) {
+       die($xml->message);
+    }
+    die("unexpected response ".$response);
+  }
+
   $arr = $xml->task[0]->attributes();
   
   // Task id
