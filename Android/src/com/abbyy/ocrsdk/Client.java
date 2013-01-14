@@ -28,9 +28,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return decodeServerResponse(connection);
 	}
 
 	public Task processImage(String filePath, ProcessingSettings settings)
@@ -44,9 +42,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return decodeServerResponse(connection);
 	}
 
 	public Task processDocument(String taskId, ProcessingSettings settings)
@@ -54,11 +50,9 @@ public class Client {
 		URL url = new URL(serverUrl + "/processDocument?taskId=" + taskId + "&"
 				+ settings.asUrlParams());
 
-		URLConnection connection = openGetConnection(url);
+		HttpURLConnection connection = openGetConnection(url);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return decodeServerResponse(connection);
 	}
 
 	public Task processBusinessCard(String filePath, BusCardSettings settings)
@@ -73,9 +67,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return decodeServerResponse(connection);
 	}
 
 	public Task processTextField(String filePath, TextFieldSettings settings)
@@ -90,9 +82,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return decodeServerResponse(connection);
 	}
 
 	public Task processBarcodeField(String filePath, BarcodeSettings settings)
@@ -107,9 +97,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return decodeServerResponse(connection);
 	}
 
 	public Task processCheckmarkField(String filePath) throws Exception {
@@ -122,9 +110,7 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return decodeServerResponse(connection);
 	}
 
 	/**
@@ -147,20 +133,30 @@ public class Client {
 				Integer.toString(fileContents.length));
 		connection.getOutputStream().write(fileContents);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		return decodeServerResponse(connection);
 	}
 
 	public Task getTaskStatus(String taskId) throws Exception {
 		URL url = new URL(serverUrl + "/getTaskStatus?taskId=" + taskId);
 
-		URLConnection connection = openGetConnection(url);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
-		return new Task(reader);
+		HttpURLConnection connection = openGetConnection(url);
+		return decodeServerResponse(connection);
 	}
 
+	private Task decodeServerResponse(HttpURLConnection connection)	throws Exception {
+		int responseCode = connection.getResponseCode();
+
+		if (responseCode == 200) {
+			InputStream inputStream = connection.getInputStream();
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+			BufferedReader reader = new BufferedReader(inputStreamReader);
+			return new Task(reader);
+		} else {
+			String response = connection.getResponseMessage();
+			throw new Exception(response);
+		}
+	}
+	
 	public void downloadResult(Task task, String outputFile) throws Exception {
 		if (task.Status != Task.TaskStatus.Completed) {
 			throw new IllegalArgumentException("Invalid task status");
@@ -172,9 +168,7 @@ public class Client {
 		}
 
 		URL url = new URL(task.DownloadUrl);
-		URLConnection connection = url.openConnection(); // do not use
-															// authenticated
-															// connection
+		URLConnection connection = url.openConnection(); // do not use authenticated connection
 
 		BufferedInputStream reader = new BufferedInputStream(
 				connection.getInputStream());
@@ -194,14 +188,13 @@ public class Client {
 		connection.setDoInput(true);
 		connection.setRequestMethod("POST");
 		setupAuthorization(connection);
-		connection
-				.setRequestProperty("Content-Type", "applicaton/octet-stream");
+		connection.setRequestProperty("Content-Type", "applicaton/octet-stream");
 
 		return connection;
 	}
 
-	private URLConnection openGetConnection(URL url) throws Exception {
-		URLConnection connection = url.openConnection();
+	private HttpURLConnection openGetConnection(URL url) throws Exception {
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		// connection.setRequestMethod("GET");
 		setupAuthorization(connection);
 		return connection;
