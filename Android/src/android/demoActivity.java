@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 import android.app.*;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 import com.abbyy.ocrsdk.*;
@@ -43,16 +44,39 @@ public class demoActivity extends Activity {
 				
 				- Upload test image to sd card or modify sample to get image from camera. Remove this line afterwards.
 				String filePath = "/sdcard/00000001.jpg";
+			
+				// Obtain installation id when running the application for the first time
+				SharedPreferences settings = getPreferences(MODE_PRIVATE);
+				String instIdName = "installationId";
+				if( !settings.contains(instIdName)) {
+					// Get installation id from server using device id
+					String deviceId = android.provider.Settings.Secure.getString(getContentResolver(), 
+							android.provider.Settings.Secure.ANDROID_ID);
+					
+					// Obtain installation id from server
+					displayMessage( "First run: obtaining installation id..");
+					String installationId = restClient.activateNewInstallation(deviceId);
+					displayMessage( "Done. Installation id is '" + installationId + "'");
+					
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putString(instIdName, installationId);
+					editor.commit();
+				} 
+				
+				String installationId = settings.getString(instIdName, "");
+				restClient.applicationId += installationId;
+				
+				// Perform recognition
 				
 				String outputFile = "/sdcard/result.txt";
 				String language = "English"; // Comma-separated list: Japanese,English or German,French,Spanish etc.
 				
-				ProcessingSettings settings = new ProcessingSettings();
-				settings.setOutputFormat( ProcessingSettings.OutputFormat.txt );
-				settings.setLanguage(language);
+				ProcessingSettings processingSettings = new ProcessingSettings();
+				processingSettings.setOutputFormat( ProcessingSettings.OutputFormat.txt );
+				processingSettings.setLanguage(language);
 				
 				displayMessage( "Uploading.." );
-				Task task = restClient.processImage(filePath, settings);
+				Task task = restClient.processImage(filePath, processingSettings);
 				
 				// If you want to process business cards, uncomment this
 				/*
