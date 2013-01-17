@@ -217,8 +217,9 @@ public class Client {
 	}
 
 	private void setupAuthorization(URLConnection connection) {
-		connection.addRequestProperty("Authorization", "Basic: "
-				+ encodeUserPassword());
+		String authString = "Basic: " + encodeUserPassword();
+		authString = authString.replaceAll("\n", "");
+		connection.addRequestProperty("Authorization", authString);
 	}
 
 	private byte[] readDataFromFile(String filePath) throws Exception {
