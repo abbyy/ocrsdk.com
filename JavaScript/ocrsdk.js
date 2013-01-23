@@ -1,3 +1,7 @@
+if (typeof process == 'undefined' || process.argv[0] != "node") {
+	throw new Error("This code must be run on server side under NodeJS");
+}
+
 var http = require("http");
 var https = require("https");
 var url = require("url");

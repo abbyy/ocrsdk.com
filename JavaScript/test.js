@@ -1,5 +1,9 @@
 // Demo sample using ABBYY Cloud OCR SDK from Node.js
 
+if (typeof process == 'undefined' || process.argv[0] != "node") {
+	throw new Error("This code must be run on server side under NodeJS");
+}
+
 !!! Please provide your application id and password and remove this line !!!
 // Name of application you created
 var appId = '';
