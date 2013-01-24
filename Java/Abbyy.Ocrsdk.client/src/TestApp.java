@@ -48,13 +48,15 @@ public class TestApp {
 				performFieldsRecognition(argList);
 			} else if (mode.equalsIgnoreCase("captureData")) {
 				performCaptureData(argList);
+			} else if( mode.equalsIgnoreCase("createTemplate")) {
+				createTemplate(argList);
 			} else {
 				System.out.println("Unknown mode: " + mode);
 				return;
 			}
 		} catch (Exception e) {
 			System.out.println("Exception occured:" + e.getMessage());
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
@@ -102,9 +104,12 @@ public class TestApp {
 						+ "6. Machine-Readable Zones (MRZ) of different official documents\n"
 						+ "  java TestApp captureData image.jpg MRZ result.xml\n"
 						+ "\n"
+						+ "7. Create template for further recognition\n" 
+						+ "  java TestApp createTemplate image.jpg <template name> settings.xml\n"
+						+ "\n"
 						+ "For detailed help, call\n"
 						+ "  java TestApp help <mode>\n"
-						+ "where <mode> is one of: recognize, busCard, textField, barcode, checkmark, processFields");
+						+ "where <mode> is one of: recognize, busCard, textField, barcode, checkmark, processFields, captureData, createTemplate");
 	}
 
 	/**
@@ -123,6 +128,8 @@ public class TestApp {
 			displayProcessFieldsHelp();
 		} else if (mode.equalsIgnoreCase("captureData")) {
 			displayCaptureDataHelp();
+		} else if (mode.equalsIgnoreCase("createTemplate")) {
+			displayCreateTemplateHelp();
 		} else {
 			System.out.println("Unknown processing mode.");
 		}
@@ -399,19 +406,56 @@ public class TestApp {
 		waitAndDownloadResult(task, outputPath);
 	}
 	
-	
+	private static void displayCreateTemplateHelp() {
+		System.out
+		.println("TODO\n");
 
-	/**
-	 * Wait until task processing finishes and download result.
+	}
+	
+	private static void createTemplate(Vector<String> argList) throws Exception {
+		if( argList.size() != 3) {
+			System.out.println( "Invalid number of arguments.");
+			return;
+		}
+		
+		String imagePath = argList.elementAt(0);
+		String templateName = argList.elementAt(1);
+		String settingsPath = argList.elementAt(2);
+
+		System.out.println("Uploading image..");
+		Task task = restClient.submitImage(imagePath, null);
+		
+		System.out.println("Creating template..");
+		task = restClient.createTemplate(task.Id, templateName, settingsPath);
+		System.out.println("Waiting..");
+		task = waitForCompletion(task);
+		
+		if( task.Status == Task.TaskStatus.Completed) {
+			System.out.println( "Done.");
+		} else {
+			System.out.println("Error creating template.");
+		}
+	}
+
+	/** 
+	 * Wait until task processing finishes
 	 */
-	private static void waitAndDownloadResult(Task task, String outputPath)
-			throws Exception {
+	private static Task waitForCompletion(Task task) throws Exception {
 		while (task.isTaskActive()) {
 			Thread.sleep(2000);
 
 			System.out.println("Waiting..");
 			task = restClient.getTaskStatus(task.Id);
 		}
+		return task;
+	}
+	
+	/**
+	 * Wait until task processing finishes and download result.
+	 */
+	private static void waitAndDownloadResult(Task task, String outputPath)
+			throws Exception {
+		task = waitForCompletion(task);
 
 		if (task.Status == Task.TaskStatus.Completed) {
 			System.out.println("Downloading..");

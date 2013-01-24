@@ -162,6 +162,18 @@ public class Client {
 		return getResponse(connection);
 	}
 	
+	public Task createTemplate(String taskId, String templateName, String settingsFilePath) throws Exception {
+		URL url = new URL(serverUrl + "/createTemplate?taskId=" + taskId + "&template=" + templateName);
+		byte[] fileContents = readDataFromFile(settingsFilePath);
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length",
+				Integer.toString(fileContents.length));
+		connection.getOutputStream().write(fileContents);
+
+		return getResponse(connection);
+	}
 
 	public Task getTaskStatus(String taskId) throws Exception {
 		URL url = new URL(serverUrl + "/getTaskStatus?taskId=" + taskId);
