@@ -108,7 +108,25 @@ namespace Abbyy.CloudOcrSdk
             XAttribute xResultUrl = xTask.Attribute("resultUrl");
             if (xResultUrl != null)
             {
-                task.DownloadUrl = xResultUrl.Value;
+                task.DownloadUrls = new List<string>{xResultUrl.Value};
+                for (int i = 2; i < 10; i++)
+                {
+                    XAttribute xResultUrlI = xTask.Attribute("resultUrl" + i);
+                    if (xResultUrlI != null)
+                    {
+                        task.DownloadUrls.Add(xResultUrlI.Value);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            XAttribute xError = xTask.Attribute("error");
+            if (xError != null)
+            {
+                task.Error = xError.Value;
             }
 
             return task;

@@ -15,11 +15,19 @@ namespace Abbyy.CloudOcrSdk
         English, French, Italian, German, Spanish, Russian, ChinesePRC, Japanese, Korean
     };
 
+    public enum Profile
+    {
+        documentConversion,
+        documentArchiving,
+        textExtraction
+    }
+
     public class ProcessingSettings : IProcessingSettings
     {
         public ProcessingSettings()
         {
             Language = RecognitionLanguage.English;
+            Profile = Profile.documentConversion;
         }
 
         public RecognitionLanguage Language
@@ -32,7 +40,25 @@ namespace Abbyy.CloudOcrSdk
             _language = lang;
         }
 
-        public OutputFormat OutputFormat { get; set; }
+        private List<OutputFormat> _outputFormats = new List<OutputFormat> { OutputFormat.rtf };
+
+        public void SetOutputFormat(OutputFormat f)
+        {
+            _outputFormats = new List<OutputFormat> { f };
+        }
+
+        /// <summary>
+        /// You can specify up to 3 different output formats and get a file for each output format
+        /// </summary>
+        public void SetOutputFormat(IEnumerable<OutputFormat> formats)
+        {
+            _outputFormats = new List<OutputFormat>(formats);
+        }
+
+        public List<OutputFormat> OutputFormats
+        {
+            get { return _outputFormats; }
+        }
 
         public string Description { get; set; }
 
@@ -41,6 +67,8 @@ namespace Abbyy.CloudOcrSdk
             get;
             set;
         }
+
+        public Profile Profile { get; set; }
 
         /// <summary>
         /// Any Url parameters that are passed as-is to the server
@@ -54,11 +82,9 @@ namespace Abbyy.CloudOcrSdk
         /// <summary>
         /// Gets default extension for given output format
         /// </summary>
-        public string OutputFileExt
+        public string GetOutputFileExt(OutputFormat f)
         {
-            get
-            {
-                switch (this.OutputFormat)
+                switch (f)
                 {
                     case OutputFormat.docx:
                         return ".docx";
@@ -78,7 +104,6 @@ namespace Abbyy.CloudOcrSdk
                 }
 
                 return ".bin";
-            }
         }
 
         public string AsUrlParams
@@ -86,9 +111,13 @@ namespace Abbyy.CloudOcrSdk
             get
             {
                 StringBuilder result = new StringBuilder();
-                result.Append(String.Format("language={0}&exportFormat={1}",
+
+                string outputFormats = String.Join(",", _outputFormats.Select(f => f.ToString()).ToArray());
+
+                result.Append(String.Format("language={0}&exportFormat={1}&profile={2}",
                     Uri.EscapeDataString(_language),
-                    Uri.EscapeDataString(OutputFormat.ToString())));
+                    Uri.EscapeDataString(outputFormats),
+                    Profile));
 
                 string textType = TextTypes.AsUrlParams();
                 if (!String.IsNullOrEmpty(textType))

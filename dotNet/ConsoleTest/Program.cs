@@ -27,10 +27,10 @@ ConsoleTest.exe --asTextField [common options] <source_dir|file> <target_dir>
 
 ConsoleTest.exe --asFields <source_file> <settings.xml> <target_dir>
   Perform recognition via processFields call. Processing settings should be specified in xml file.
-          
-ConsoleTest.exe --captureData <source_file> <template name> <target_dir>
-  Perform data capture for specific document types. Possible template names are:
-    * MRZ - perform Machine-Readable Zone extraction
+
+ConsoleTest.exe --asMRZ <source_file> <target_dir>
+  Recognize and parse Machine-Readable Zone (MRZ) of Passport, ID card, Visa or other official document          
+
 
 Common options description:
 --lang=<languages>: Recognize with specified language. Examples: --lang=English --lang=English,German,French
@@ -56,14 +56,15 @@ Common options description:
                 { "asDocument", v => processingMode = ProcessingModeEnum.MultiPage },
                 { "asTextField", v => processingMode = ProcessingModeEnum.ProcessTextField},
                 { "asFields", v => processingMode = ProcessingModeEnum.ProcessFields},
+                { "asMRZ", var => processingMode = ProcessingModeEnum.ProcessMrz},
                 { "captureData", v => processingMode = ProcessingModeEnum.CaptureData},
                 { "out=", (string v) => outFormat = v },
                 { "lang=", (string v) => language = v },
                 { "options=", (string v) => customOptions = v }
             };
 
-                List<string> additionalArgs = null;
-                try
+            List<string> additionalArgs = null;
+            try
                 {
                     additionalArgs = p.Parse(args);
                 }
@@ -74,16 +75,17 @@ Common options description:
                     return;
                 }
 
-                string sourcePath = null;
-                string xmlPath = null;
-                string targetPath = null;
-                string templateName = null;
+            string sourcePath = null;
+            string xmlPath = null;
+            string targetPath = Directory.GetCurrentDirectory();
+            string templateName = null;
 
-                switch (processingMode)
-                {
-                    case ProcessingModeEnum.SinglePage:
+            switch (processingMode)
+            {
+                case ProcessingModeEnum.SinglePage:
                     case ProcessingModeEnum.MultiPage:
                     case ProcessingModeEnum.ProcessTextField:
+                    case ProcessingModeEnum.ProcessMrz:
                         if (additionalArgs.Count != 2)
                         {
                             displayHelp();
@@ -128,6 +130,7 @@ Common options description:
                 {
                     if (processingMode == ProcessingModeEnum.ProcessFields ||
                         processingMode == ProcessingModeEnum.ProcessTextField ||
+                        processingMode == ProcessingModeEnum.ProcessMrz ||
                         processingMode == ProcessingModeEnum.CaptureData)
                         outFormat = "xml";
                     else
@@ -159,6 +162,11 @@ Common options description:
                     string outputFilePath = Path.Combine(targetPath, Path.GetFileName(sourcePath) + ".xml");
                     tester.ProcessFields(sourcePath, xmlPath, outputFilePath);
                 }
+                else if (processingMode == ProcessingModeEnum.ProcessMrz)
+                {
+                    string outputFilePath = Path.Combine(targetPath, Path.GetFileName(sourcePath) + ".xml");
+                    tester.ProcessMrz(sourcePath, outputFilePath);
+                }
                 else if (processingMode == ProcessingModeEnum.CaptureData)
                 {
                     string outputFilePath = Path.Combine(targetPath, Path.GetFileName(sourcePath) + ".xml");
@@ -180,14 +188,14 @@ Common options description:
             settings.SetLanguage( language );
             switch (outputFormat.ToLower())
             {
-                case "txt": settings.OutputFormat = OutputFormat.txt; break;
-                case "rtf": settings.OutputFormat = OutputFormat.rtf; break;
-                case "docx": settings.OutputFormat = OutputFormat.docx; break;
-                case "xlsx": settings.OutputFormat = OutputFormat.xlsx; break;
-                case "pptx": settings.OutputFormat = OutputFormat.pptx; break;
-                case "pdfsearchable": settings.OutputFormat = OutputFormat.pdfSearchable; break;
-                case "pdftextandimages": settings.OutputFormat = OutputFormat.pdfTextAndImages; break;
-                case "xml": settings.OutputFormat = OutputFormat.xml; break;
+                case "txt": settings.SetOutputFormat(OutputFormat.txt); break;
+                case "rtf": settings.SetOutputFormat( OutputFormat.rtf); break;
+                case "docx": settings.SetOutputFormat( OutputFormat.docx); break;
+                case "xlsx": settings.SetOutputFormat( OutputFormat.xlsx); break;
+                case "pptx": settings.SetOutputFormat( OutputFormat.pptx); break;
+                case "pdfsearchable": settings.SetOutputFormat( OutputFormat.pdfSearchable); break;
+                case "pdftextandimages": settings.SetOutputFormat( OutputFormat.pdfTextAndImages); break;
+                case "xml": settings.SetOutputFormat( OutputFormat.xml); break;
                 default:
                     throw new ArgumentException("Invalid output format");
             }

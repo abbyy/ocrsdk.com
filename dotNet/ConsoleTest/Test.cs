@@ -16,6 +16,7 @@ namespace ConsoleTest
         MultiPage,
         ProcessTextField,
         ProcessFields,
+        ProcessMrz,
         CaptureData
     };
 
@@ -26,7 +27,6 @@ namespace ConsoleTest
         public Test()
         {
             restClient = new RestServiceClient();
-            restClient.ServerUrl = Properties.Settings.Default.ServerAddress;
             restClient.Proxy.Credentials = CredentialCache.DefaultCredentials;
 
             //!!! Please provide your application id and password here
@@ -87,8 +87,7 @@ namespace ConsoleTest
                 foreach (string filePath in sourceFiles)
                 {
                     string outputFileName = Path.GetFileNameWithoutExtension(filePath);
-                    string ext = fullTextSettings.OutputFileExt;
-                    string outputFilePath = Path.Combine(outputPath, outputFileName + ext);
+                    string outputFilePath = Path.Combine(outputPath, outputFileName);
 
                     Console.WriteLine("Processing " + Path.GetFileName(filePath));
 
@@ -99,8 +98,7 @@ namespace ConsoleTest
             {
                 ProcessingSettings fullTextSettings = settings as ProcessingSettings;
                 string outputFileName = "document";
-                string ext = fullTextSettings.OutputFileExt;
-                string outputFilePath = Path.Combine(outputPath, outputFileName + ext);
+                string outputFilePath = Path.Combine(outputPath, outputFileName);
 
                 ProcessDocument(sourceFiles, outputFilePath, fullTextSettings);
             }
@@ -121,16 +119,10 @@ namespace ConsoleTest
             }
         }
 
-        public void ProcessFile(string sourceFilePath, string outputFilePath, ProcessingSettings settings)
+        public void ProcessFile(string sourceFilePath, string outputFileBase, ProcessingSettings settings)
         {
             Console.WriteLine("Uploading..");
             Task task = restClient.ProcessImage(sourceFilePath, settings);
-
-            // For field-level
-            /*
-            var flSettings = new TextFieldProcessingSettings();
-            TaskId taskId = restClient.ProcessTextField(sourceFilePath, flSettings);
-             */
 
             TaskId taskId = task.Id;
 
@@ -147,7 +139,12 @@ namespace ConsoleTest
             if (task.Status == TaskStatus.Completed)
             {
                 Console.WriteLine("Processing completed.");
-                restClient.DownloadResult(task, outputFilePath);
+                for (int i = 0; i < settings.OutputFormats.Count; i++)
+                {
+                    var outputFormat = settings.OutputFormats[i];
+                    string ext = settings.GetOutputFileExt(outputFormat);
+                    restClient.DownloadUrl(task.DownloadUrls[i], outputFileBase + ext);
+                }
                 Console.WriteLine("Download completed.");
             }
             else if (task.Status == TaskStatus.NotEnoughCredits)
@@ -160,7 +157,7 @@ namespace ConsoleTest
             }
         }
 
-        public void ProcessDocument(IEnumerable<string> _sourceFiles, string outputFilePath,
+        public void ProcessDocument(IEnumerable<string> _sourceFiles, string outputFileBase,
             ProcessingSettings settings)
         {
             string[] sourceFiles = _sourceFiles.ToArray();
@@ -193,6 +190,38 @@ namespace ConsoleTest
             if (task.Status == TaskStatus.Completed)
             {
                 Console.WriteLine("Processing completed.");
+                for( int i = 0; i < settings.OutputFormats.Count; i++ ) 
+                {
+                    var outputFormat = settings.OutputFormats[i];
+                    string ext = settings.GetOutputFileExt(outputFormat);
+                    restClient.DownloadUrl(task.DownloadUrls[i], outputFileBase + ext);
+                }
+                Console.WriteLine("Download completed.");
+            }
+            else
+            {
+                Console.WriteLine("Error while processing the task");
+            }
+        }
+
+        /// <summary>
+        /// Wait until task finishes and download result
+        /// </summary>
+        private void waitAndDownload(Task task, string outputFilePath)
+        {
+            while (task.IsTaskActive())
+            {
+                task = restClient.GetTaskStatus(task.Id);
+                if (!Task.IsTaskActive(task.Status))
+                    break;
+
+                Console.WriteLine("Waiting..");
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            if (task.Status == TaskStatus.Completed)
+            {
+                Console.WriteLine("Processing completed.");
                 restClient.DownloadResult(task, outputFilePath);
                 Console.WriteLine("Download completed.");
             }
@@ -207,34 +236,7 @@ namespace ConsoleTest
             Console.WriteLine("Uploading..");
             Task task = restClient.ProcessTextField(sourceFilePath, settings);
 
-            // For field-level
-            /*
-            var flSettings = new TextFieldProcessingSettings();
-            TaskId taskId = restClient.ProcessTextField(sourceFilePath, flSettings);
-             */
-
-            TaskId taskId = task.Id;
-
-            while (true)
-            {
-                task = restClient.GetTaskStatus(taskId);
-                if (!Task.IsTaskActive(task.Status))
-                    break;
-
-                Console.WriteLine(String.Format("Task status: {0}", task.Status));
-                System.Threading.Thread.Sleep(1000);
-            }
-
-            if (task.Status == TaskStatus.Completed)
-            {
-                Console.WriteLine("Processing completed.");
-                restClient.DownloadResult(task, outputFilePath);
-                Console.WriteLine("Download completed.");
-            }
-            else
-            {
-                Console.WriteLine("Error while processing the task");
-            }
+            waitAndDownload(task, outputFilePath);
         }
 
         public void ProcessFields(string sourceFilePath, string xmlSettingsPath, string outputFilePath)
@@ -244,26 +246,16 @@ namespace ConsoleTest
             Console.WriteLine("Processing..");
             task = restClient.ProcessFields(task, xmlSettingsPath);
 
-            while (true)
-            {
-                task = restClient.GetTaskStatus(task.Id);
-                if (!Task.IsTaskActive(task.Status))
-                    break;
+            waitAndDownload(task, outputFilePath);
+        }
 
-                Console.WriteLine(String.Format("Task status: {0}", task.Status));
-                System.Threading.Thread.Sleep(1000);
-            }
+        public void ProcessMrz(string sourceFilePath, string outputFilePath)
+        {
+            Console.WriteLine("Uploading");
+            Task task = restClient.ProcessMrz(sourceFilePath);
+            Console.WriteLine("Processing..");
 
-            if (task.Status == TaskStatus.Completed)
-            {
-                Console.WriteLine("Processing completed.");
-                restClient.DownloadResult(task, outputFilePath);
-                Console.WriteLine("Download completed.");
-            }
-            else
-            {
-                Console.WriteLine("Error while processing the task");
-            }
+            waitAndDownload(task, outputFilePath);
         }
 
         public void CaptureData(string sourceFilePath, string templateName, string outputFilePath)
@@ -271,26 +263,7 @@ namespace ConsoleTest
             Console.WriteLine("Uploading");
             Task task = restClient.CaptureData(sourceFilePath, templateName);
 
-            while (true)
-            {
-                task = restClient.GetTaskStatus(task.Id);
-                if (!Task.IsTaskActive(task.Status))
-                    break;
-
-                Console.WriteLine(String.Format("Task status: {0}", task.Status));
-                System.Threading.Thread.Sleep(1000);
-            }
-
-            if (task.Status == TaskStatus.Completed)
-            {
-                Console.WriteLine("Processing completed.");
-                restClient.DownloadResult(task, outputFilePath);
-                Console.WriteLine("Download completed.");
-            }
-            else
-            {
-                Console.WriteLine("Error while processing the task");
-            }
+            waitAndDownload(task, outputFilePath);
         }
     }
 }

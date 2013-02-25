@@ -22,17 +22,28 @@ namespace Abbyy.CloudOcrSdk
         {
             get
             {
-                string result = "?language=" + Language + "&textType=" + TextType.AsUrlParams();
+                StringBuilder result = new StringBuilder("?language=" + Language + 
+                    "&textType=" + TextType.AsUrlParams());
+                if (!String.IsNullOrEmpty(Letterset))
+                {
+                    result.AppendFormat("&letterSet={0}", Letterset);
+                }
+                if (!String.IsNullOrEmpty(Regexp))
+                {
+                    result.AppendFormat("&regExp={0}", Regexp);
+                }
                 if (!String.IsNullOrEmpty(CustomOptions))
                 {
-                    result += "&" + CustomOptions;
+                    result.Append("&" + CustomOptions);
                 }
-                return result;
+                return result.ToString();
             }
         }
 
         public string Language { get; set; }
         public TextType TextType { get; set; }
+        public string Letterset { get; set; }
+        public string Regexp { get; set; }
 
         public String CustomOptions { get; set; }
     }

@@ -143,13 +143,13 @@ namespace GuiTest
                 task.TaskStatus = "Uploading";
                 task.OutputFilePath = System.IO.Path.Combine(
                     outputDir,
-                    System.IO.Path.GetFileNameWithoutExtension(filePath) + settings.OutputFileExt);
+                    System.IO.Path.GetFileNameWithoutExtension(filePath) + settings.GetOutputFileExt(settings.OutputFormats[0]));
 
                 _userTasks.Add(task);
 
                 settings.Description = String.Format("{0} -> {1}",
                     Path.GetFileName(filePath),
-                    settings.OutputFileExt);
+                    settings.GetOutputFileExt(settings.OutputFormats[0]));
 
                 restClientAsync.ProcessImageAsync(filePath, settings, task);
             }
@@ -307,7 +307,7 @@ namespace GuiTest
         {
             ProcessingSettings result = new ProcessingSettings();
             result.SetLanguage(getLanguages());
-            result.OutputFormat = getOutputFormat();
+            result.SetOutputFormat( getOutputFormat() );
             return result;
         }
 
