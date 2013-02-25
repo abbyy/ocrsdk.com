@@ -115,7 +115,19 @@ namespace ConsoleTest
 
                     ProcessTextField(filePath, outputFilePath, fieldSettings);
                 }
+            }
+            else if (processingMode == ProcessingModeEnum.ProcessMrz)
+            {
+                foreach (string filePath in sourceFiles)
+                {
+                    string outputFileName = Path.GetFileNameWithoutExtension(filePath);
+                    string ext = ".xml";
+                    string outputFilePath = Path.Combine(outputPath, outputFileName + ext);
 
+                    Console.WriteLine("Processing " + Path.GetFileName(filePath));
+
+                    ProcessMrz(filePath, outputFilePath);
+                }
             }
         }
 

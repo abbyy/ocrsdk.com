@@ -164,8 +164,7 @@ Common options description:
                 }
                 else if (processingMode == ProcessingModeEnum.ProcessMrz)
                 {
-                    string outputFilePath = Path.Combine(targetPath, Path.GetFileName(sourcePath) + ".xml");
-                    tester.ProcessMrz(sourcePath, outputFilePath);
+                    tester.ProcessPath(sourcePath, targetPath, null, processingMode);
                 }
                 else if (processingMode == ProcessingModeEnum.CaptureData)
                 {
