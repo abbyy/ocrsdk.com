@@ -59,6 +59,10 @@
   }
 
   $arr = $xml->task[0]->attributes();
+  $taskStatus = $arr["status"];
+  if($taskStatus != "Queued") {
+    die("Unexpected task status ".$taskStatus);
+  }
   
   // Task id
   $taskid = $arr["id"];  
@@ -72,7 +76,7 @@
 
   // Check task status in a loop until it is finished
   // TODO: support states indicating error
-  do
+  while(true)
   {
     sleep(5);
     $curlHandle = curl_init();
@@ -81,13 +85,32 @@
     curl_setopt($curlHandle, CURLOPT_USERPWD, "$applicationId:$password");
     curl_setopt($curlHandle, CURLOPT_USERAGENT, "PHP Cloud OCR SDK Sample");
     $response = curl_exec($curlHandle);
+    $httpCode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
     curl_close($curlHandle);
   
     // parse xml
     $xml = simplexml_load_string($response);
+    if($httpCode != 200) {
+      if(property_exists($xml, "message")) {
+        die($xml->message);
+      }
+      die("Unexpected response ".$response);
+    }
     $arr = $xml->task[0]->attributes();
+    $taskStatus = $arr["status"];
+    if($taskStatus == "Queued" || $taskStatus == "InProgress") {
+      // continue waiting
+      continue;
+    }
+    if($taskStatus == "Completed") {
+      // exit this loop and proceed to handling the result
+      break;
+    }
+    if($taskStatus == "ProcessingFailed") {
+      die("Task processing failed: ".$arr["error"]);
+    }
+    die("Unexpected task status ".$taskStatus);
   }
-  while($arr["status"] != "Completed");
 
   // Result is ready. Download it
 
