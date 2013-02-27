@@ -35,6 +35,7 @@
   curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
   curl_setopt($curlHandle, CURLOPT_USERPWD, "$applicationId:$password");
   curl_setopt($curlHandle, CURLOPT_POST, 1);
+  curl_setopt($curlHandle, CURLOPT_USERAGENT, "PHP Cloud OCR SDK Sample");
   $post_array = array(
       "my_file"=>"@".$filePath,
   );
@@ -78,6 +79,7 @@
     curl_setopt($curlHandle, CURLOPT_URL, $url.$qry_str);
     curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curlHandle, CURLOPT_USERPWD, "$applicationId:$password");
+    curl_setopt($curlHandle, CURLOPT_USERAGENT, "PHP Cloud OCR SDK Sample");
     $response = curl_exec($curlHandle);
     curl_close($curlHandle);
   
