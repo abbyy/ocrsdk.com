@@ -135,7 +135,7 @@ namespace GuiTest
 
             // Different behavior for full-text recognition and business card recognition
 
-            if (formatVCard.IsChecked == false)
+            if (modeGeneral.IsChecked == true)
             {
                 ProcessingSettings settings = GetProcessingSettings();
 
@@ -143,30 +143,55 @@ namespace GuiTest
                 task.TaskStatus = "Uploading";
                 task.OutputFilePath = System.IO.Path.Combine(
                     outputDir,
-                    System.IO.Path.GetFileNameWithoutExtension(filePath) + settings.OutputFileExt);
+                    System.IO.Path.GetFileNameWithoutExtension(filePath) + settings.GetOutputFileExt(settings.OutputFormats[0]));
 
                 _userTasks.Add(task);
 
                 settings.Description = String.Format("{0} -> {1}",
                     Path.GetFileName(filePath),
-                    settings.OutputFileExt);
+                    settings.GetOutputFileExt(settings.OutputFormats[0]));
 
                 restClientAsync.ProcessImageAsync(filePath, settings, task);
             }
-            else
+            else if (modeBcr.IsChecked == true)
             {
                 // Business-card recognition
                 BusCardProcessingSettings settings = GetBusCardProcessingSettings();
+                string ext;
+                if (formatVCard.IsChecked == true)
+                {
+                    settings.OutputFormat = BusCardProcessingSettings.OutputFormatEnum.vCard;
+                    ext = ".vcf";
+                }
+                else
+                {
+                    settings.OutputFormat = BusCardProcessingSettings.OutputFormatEnum.xml;
+                    ext = ".xml";
+                }
+
 
                 UserTask task = new UserTask(filePath);
                 task.TaskStatus = "Uploading";
                 task.OutputFilePath = System.IO.Path.Combine(
                     outputDir,
-                    System.IO.Path.GetFileNameWithoutExtension(filePath) + ".vcf");
+                    System.IO.Path.GetFileNameWithoutExtension(filePath) + ext);
 
                 _userTasks.Add(task);
-                
+
                 restClientAsync.ProcessBusinessCardAsync(filePath, settings, task);
+            }
+            else
+            {
+                // Machine-readable zone recognition
+
+                UserTask task = new UserTask(filePath);
+                task.TaskStatus = "Uploading";
+                task.OutputFilePath = System.IO.Path.Combine(
+                    outputDir,
+                    System.IO.Path.GetFileNameWithoutExtension(filePath) + ".xml");
+
+                _userTasks.Add(task);
+                restClientAsync.CaptureDataAsync(filePath, "MRZ", task);
             }
         }
 
@@ -282,7 +307,7 @@ namespace GuiTest
         {
             ProcessingSettings result = new ProcessingSettings();
             result.SetLanguage(getLanguages());
-            result.OutputFormat = getOutputFormat();
+            result.SetOutputFormat( getOutputFormat() );
             return result;
         }
 
@@ -446,6 +471,43 @@ namespace GuiTest
             Application.Current.Shutdown();
         }
 
+        private void UpdateFormatButtons(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (modeBcr.IsChecked == true || modeMrz.IsChecked == true)
+            {
+                formatDocx.Visibility = Visibility.Collapsed;
+                formatPdfSearchable.Visibility = Visibility.Collapsed;
+                formatPdfText.Visibility = Visibility.Collapsed;
+                formatPptx.Visibility = Visibility.Collapsed;
+                formatRtf.Visibility = Visibility.Collapsed;
+                formatTxt.Visibility = Visibility.Collapsed;
+                formatVCard.Visibility = Visibility.Collapsed;
+                formatXlsx.Visibility = Visibility.Collapsed;
+
+                formatXml.Visibility = Visibility.Visible;
+                if (modeBcr.IsChecked == true)
+                {
+                    formatVCard.Visibility = Visibility.Visible;
+                }
+
+                formatXml.IsChecked = true;
+            }
+            else // general mode
+            {
+                formatDocx.Visibility = Visibility.Visible;
+                formatPdfSearchable.Visibility = Visibility.Visible;
+                formatPdfText.Visibility = Visibility.Visible;
+                formatPptx.Visibility = Visibility.Visible;
+                formatRtf.Visibility = Visibility.Visible;
+                formatTxt.Visibility = Visibility.Visible;
+                formatVCard.Visibility = Visibility.Visible;
+                formatXlsx.Visibility = Visibility.Visible;
+
+                formatVCard.Visibility = Visibility.Collapsed;
+
+                formatXml.IsChecked = true;
+            }
+        }
     }
 
 

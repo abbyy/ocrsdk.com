@@ -51,7 +51,12 @@ namespace Abbyy.CloudOcrSdk
         /// <summary>
         /// Url to download processed tasks
         /// </summary>
-        public string DownloadUrl = null;
+        public List<string> DownloadUrls = null;
+
+        /// <summary>
+        /// Error description when task processing failed
+        /// </summary>
+        public string Error = null;
 
         public Task()
         {
@@ -122,8 +127,19 @@ namespace Abbyy.CloudOcrSdk
         private readonly string _id;
     }
 
-   
-   
+    public interface IRequestAuthSetup {
+		void Run( WebRequest request, String username, String password );
+	}
+
+	public class BasicRequestAuthSetup : IRequestAuthSetup {
+		public void Run( WebRequest request, String username, String password )
+		{
+			Encoding encoding = Encoding.GetEncoding("iso-8859-1");
+            string toEncode = username + ":" + password;
+            string baseEncoded = Convert.ToBase64String(encoding.GetBytes(toEncode));
+			request.Headers.Add( "Authorization", "Basic: " + baseEncoded );
+		}
+	}
 
     public class RestServiceClient
     {
@@ -132,6 +148,7 @@ namespace Abbyy.CloudOcrSdk
             ServerUrl = "http://cloud.ocrsdk.com/";
             IsSecureConnection = false;
             Proxy = WebRequest.DefaultWebProxy;
+			RequestAuthSetup = new BasicRequestAuthSetup();
         }
 
         /// <summary>
@@ -167,6 +184,8 @@ namespace Abbyy.CloudOcrSdk
         public string Password { get; set; }
 
         public IWebProxy Proxy { get; set; }
+
+		public IRequestAuthSetup RequestAuthSetup { get; set; }
 
         /// <summary>
         /// Does the connection use SSL or not. Set this property after ServerUrl
@@ -386,6 +405,21 @@ namespace Abbyy.CloudOcrSdk
             return result;
         }
 
+        /// <summary>
+        /// Recognize Machine-Readable Zone of an official document (Passport, ID, Visa etc)
+        /// </summary>
+        public Task ProcessMrz(string filePath)
+        {
+            string url = String.Format("{0}/processMRZ", ServerUrl);
+            WebRequest request = WebRequest.Create(url);
+            setupPostRequest(url, request);
+            writeFileToRequest(filePath, request);
+
+            XDocument response = performRequest(request);
+            Task serverTask = ServerXml.GetTaskStatus(response);
+            return serverTask;
+        }
+
         public Task CaptureData(string filePath, string templateName)
         {
             string url = String.Format("{0}/captureData?template={1}", ServerUrl, templateName);
@@ -399,12 +433,38 @@ namespace Abbyy.CloudOcrSdk
             Task serverTask = ServerXml.GetTaskStatus(response);
             return serverTask;
         }
+       
+
+        public void DownloadUrl(string url, string outputFile)
+        {
+            try
+            {
+                WebRequest request = WebRequest.Create(url);
+                setupGetRequest(url, request);
+
+                using (HttpWebResponse result = (HttpWebResponse) request.GetResponse())
+                {
+                    using (Stream stream = result.GetResponseStream())
+                    {
+                        // Write result directly to file
+                        using (Stream file = File.OpenWrite(outputFile))
+                        {
+                            copyStream(stream, file);
+                        }
+                    }
+                }
+            }
+            catch (System.Net.WebException e)
+            {
+                throw new ProcessingErrorException(e.Message, e);
+            }
+        }
 
         /// <summary>
-        /// Download filePath that has finished processing and save it to given path
+        /// Download task that has finished processing and save it to given path
         /// </summary>
         /// <param name="task">Id of a task</param>
-        /// <param name="outputFile">Path to save a filePath</param>
+        /// <param name="outputFile">Path to save a file</param>
         public void DownloadResult(Task task, string outputFile)
         {
             if (task.Status != TaskStatus.Completed)
@@ -418,33 +478,13 @@ namespace Abbyy.CloudOcrSdk
                     File.Delete(outputFile);
 
                
-                if (task.DownloadUrl == null)
+                if (task.DownloadUrls == null || task.DownloadUrls.Count == 0)
                 {
                     throw new ArgumentException("Cannot download task without download url");
                 }
 
-                string url = task.DownloadUrl;
-
-                // Emergency code. In normal situations it shouldn't be called
-                /*
-                url = String.Format("{0}/{1}?taskId={2}", ServerUrl, _getResultUrl,
-                    Uri.EscapeDataString(task.Id.ToString()));
-                 */
-
-                WebRequest request = WebRequest.Create(url);
-                setupGetRequest(url, request);
-
-                using (HttpWebResponse result = (HttpWebResponse)request.GetResponse())
-                {
-                    using (Stream stream = result.GetResponseStream())
-                    {
-                        // Write result directly to file
-                        using (Stream file = File.OpenWrite(outputFile))
-                        {
-                            copyStream(stream, file);
-                        }
-                    }
-                }
+                string url = task.DownloadUrls[0];
+                DownloadUrl(url, outputFile);
             }
             catch (System.Net.WebException e)
             {
@@ -527,6 +567,22 @@ namespace Abbyy.CloudOcrSdk
             return serverTask;
         }
 
+        /// <summary>
+        /// Activate application on a new mobile device
+	    /// </summary>
+        /// <param name="deviceId">string that uniquely identifies current device</param>
+        /// <returns>string that should be added to application id for all API calls</returns>
+        public string ActivateNewInstallation(string deviceId)
+        {
+            string url = String.Format("{0}/activateNewInstallation?deviceId={1}", ServerUrl, Uri.EscapeDataString(deviceId));
+            WebRequest request = WebRequest.Create(url);
+            setupGetRequest(url, request);
+
+            XDocument response = performRequest(request);
+            string installationId = response.Root.Elements().First().Value;
+
+            return installationId;
+        }
 
         #region Request management functions
 
@@ -551,14 +607,6 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
-        private string encodeAppIdAndPassword(string applicationId, string pass)
-        {
-            Encoding encoding = Encoding.GetEncoding("iso-8859-1");
-            string toEncode = applicationId + ":" + pass;
-            string baseEncoded = Convert.ToBase64String(encoding.GetBytes(toEncode));
-            return baseEncoded;
-        }
-
         private void setupRequest(string serverUrl, WebRequest request)
         {
             if (Proxy != null)
@@ -567,7 +615,7 @@ namespace Abbyy.CloudOcrSdk
             // Support authentication in case url is ABBYY SDK
             if (serverUrl.StartsWith(ServerUrl, StringComparison.InvariantCultureIgnoreCase))
             {
-                request.Credentials = new NetworkCredential(ApplicationId, Password);
+				RequestAuthSetup.Run(request, ApplicationId, Password);
             }
 
             // Set user agent string so that server is able to collect statistics

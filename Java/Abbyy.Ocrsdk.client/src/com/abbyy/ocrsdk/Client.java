@@ -143,6 +143,27 @@ public class Client {
 		return getResponse(connection);
 	}
 	
+	
+	/**
+	 * Process and parse Machine-Readable Zone (MRZ) of Passport, ID card, Visa etc
+	 * 
+	 * For details see
+	 * http://ocrsdk.com/documentation/apireference/processMRZ/
+	 * 
+	 */
+	public Task processMrz(String filePath ) throws Exception {
+		URL url = new URL(serverUrl + "/processMrz" );
+		byte[] fileContents = readDataFromFile(filePath);
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length",
+				Integer.toString(fileContents.length));
+		connection.getOutputStream().write(fileContents);
+
+		return getResponse(connection);
+	}
+	
 	/**
 	 * Create captureData task.
 	 * @param filePath 			File with image to process
@@ -162,6 +183,18 @@ public class Client {
 		return getResponse(connection);
 	}
 	
+	public Task createTemplate(String taskId, String templateName, String settingsFilePath) throws Exception {
+		URL url = new URL(serverUrl + "/createTemplate?taskId=" + taskId + "&template=" + templateName);
+		byte[] fileContents = readDataFromFile(settingsFilePath);
+		
+		HttpURLConnection connection = openPostConnection(url);
+		
+		connection.setRequestProperty("Content-Length",
+				Integer.toString(fileContents.length));
+		connection.getOutputStream().write(fileContents);
+
+		return getResponse(connection);
+	}
 
 	public Task getTaskStatus(String taskId) throws Exception {
 		URL url = new URL(serverUrl + "/getTaskStatus?taskId=" + taskId);

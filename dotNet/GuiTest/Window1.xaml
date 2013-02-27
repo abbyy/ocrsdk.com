@@ -84,6 +84,15 @@
                                     <CheckBox IsChecked="False" Name="langKo">KO</CheckBox>
                                 </WrapPanel>
                             </GroupBox>
+                            
+                            <GroupBox Header="Processing mode">
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton GroupName="mode" IsChecked="True" Name="modeGeneral" Click="UpdateFormatButtons">General</RadioButton>
+                                    <RadioButton GroupName="mode" IsChecked="False" Name="modeBcr" Click="UpdateFormatButtons">Business card</RadioButton>
+                                    <RadioButton GroupName="mode" IsChecked="False" Name="modeMrz" Click="UpdateFormatButtons">Document with MRZ</RadioButton>
+                                </StackPanel>
+                            </GroupBox>
+                            
                             <GroupBox Header="Output format">
                                 <StackPanel Orientation="Horizontal">
                                     <RadioButton GroupName="format" IsChecked="True" Name="formatPdfSearchable">Searchable Pdf</RadioButton>
