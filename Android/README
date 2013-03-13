@@ -4,16 +4,14 @@ This folder contains demo sample for Android
 
 == Access credentials == 
 
-Please modify src/android/demoActivity.java before running the program.
+Please modify src/abbyy/ocrsdk/android/AsyncProcessTask.java before running the program.
 
 You need to provide your credentials to connect to Cloud OCR SDK. 
-See run() method.
+See doInBackground() method.
 
 == Recognition language ==
 
 The sample is pre-configured to recognize English texts. If you
-recognize text in other language, you need to change the behaviour using 
-ProcessingSettings.AsUrlParams() method.
-
-See src/com/abbyy/ocrsdk/ProcessingSettings.java
+recognize text in other language, you need to modify 'language' variable.
+See src/abbyy/ocrsdk/android/AsyncProcessTask.java
 

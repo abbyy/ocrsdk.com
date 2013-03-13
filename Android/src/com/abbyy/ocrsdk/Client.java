@@ -170,6 +170,33 @@ public class Client {
 		HttpURLConnection connection = openGetConnection(url);
 		return getResponse(connection);
 	}
+	
+	public void downloadResult(Task task, FileOutputStream out) throws Exception {
+		if (task.Status != Task.TaskStatus.Completed) {
+			throw new IllegalArgumentException("Invalid task status");
+		}
+
+		if (task.DownloadUrl == null) {
+			throw new IllegalArgumentException(
+					"Cannot download result without url");
+		}
+
+		URL url = new URL(task.DownloadUrl);
+		URLConnection connection = url.openConnection(); // do not use
+															// authenticated
+															// connection
+
+		BufferedInputStream reader = new BufferedInputStream(
+				connection.getInputStream());
+
+		//FileOutputStream out = new FileOutputStream(outputFile);
+
+		byte[] data = new byte[1024];
+		int count;
+		while ((count = reader.read(data, 0, 1024)) != -1) {
+			out.write(data, 0, count);
+		}
+	}
 
 	public void downloadResult(Task task, String outputFile) throws Exception {
 		if (task.Status != Task.TaskStatus.Completed) {
