@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
@@ -224,6 +225,45 @@ public class Client {
 		}
 	}
 
+
+	/** Activate application on a new mobile device.
+	 * @param deviceId string that uniquely identifies current device
+	 * @return string that should be added to application id for all API calls
+	 * @throws Exception
+	 */
+	public String activateNewInstallation(String deviceId) throws Exception {
+		URL url = new URL(serverUrl + "/activateNewInstallation?deviceId=" + deviceId);
+
+		HttpURLConnection connection = openGetConnection(url);
+		
+		int responseCode = connection.getResponseCode();
+		if (responseCode == 200) {
+			InputStream inputStream = connection.getInputStream();
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+			BufferedReader reader = new BufferedReader(inputStreamReader);
+			
+			InputSource source = new InputSource();
+			source.setCharacterStream(reader);
+			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
+			Document doc = builder.parse(source);
+
+			NodeList nodes = doc.getElementsByTagName("authToken");
+			Element authTokenNode = (Element) nodes.item(0);
+			
+			Node textNode = authTokenNode.getFirstChild();
+			String installationId = textNode != null ? textNode.getNodeValue() : "";
+			if( installationId == null) 
+				installationId = "";
+			
+			return installationId;
+		} else {
+			String response = connection.getResponseMessage();
+			throw new Exception(response);
+		}
+	}
+	
+	
 	private HttpURLConnection openPostConnection(URL url) throws Exception {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setDoOutput(true);
