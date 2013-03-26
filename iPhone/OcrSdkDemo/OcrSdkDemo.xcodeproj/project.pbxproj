@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		492386421640113700D178F6 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 4923863F1640113700D178F6 /* NSData+Base64.m */; };
 		492386431640113700D178F6 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 492386411640113700D178F6 /* NSString+Base64.m */; };
+		49A5F1B11700AC020052CF10 /* ActivationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5F1B01700AC020052CF10 /* ActivationInfo.m */; };
 		49B675B2148604A700F853E4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B675B1148604A700F853E4 /* UIKit.framework */; };
 		49B675B4148604A700F853E4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B675B3148604A700F853E4 /* Foundation.framework */; };
 		49B675B6148604A700F853E4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B675B5148604A700F853E4 /* CoreGraphics.framework */; };
@@ -31,6 +32,8 @@
 		4923863F1640113700D178F6 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		492386401640113700D178F6 /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Base64.h"; sourceTree = "<group>"; };
 		492386411640113700D178F6 /* NSString+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
+		49A5F1AF1700AC020052CF10 /* ActivationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActivationInfo.h; path = Sources/ActivationInfo.h; sourceTree = SOURCE_ROOT; };
+		49A5F1B01700AC020052CF10 /* ActivationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ActivationInfo.m; path = Sources/ActivationInfo.m; sourceTree = SOURCE_ROOT; };
 		49B675AD148604A700F853E4 /* OcrSdkDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OcrSdkDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B675B1148604A700F853E4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		49B675B3148604A700F853E4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -150,6 +153,8 @@
 				49B675F7148660FC00F853E4 /* RecognitionViewController.m */,
 				49B675F8148660FC00F853E4 /* Task.h */,
 				49B675F9148660FD00F853E4 /* Task.m */,
+				49A5F1AF1700AC020052CF10 /* ActivationInfo.h */,
+				49A5F1B01700AC020052CF10 /* ActivationInfo.m */,
 				49B675F0148660F300F853E4 /* main.m */,
 				49B675F1148660F500F853E4 /* OcrSdkDemo-Prefix.pch */,
 				E52F4994148666A000DB5C75 /* ImageViewController.h */,
@@ -233,6 +238,7 @@
 				E52F4996148666A000DB5C75 /* ImageViewController.m in Sources */,
 				492386421640113700D178F6 /* NSData+Base64.m in Sources */,
 				492386431640113700D178F6 /* NSString+Base64.m in Sources */,
+				49A5F1B11700AC020052CF10 /* ActivationInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
