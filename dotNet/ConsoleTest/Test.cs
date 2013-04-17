@@ -138,7 +138,7 @@ namespace ConsoleTest
 
             TaskId taskId = task.Id;
 
-            while (true)
+            while (Task.IsTaskActive(task.Status))
             {
                 task = restClient.GetTaskStatus(taskId);
                 if (!Task.IsTaskActive(task.Status))
