@@ -11,7 +11,7 @@ http://dev.windowsphone.com/en-us/downloadsdk
 Please modify CloudDemo\ProcessingPage.xaml.cs before running the program
 
 You need to provide your credentials to connect to Cloud OCR SDK. 
-See ProcessingPage() constuctor
+See ProcessingPage() constructor
 
 == Recognition language ==
 
