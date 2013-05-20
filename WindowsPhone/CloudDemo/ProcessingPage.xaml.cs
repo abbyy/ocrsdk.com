@@ -27,7 +27,7 @@ namespace CloudDemo
             InitializeComponent();
 
             RestServiceClient syncClient = new RestServiceClient();
-			!!! Please provide application id and password and remove this line !!!
+            #error Please provide application id and password and remove this line !!!
 			// Name of application you created
             syncClient.ApplicationId = "";
 			// Password should be sent to your e-mail after application was created
