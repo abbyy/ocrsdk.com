@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -12,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Xna.Framework.Media;
 
 namespace CloudDemo
 {
@@ -57,6 +59,12 @@ namespace CloudDemo
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+#if DEBUG
+            if (Microsoft.Devices.Environment.DeviceType == Microsoft.Devices.DeviceType.Emulator)
+            {
+                addTestImageToEmulator();
+            }
+#endif
         }
 
         // Code to execute when the application is launching (eg, from Start)
@@ -102,6 +110,35 @@ namespace CloudDemo
                 System.Diagnostics.Debugger.Break();
             }
         }
+
+#if DEBUG
+        private void addTestImageToEmulator()
+        {
+            IsolatedStorageSettings userSettings = IsolatedStorageSettings.ApplicationSettings;
+            if (userSettings.Contains(testImageAddedFlagName))
+            {
+                return;
+            }
+
+            MediaLibrary mediaLibrary = new MediaLibrary();
+            Uri sourceUri = new Uri(testImageSourceFileName, UriKind.Relative);
+
+            var resourceStream = App.GetResourceStream(sourceUri);
+            using (System.IO.Stream photoStream = resourceStream.Stream)
+            {
+                byte[] buffer = new byte[photoStream.Length];
+                photoStream.Read(buffer, 0, buffer.Length);
+                mediaLibrary.SavePicture(testImageOnEmulatorFileName, buffer);
+            }
+
+            userSettings[testImageAddedFlagName] = null;
+            userSettings.Save();
+        }
+
+        private const string testImageAddedFlagName = "__emulatorCloudOcrSdkTestImagesAdded";
+        private const string testImageSourceFileName = "SampleImage.jpg";
+        private const string testImageOnEmulatorFileName = "CloudOcrSdkTestImage.jpg";
+#endif
 
         #region Phone application initialization
 
