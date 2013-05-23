@@ -1,0 +1,16 @@
+PODS:
+  - AFNetworking (1.2.0)
+  - OCRSDKClient (0.0.1):
+    - AFNetworking (= 1.2.0)
+    - XMLDictionary
+  - XMLDictionary (2.0.0)
+
+DEPENDENCIES:
+  - OCRSDKClient
+
+SPEC CHECKSUMS:
+  AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
+  OCRSDKClient: 69759c982d627b1874c3727414e46f10c91e1ec0
+  XMLDictionary: d41dcb25b03e480f374551037396f4fc1307ff1c
+
+COCOAPODS: 0.19.1
