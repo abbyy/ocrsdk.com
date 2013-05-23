@@ -1,6 +1,6 @@
 #import "OCRDemoClient.h"
 
-// !!! Provide Application ID and Passworh here
+#error Provide Application ID and Password
 static NSString * const kApplicationId = @"<# your application id #>";
 static NSString * const kPassowrd = @"<# your password #>";
 
