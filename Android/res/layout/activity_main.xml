@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/fromCameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="captureImageFromCamera"
+        android:text="@string/fromCamera" />
+
+    <Button
+        android:id="@+id/fromFileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="captureImageFromSdCard"
+        android:text="@string/fromFile" />
+
+</LinearLayout>
