@@ -73,7 +73,7 @@ static NSString * const kExportFormat = @"txt";
 		NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.5);
 		NSDictionary *processingParams = @{@"language": kRecognitionLanguages, @"exportFormat": kExportFormat};
 		
-		[[OCRDemoClient sharedClient] startTaskWithImageData:imageData withParams:processingParams success:^(NSDictionary *taskInfo) {
+		[[OCRDemoClient sharedClient] startTaskWithImageData:imageData withParams:processingParams progressBlock:nil success:^(NSDictionary *taskInfo) {
 			[self updateTaskStatus:[taskInfo objectForKey:OCRSDKTaskId]];
 		} failure:^(NSError *error) {
 			[self showError:error];
