@@ -1,6 +1,7 @@
 package com.abbyy.ocrsdk;
 
 import java.io.*;
+import java.util.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import org.xml.sax.*;
@@ -24,6 +25,34 @@ public class Task {
 		Element task = (Element) taskNodes.item(0);
 
 		parseTask(task);
+	}
+
+	private Task() {
+	}
+
+	/**
+	* Read multiple tasks from server xml response
+	*/
+	public static Task[] LoadTasks(Reader reader) throws Exception {
+		// Read all text into string
+		// String data = new Scanner(reader).useDelimiter("\\A").next();
+		// Read full task information from xml
+		InputSource source = new InputSource();
+		source.setCharacterStream(reader);
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+				.newDocumentBuilder();
+		Document doc = builder.parse(source);
+
+		Vector<Task> result = new Vector<Task>();
+
+		NodeList taskNodes = doc.getElementsByTagName("task");
+		for( int i = 0; i < taskNodes.getLength(); i++ ) {
+			Element taskEl = (Element) taskNodes.item(i);
+			Task task = new Task();
+			task.parseTask(taskEl);
+			result.add( task );
+		}
+		return result.toArray(new Task[result.size()]);
 	}
 
 	public TaskStatus Status = TaskStatus.Unknown;

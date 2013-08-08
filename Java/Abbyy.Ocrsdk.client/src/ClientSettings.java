@@ -1,3 +1,4 @@
+import java.net.*;
 
 /**
  * Authentication settings for Cloud OCR SDK client.
@@ -16,8 +17,17 @@ public class ClientSettings {
 		/*
 		String host = "";
 		String port = "";
-		String user = "";
-		String password = "";
+		final String user = "";
+		final String password = "";
+
+		Authenticator.setDefault(
+			new Authenticator() {
+		 		public PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication( user, password.toCharArray());
+				}
+ 			}
+		);
+
 		System.getProperties().put("http.proxyHost", host );
 		System.getProperties().put("https.proxyHost", host );
 		System.getProperties().put("http.proxyPort", port);

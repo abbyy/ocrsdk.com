@@ -53,6 +53,15 @@ public class Client {
 		return getResponse(connection);
 	}
 
+	public Task processRemoteImage( String fileUrl, ProcessingSettings settings)
+			throws Exception {
+		URL url = new URL(String.format("%s/processRemoteImage?source=%s&%s",
+			serverUrl, URLEncoder.encode(fileUrl, "UTF-8"), settings.asUrlParams()));
+
+		HttpURLConnection connection = openGetConnection(url);
+		return getResponse(connection);
+	}
+
 	public Task processDocument(String taskId, ProcessingSettings settings)
 			throws Exception {
 		URL url = new URL(serverUrl + "/processDocument?taskId=" + taskId + "&"
@@ -203,6 +212,12 @@ public class Client {
 		return getResponse(connection);
 	}
 
+	public Task[] listFinishedTasks() throws Exception {
+		URL url = new URL(serverUrl + "/listFinishedTasks");
+		HttpURLConnection connection = openGetConnection(url);
+		return getTaskListResponse(connection);
+	}
+
 	public void downloadResult(Task task, String outputFile) throws Exception {
 		if (task.Status != Task.TaskStatus.Completed) {
 			throw new IllegalArgumentException("Invalid task status");
@@ -229,6 +244,14 @@ public class Client {
 			out.write(data, 0, count);
 		}
 	}
+
+	public Task deleteTask(String taskId) throws Exception {
+		URL url = new URL(serverUrl + "/deleteTask?taskId=" + taskId);
+
+		HttpURLConnection connection = openGetConnection(url);
+		return getResponse(connection);
+	}
+
 
 	private HttpURLConnection openPostConnection(URL url) throws Exception {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -299,6 +322,46 @@ public class Client {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					inputStream));
 			return new Task(reader);
+		} else if (responseCode == 401) {
+			throw new Exception(
+					"HTTP 401 Unauthorized. Please check your application id and password");
+		} else if (responseCode == 407) {
+			throw new Exception("HTTP 407. Proxy authentication error");
+		} else {
+			String message = "";
+			try {
+				InputStream errorStream = connection.getErrorStream();
+
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(errorStream));
+
+				// Parse xml error response
+				InputSource source = new InputSource();
+				source.setCharacterStream(reader);
+				DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+						.newDocumentBuilder();
+				Document doc = builder.parse(source);
+				
+				NodeList error = doc.getElementsByTagName("error");
+				Element err = (Element) error.item(0);
+				
+				message = err.getTextContent();
+			} catch (Exception e) {
+				throw new Exception("Error getting server response");
+			}
+
+			throw new Exception("Error: " + message);
+		}
+	}
+
+	private Task[] getTaskListResponse(HttpURLConnection connection) throws Exception {
+		int responseCode = connection.getResponseCode();
+		if (responseCode == 200) {
+			InputStream inputStream = connection.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					inputStream));
+
+			return Task.LoadTasks( reader );
 		} else if (responseCode == 401) {
 			throw new Exception(
 					"HTTP 401 Unauthorized. Please check your application id and password");

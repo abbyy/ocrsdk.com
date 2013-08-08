@@ -18,6 +18,20 @@ public class ProcessingSettings {
 	public OutputFormat getOutputFormat() {
 		return outputFormat;
 	}
+	
+	public String getOutputFileExt() {
+		switch( outputFormat ) {
+			case txt: return ".txt";
+			case rtf: return ".rtf";
+			case docx: return ".docx";
+			case xlsx: return ".xlsx";
+			case pptx: return ".pptx";
+			case pdfSearchable:
+			case pdfTextAndImages: return ".pdf";
+			case xml: return ".xml";
+		}
+		return ".ocr";
+	}
 
 	/*
 	 * Set recognition language. You can set any language listed at

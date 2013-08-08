@@ -153,7 +153,7 @@ public class TestApp {
 	 */
 	private static void performRecognition(Vector<String> argList)
 			throws Exception {
-		String language = extractRecognitionLanguage(argList);
+		String language = CmdLineOptions.extractRecognitionLanguage(argList);
 		String outputPath = argList.lastElement();
 		argList.remove(argList.size() - 1);
 		// argList now contains list of source images to process
@@ -220,7 +220,7 @@ public class TestApp {
 	 */
 	private static void performBusinessCardRecognition(Vector<String> argList)
 			throws Exception {
-		String language = extractRecognitionLanguage(argList);
+		String language = CmdLineOptions.extractRecognitionLanguage(argList);
 		String outputPath = argList.lastElement();
 		argList.remove(argList.size() - 1);
 		// argList now contains list of source images to process
@@ -259,7 +259,7 @@ public class TestApp {
 
 	private static void performTextFieldRecognition(Vector<String> argList)
 			throws Exception {
-		String language = extractRecognitionLanguage(argList);
+		String language = CmdLineOptions.extractRecognitionLanguage(argList);
 		String options = extractExtraOptions(argList);
 		String outputPath = argList.lastElement();
 		argList.remove(argList.size() - 1);
@@ -492,50 +492,7 @@ public class TestApp {
 
 	}
 
-	/**
-	 * Extract value of given parameter from command-line parameters. Parameter
-	 * is removed after extraction
-	 * 
-	 * @return value of parameter or null
-	 */
-	private static String extractParameterValue(String parameterName,
-			Vector<String> args) {
-		String prefix = "--" + parameterName + "=";
-
-		for (int i = 0; i < args.size(); i++) {
-			String arg = args.elementAt(i);
-			if (arg.startsWith(prefix)) {
-				String value = arg.substring(prefix.length());
-				args.remove(i);
-				return value;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Extract recognition language from command-line parameters. After
-	 * extraction parameter is removed
-	 * 
-	 * @return recognition language
-	 */
-	private static String extractRecognitionLanguage(Vector<String> args) {
-		// Recognition language parameter has form --lang=<languges>
-
-		String lang = extractParameterValue("lang", args);
-		if (lang != null) {
-			return lang;
-		}
-
-		System.out
-				.println("Warning! The document will be processed with English language.\n"
-						+ "To change this, specify --lang=<languages> option.\n");
-
-		return "English";
-	}
-
-	/**
+		/**
 	 * Extract extra RESTful options from command-line parameters. Parameter is
 	 * removed after extraction
 	 * 
@@ -543,7 +500,7 @@ public class TestApp {
 	 */
 	private static String extractExtraOptions(Vector<String> args) {
 		// Extra options parameter has from --options=<options>
-		return extractParameterValue("options", args);
+		return CmdLineOptions.extractParameterValue("options", args);
 	}
 
 	/**
