@@ -115,7 +115,7 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
-        // This method performs the actual prime number computation.
+        // This method performs the actual file processing.
         // It is executed on the worker thread.
         private void processFileWorker(string filePath, IProcessingSettings settings,
             AsyncOperation asyncOp)
