@@ -54,7 +54,7 @@ try {
 		console.log("Downloading result to " + outputPath);
 
 		ocrsdk
-				.downloadResult(taskData.resultUrl, outputPath,
+				.downloadResult(taskData.resultUrl.toString(), outputPath,
 						downloadCompleted);
 	}
 
