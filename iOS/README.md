@@ -1,6 +1,6 @@
 #ABBYY Cloud OCR SDK demo sample for iOS
 
-##Ussage
+##Usage
 
 ###Initial setup
 
@@ -10,7 +10,7 @@ The easiest way to run this sample is [Cocoa Pods](http://cocoapods.org):
 pod install
 ````
 
-Then open a generated `OCRSDKDemo.xcworkspace` workspace and build a it (but specify your access credentials first!).
+Then open a generated `OCRSDKDemo.xcworkspace` workspace and build it (but specify your access credentials first!).
 
 ###Access credentials
 
