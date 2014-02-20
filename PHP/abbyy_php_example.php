@@ -5,6 +5,8 @@
   // 3.	Read taskId from xml
 
   !!! Please provide your application id and password and remove this line !!!
+  // To create an application and obtain a password,
+  // register at http://cloud.ocrsdk.com/Account/Register
   // Name of application you created
   $applicationId = 'my_application_id';
   // Password should be sent to your e-mail after application was created

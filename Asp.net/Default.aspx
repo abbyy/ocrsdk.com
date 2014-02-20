@@ -252,7 +252,10 @@
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        !!! Provide your credentials here and remove this line !!!
+        !!! Please provide application id and password and remove this line. !!!
+        // To create an application and obtain a password,
+        // register at http://cloud.ocrsdk.com/Account/Register
+
 		// Name of application you created
         ApplicationId = "myApplicationId";
 		// The password from e-mail sent by server after application was created

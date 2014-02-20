@@ -38,6 +38,8 @@ exports.ProcessingSettings = ProcessingSettings;
  * @constructor
  * @param {string} applicationId 	Application Id.
  * @param {string} password 		Password for the application you received in e-mail.
+ * To create an application and obtain a password,
+ * register at http://cloud.ocrsdk.com/Account/Register
  */
 function ocrsdk(applicationId, password) {
 	this.appId = applicationId;

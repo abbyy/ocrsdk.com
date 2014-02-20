@@ -7,6 +7,8 @@
 # do not forget to set http_proxy and https_proxy variables if necessary
 
 ServerUrl='http://cloud.ocrsdk.com'
+# To create an application and obtain a password,
+# register at http://cloud.ocrsdk.com/Account/Register
 ApplicationId=""
 Password=""
 

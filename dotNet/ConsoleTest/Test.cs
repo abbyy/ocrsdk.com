@@ -30,6 +30,9 @@ namespace ConsoleTest
             restClient.Proxy.Credentials = CredentialCache.DefaultCredentials;
 
             //!!! Please provide your application id and password here
+            // To create an application and obtain a password,
+            // register at http://cloud.ocrsdk.com/Account/Register
+
             /*
 			// Name of application you created
             restClient.ApplicationId = "<your application id>";

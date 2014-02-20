@@ -31,6 +31,8 @@ class Task:
 
 class AbbyyOnlineSdk:
 	ServerUrl = "http://cloud.ocrsdk.com/"
+	# To create an application and obtain a password,
+	# register at http://cloud.ocrsdk.com/Account/Register
 	ApplicationId = "user"
 	Password = "password"
 	Proxy = None
