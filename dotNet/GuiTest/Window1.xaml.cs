@@ -340,6 +340,8 @@ namespace GuiTest
                 result.Add("japanese");
             if (langKo.IsChecked == true)
                 result.Add("korean");
+            if (langDu.IsChecked == true)
+                result.Add("dutch");
 
             if (result.Count == 0)
                 return "english";

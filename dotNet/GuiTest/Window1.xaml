@@ -82,6 +82,7 @@
                                     <CheckBox IsChecked="False" Name="langZh">ZH</CheckBox>
                                     <CheckBox IsChecked="False" Name="langJa">JA</CheckBox>
                                     <CheckBox IsChecked="False" Name="langKo">KO</CheckBox>
+                                    <CheckBox IsChecked="False" Name="langDu">DU</CheckBox>
                                 </WrapPanel>
                             </GroupBox>
                             
