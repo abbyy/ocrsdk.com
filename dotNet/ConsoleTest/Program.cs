@@ -34,6 +34,7 @@ ConsoleTest.exe --asMRZ <source_file> <target_dir>
 
 Common options description:
 --lang=<languages>: Recognize with specified language. Examples: --lang=English --lang=English,German,French
+--profile=<profile>: Use specific profile: documentConversion, documentArchiving or textExtraction
 --out=<output format>: Create output in specified format: txt, rtf, docx, xlsx, pptx, pdfSearchable, pdfTextAndImages, xml
 --options=<string>: Pass additional arguments to RESTful calls
 ");    
@@ -49,6 +50,7 @@ Common options description:
                 ProcessingModeEnum processingMode = ProcessingModeEnum.SinglePage;
 
                 string outFormat = null;
+                string profile = null;
                 string language = "english";
                 string customOptions = "";
 
@@ -59,6 +61,7 @@ Common options description:
                 { "asMRZ", var => processingMode = ProcessingModeEnum.ProcessMrz},
                 { "captureData", v => processingMode = ProcessingModeEnum.CaptureData},
                 { "out=", (string v) => outFormat = v },
+                { "profile=", (string v) => profile = v },
                 { "lang=", (string v) => language = v },
                 { "options=", (string v) => customOptions = v }
             };
@@ -148,7 +151,7 @@ Common options description:
 
                 if (processingMode == ProcessingModeEnum.SinglePage || processingMode == ProcessingModeEnum.MultiPage)
                 {
-                    ProcessingSettings settings = buildSettings(language, outFormat);
+                    ProcessingSettings settings = buildSettings(language, outFormat, profile);
                     settings.CustomOptions = customOptions;
                     tester.ProcessPath(sourcePath, targetPath, settings, processingMode);
                 }
@@ -181,7 +184,8 @@ Common options description:
             }
         }
 
-        private static ProcessingSettings buildSettings(string language, string outputFormat)
+        private static ProcessingSettings buildSettings(string language,
+            string outputFormat, string profile)
         {
             ProcessingSettings settings = new ProcessingSettings();
             settings.SetLanguage( language );
@@ -197,6 +201,23 @@ Common options description:
                 case "xml": settings.SetOutputFormat( OutputFormat.xml); break;
                 default:
                     throw new ArgumentException("Invalid output format");
+            }
+            if (profile != null)
+            {
+                switch (profile.ToLower())
+                {
+                    case "documentconversion":
+                        settings.Profile = Profile.documentConversion;
+                        break;
+                    case "documentarchiving":
+                        settings.Profile = Profile.documentArchiving;
+                        break;
+                    case "textextraction":
+                        settings.Profile = Profile.textExtraction;
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid profile");
+                }
             }
 
             return settings;
