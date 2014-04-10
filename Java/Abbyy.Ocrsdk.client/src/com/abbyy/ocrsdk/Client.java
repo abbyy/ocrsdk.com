@@ -257,7 +257,7 @@ public class Client {
 	}
 
 
-	private HttpURLConnection openPostConnection(URL url) throws Exception {
+	protected HttpURLConnection openPostConnection(URL url) throws Exception {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setDoOutput(true);
 		connection.setDoInput(true);
@@ -269,14 +269,14 @@ public class Client {
 		return connection;
 	}
 
-	private HttpURLConnection openGetConnection(URL url) throws Exception {
+	protected HttpURLConnection openGetConnection(URL url) throws Exception {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		// connection.setRequestMethod("GET");
 		setupAuthorization(connection);
 		return connection;
 	}
 
-	private void setupAuthorization(URLConnection connection) {
+	protected void setupAuthorization(URLConnection connection) {
 		String authString = "Basic: " + encodeUserPassword();
 		authString = authString.replaceAll("\n", "");
 		connection.addRequestProperty("Authorization", authString);
@@ -308,7 +308,7 @@ public class Client {
 		return dataBuffer;
 	}
 
-	private String encodeUserPassword() {
+	protected String encodeUserPassword() {
 		String toEncode = applicationId + ":" + password;
 		return Base64.encode(toEncode);
 	}
@@ -319,7 +319,7 @@ public class Client {
 	 * @throws Exception
 	 *             in case of error
 	 */
-	private Task getResponse(HttpURLConnection connection) throws Exception {
+	protected Task getResponse(HttpURLConnection connection) throws Exception {
 		int responseCode = connection.getResponseCode();
 		if (responseCode == 200) {
 			InputStream inputStream = connection.getInputStream();
