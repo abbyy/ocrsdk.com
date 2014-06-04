@@ -27,30 +27,13 @@ public class Client {
 			taskPart = "?taskId=" + taskId;
 		}
 		URL url = new URL(serverUrl + "/submitImage" + taskPart);
-
-		byte[] fileContents = readDataFromFile(filePath);
-
-		HttpURLConnection connection = openPostConnection(url);
-
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(filePath, url);
 	}
 
 	public Task processImage(String filePath, ProcessingSettings settings)
 			throws Exception {
 		URL url = new URL(serverUrl + "/processImage?" + settings.asUrlParams());
-		byte[] fileContents = readDataFromFile(filePath);
-
-		HttpURLConnection connection = openPostConnection(url);
-
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(filePath, url);
 	}
 
 	public Task processRemoteImage( String fileUrl, ProcessingSettings settings)
@@ -75,58 +58,26 @@ public class Client {
 			throws Exception {
 		URL url = new URL(serverUrl + "/processBusinessCard?"
 				+ settings.asUrlParams());
-		byte[] fileContents = readDataFromFile(filePath);
-
-		HttpURLConnection connection = openPostConnection(url);
-
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(filePath, url);
 	}
 
 	public Task processTextField(String filePath, TextFieldSettings settings)
 			throws Exception {
 		URL url = new URL(serverUrl + "/processTextField?"
 				+ settings.asUrlParams());
-		byte[] fileContents = readDataFromFile(filePath);
-
-		HttpURLConnection connection = openPostConnection(url);
-
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(filePath, url);
 	}
 
 	public Task processBarcodeField(String filePath, BarcodeSettings settings)
 			throws Exception {
 		URL url = new URL(serverUrl + "/processBarcodeField?"
 				+ settings.asUrlParams());
-		byte[] fileContents = readDataFromFile(filePath);
-
-		HttpURLConnection connection = openPostConnection(url);
-
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(filePath, url);
 	}
 
 	public Task processCheckmarkField(String filePath) throws Exception {
 		URL url = new URL(serverUrl + "/processCheckmarkField");
-		byte[] fileContents = readDataFromFile(filePath);
-
-		HttpURLConnection connection = openPostConnection(url);
-
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(filePath, url);
 	}
 
 	/**
@@ -141,15 +92,7 @@ public class Client {
 	public Task processFields(String taskId, String settingsPath)
 			throws Exception {
 		URL url = new URL(serverUrl + "/processFields?taskId=" + taskId);
-		byte[] fileContents = readDataFromFile(settingsPath);
-
-		HttpURLConnection connection = openPostConnection(url);
-
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(settingsPath, url);
 	}
 	
 	
@@ -162,15 +105,7 @@ public class Client {
 	 */
 	public Task processMrz(String filePath ) throws Exception {
 		URL url = new URL(serverUrl + "/processMrz" );
-		byte[] fileContents = readDataFromFile(filePath);
-		
-		HttpURLConnection connection = openPostConnection(url);
-		
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(filePath, url);
 	}
 	
 	/**
@@ -181,28 +116,12 @@ public class Client {
 	 */
 	public Task captureData(String filePath, String templateName) throws Exception {
 		URL url = new URL(serverUrl + "/captureData?template=" + templateName );
-		byte[] fileContents = readDataFromFile(filePath);
-		
-		HttpURLConnection connection = openPostConnection(url);
-		
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(filePath, url);
 	}
 	
 	public Task createTemplate(String taskId, String templateName, String settingsFilePath) throws Exception {
 		URL url = new URL(serverUrl + "/createTemplate?taskId=" + taskId + "&template=" + templateName);
-		byte[] fileContents = readDataFromFile(settingsFilePath);
-		
-		HttpURLConnection connection = openPostConnection(url);
-		
-		connection.setRequestProperty("Content-Length",
-				Integer.toString(fileContents.length));
-		connection.getOutputStream().write(fileContents);
-
-		return getResponse(connection);
+		return postFileToUrl(settingsFilePath, url);
 	}
 
 	public Task getTaskStatus(String taskId) throws Exception {
@@ -241,7 +160,7 @@ public class Client {
                 try {
                     byte[] data = new byte[1024];
                     int count;
-                    while ((count = reader.read(data, 0, 1024)) != -1) {
+                    while ((count = reader.read(data, 0, data.length)) != -1) {
                             out.write(data, 0, count);
                     }
                 }
@@ -284,28 +203,48 @@ public class Client {
 
 	private byte[] readDataFromFile(String filePath) throws Exception {
 		File file = new File(filePath);
-		InputStream inputStream = new FileInputStream(file);
 		long fileLength = file.length();
 		byte[] dataBuffer = new byte[(int) fileLength];
 
-		int offset = 0;
-		int numRead = 0;
-		while (true) {
-			if (offset >= dataBuffer.length) {
-				break;
+		InputStream inputStream = new FileInputStream(file);
+		try {
+
+			int offset = 0;
+			int numRead = 0;
+			while (true) {
+				if (offset >= dataBuffer.length) {
+					break;
+				}
+				numRead = inputStream.read(dataBuffer, offset, dataBuffer.length - offset);
+				if (numRead < 0) {
+					break;
+				}
+				offset += numRead;
 			}
-			numRead = inputStream.read(dataBuffer, offset, dataBuffer.length
-					- offset);
-			if (numRead < 0) {
-				break;
+			if (offset < dataBuffer.length) {
+				throw new IOException("Could not completely read file "
+						+ file.getName());
 			}
-			offset += numRead;
-		}
-		if (offset < dataBuffer.length) {
-			throw new IOException("Could not completely read file "
-					+ file.getName());
+		} finally {
+			inputStream.close();
 		}
 		return dataBuffer;
+	}
+
+	private Task postFileToUrl(String filePath, URL url) throws Exception {
+		byte[] fileContents = readDataFromFile(filePath);
+
+		HttpURLConnection connection = openPostConnection(url);
+		connection.setRequestProperty("Content-Length", Integer.toString(fileContents.length));
+
+		OutputStream stream = connection.getOutputStream();
+		try {
+			stream.write(fileContents);
+		} finally {
+			stream.close();
+		}
+
+		return getResponse(connection);
 	}
 
 	private String encodeUserPassword() {
