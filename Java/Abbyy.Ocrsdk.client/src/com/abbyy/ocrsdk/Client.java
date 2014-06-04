@@ -157,15 +157,15 @@ public class Client {
 
 		FileOutputStream out = new FileOutputStream(outputFile);
 
-                try {
-                    byte[] data = new byte[1024];
-                    int count;
-                    while ((count = reader.read(data, 0, data.length)) != -1) {
-                            out.write(data, 0, count);
-                    }
-                }
-                
-                finally { out.close(); }
+		try {
+			byte[] data = new byte[1024];
+			int count;
+			while ((count = reader.read(data, 0, data.length)) != -1) {
+				out.write(data, 0, count);
+			}
+		} finally {
+			out.close();
+		}
 	}
 
 	public Task deleteTask(String taskId) throws Exception {
