@@ -19,6 +19,7 @@ Please modify [Sources/OCRDemoClient.m](Sources/OCRDemoClient.m) before running 
 You need to provide your credentials to connect to Cloud OCR SDK. 
 Set `kApplicationId` and `kPassword` constants.
 To create an application and obtain a password, register at http://cloud.ocrsdk.com/Account/Register
+More info on getting your application id and password at http://ocrsdk.com/documentation/faq/#faq3
 
 ###Recognition language
 
