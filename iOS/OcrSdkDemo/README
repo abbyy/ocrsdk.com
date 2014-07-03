@@ -1,0 +1,20 @@
+This folder contains ABBYY Cloud OCR SDK demo sample for iPhone
+
+!!! IMPORTANT !!!
+
+== Access credentials ==
+
+Please modify Sources\RecognitionViewController.m before running the program
+
+You need to provide your credentials to connect to Cloud OCR SDK. 
+See MyApplicationID and MyPassword variables
+
+== Recognition language ==
+
+The sample is pre-configured to recognize English texts. If you
+recognize text in other language, you need to change the behaviour using 
+ProcessingParams.urlString
+
+See Sources\ProcessingParams.m
+
+
