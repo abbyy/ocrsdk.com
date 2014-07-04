@@ -67,6 +67,10 @@ try {
 		console.log("Upload completed.");
 		console.log("Task id = " + taskData.id + ", status is "
 				+ taskData.status);
+		if (taskData.status == 'NotEnoughCredits') {
+			console.log("Unexpected task status " + taskData.status);
+			return;
+		}
 
 		ocrsdk.waitForCompletion(taskData.id, processingCompleted);
 	}
