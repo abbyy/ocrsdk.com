@@ -189,11 +189,9 @@ public class Client {
 		BufferedInputStream reader = new BufferedInputStream(
 				connection.getInputStream());
 
-		//FileOutputStream out = new FileOutputStream(outputFile);
-
 		byte[] data = new byte[1024];
 		int count;
-		while ((count = reader.read(data, 0, 1024)) != -1) {
+		while ((count = reader.read(data, 0, data.length)) != -1) {
 			out.write(data, 0, count);
 		}
 	}
@@ -218,10 +216,14 @@ public class Client {
 
 		FileOutputStream out = new FileOutputStream(outputFile);
 
-		byte[] data = new byte[1024];
-		int count;
-		while ((count = reader.read(data, 0, 1024)) != -1) {
-			out.write(data, 0, count);
+		try {
+			byte[] data = new byte[1024];
+			int count;
+			while ((count = reader.read(data, 0, data.length)) != -1) {
+				out.write(data, 0, count);
+			}
+		} finally {
+			out.close();
 		}
 	}
 

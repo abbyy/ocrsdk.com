@@ -106,9 +106,11 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 				publishProgress( "Downloading.." );
 				FileOutputStream fos = activity.openFileOutput(outputFile,Context.MODE_PRIVATE);
 				
-				restClient.downloadResult(task, fos);
-				
-				fos.close();
+				try {
+					restClient.downloadResult(task, fos);
+				} finally {
+					fos.close();
+				}
 				
 				publishProgress( "Ready" );
 			} else if( task.Status == Task.TaskStatus.NotEnoughCredits ) {
