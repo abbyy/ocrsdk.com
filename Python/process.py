@@ -56,9 +56,12 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 
 	print "Status = %s" % task.Status
 	
-	if task.DownloadUrl != None:
-		processor.DownloadResult( task, resultFilePath )
-		print "Result was written to %s" % resultFilePath
+	if task.Status == "Completed":
+		if task.DownloadUrl != None:
+			processor.DownloadResult( task, resultFilePath )
+			print "Result was written to %s" % resultFilePath
+	else:
+		print "Error processing task"
 
 
 
