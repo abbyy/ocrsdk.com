@@ -12,6 +12,11 @@ require "rexml/document"
 
 # IMPORTANT!
 !!! Please provide your application id and password and remove this line !!!
+# To create an application and obtain a password,
+# register at http://cloud.ocrsdk.com/Account/Register
+# More info on getting your application id and password at
+# http://ocrsdk.com/documentation/faq/#faq3
+
 # CGI.escape is needed to escape whitespaces, slashes and other symbols
 # that could invalidate the URI if any
 # Name of application you created
