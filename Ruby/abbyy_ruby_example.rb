@@ -44,7 +44,8 @@ BASE_URL = "http://#{APPLICATION_ID}:#{PASSWORD}@cloud.ocrsdk.com"
 def output_response_error(response)
   # Parse response xml (see http://ocrsdk.com/documentation/specifications/status-codes)
   xml_data = REXML::Document.new(response)
-  puts "Error: #{xml_data.elements["error/message"].text}" if xml_data.elements["error/message"]
+  error_message = xml_data.elements["error/message"]
+  puts "Error: #{error_message.text}" if error_message
 end
 
 # Upload and process the image (see http://ocrsdk.com/documentation/apireference/processImage)
