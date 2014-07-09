@@ -46,13 +46,18 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 
 	# Wait for the task to be completed
 	sys.stdout.write( "Waiting.." )
-	while True :
-		task = processor.GetTaskStatus( task )
-		if task.IsActive() == False:
-			print
-			break
+	# Note: it's recommended that your application waits at least 2 seconds
+	# before making the first getTaskStatus request and also between such requests
+	# for the same task. Making requests more often will not improve your
+	# application performance.
+	# Note: if your application queues several files and waits for them
+	# it's recommended that you use listFinishedTasks instead (which is described
+	# at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+
+	while task.IsActive == True :
+		time.sleep( 5 )
 		sys.stdout.write( "." )
-		time.sleep( 4 )
+		task = processor.GetTaskStatus( task )
 
 	print "Status = %s" % task.Status
 	

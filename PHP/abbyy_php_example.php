@@ -79,7 +79,14 @@
   $qry_str = "?taskid=$taskid";
 
   // Check task status in a loop until it is finished
-  // TODO: support states indicating error
+
+  // Note: it's recommended that your application waits
+  // at least 2 seconds before making the first getTaskStatus request
+  // and also between such requests for the same task.
+  // Making requests more often will not improve your application performance.
+  // Note: if your application queues several files and waits for them
+  // it's recommended that you use listFinishedTasks instead (which is described
+  // at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
   while(true)
   {
     sleep(5);

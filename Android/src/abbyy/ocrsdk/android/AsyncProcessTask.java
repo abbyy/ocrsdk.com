@@ -96,8 +96,15 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 			Task task = restClient.processImage(inputFile, processingSettings);
 			
 			while( task.isTaskActive() ) {
-				Thread.sleep(2000);
-				
+				// Note: it's recommended that your application waits
+				// at least 2 seconds before making the first getTaskStatus request
+				// and also between such requests for the same task.
+				// Making requests more often will not improve your application performance.
+				// Note: if your application queues several files and waits for them
+				// it's recommended that you use listFinishedTasks instead (which is described
+				// at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+
+				Thread.sleep(5000);
 				publishProgress( "Waiting.." );
 				task = restClient.getTaskStatus(task.Id);
 			}
