@@ -41,11 +41,15 @@ public class ResultsActivity extends Activity {
 			StringBuffer contents = new StringBuffer();
 
 			FileInputStream fis = openFileInput(outputPath);
-			Reader reader = new InputStreamReader(fis, "UTF-8");
-			BufferedReader bufReader = new BufferedReader(reader);
-			String text = null;
-			while ((text = bufReader.readLine()) != null) {
-				contents.append(text).append(System.getProperty("line.separator"));
+			try {
+				Reader reader = new InputStreamReader(fis, "UTF-8");
+				BufferedReader bufReader = new BufferedReader(reader);
+				String text = null;
+				while ((text = bufReader.readLine()) != null) {
+					contents.append(text).append(System.getProperty("line.separator"));
+				}
+			} finally {
+				fis.close();
 			}
 
 			displayMessage(contents.toString());
