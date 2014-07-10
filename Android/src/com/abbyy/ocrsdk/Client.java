@@ -293,26 +293,30 @@ public class Client {
 
 	private byte[] readDataFromFile(String filePath) throws Exception {
 		File file = new File(filePath);
-		InputStream inputStream = new FileInputStream(file);
 		long fileLength = file.length();
 		byte[] dataBuffer = new byte[(int) fileLength];
 
-		int offset = 0;
-		int numRead = 0;
-		while (true) {
-			if (offset >= dataBuffer.length) {
-				break;
+		InputStream inputStream = new FileInputStream(file);
+
+		try {
+			int offset = 0;
+			while (true) {
+				if (offset >= dataBuffer.length) {
+					break;
+				}
+				int numRead = inputStream.read(
+						dataBuffer, offset, dataBuffer.length - offset);
+				if (numRead < 0) {
+					break;
+				}
+				offset += numRead;
 			}
-			numRead = inputStream.read(dataBuffer, offset, dataBuffer.length
-					- offset);
-			if (numRead < 0) {
-				break;
+			if (offset < dataBuffer.length) {
+				throw new IOException(
+						"Could not completely read file " + file.getName());
 			}
-			offset += numRead;
-		}
-		if (offset < dataBuffer.length) {
-			throw new IOException("Could not completely read file "
-					+ file.getName());
+		} finally {
+			inputStream.close();
 		}
 		return dataBuffer;
 	}
