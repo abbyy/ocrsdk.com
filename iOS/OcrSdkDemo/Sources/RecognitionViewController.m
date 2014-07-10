@@ -1,7 +1,11 @@
 #import "RecognitionViewController.h"
 #import "AppDelegate.h"
 
-!!!! Important please provide your Cloud OCR SDK credentials and remove this line !!!!
+#error Provide Application ID and Password
+// To create an application and obtain a password,
+// register at http://cloud.ocrsdk.com/Account/Register
+// More info on getting your application id and password at
+// http://ocrsdk.com/documentation/faq/#faq3
 
 // Name of application you created
 static NSString* MyApplicationID = @"my_app_id";
