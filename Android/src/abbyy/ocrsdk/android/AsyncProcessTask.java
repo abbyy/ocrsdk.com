@@ -32,7 +32,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 			dialog.dismiss();
 		}
 		
-		activity.updateResults();
+		activity.updateResults(result);
 	}
 
 	@Override
@@ -121,14 +121,16 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 				
 				publishProgress( "Ready" );
 			} else if( task.Status == Task.TaskStatus.NotEnoughCredits ) {
-				publishProgress( "Not enough credits to process task. Add more pages to your application's account." );
+				throw new Exception( "Not enough credits to process task. Add more pages to your application's account." );
 			} else {
-				publishProgress( "Task failed" );
+				throw new Exception( "Task failed" );
 			}
 			
 			return true;
 		} catch (Exception e) {
-			publishProgress( "Error: " + e.getMessage());
+			final String message = "Error: " + e.getMessage();
+			publishProgress( message);
+			activity.displayMessage(message);
 			return false;
 		}
 	}

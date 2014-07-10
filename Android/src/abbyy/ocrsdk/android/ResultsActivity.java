@@ -34,7 +34,9 @@ public class ResultsActivity extends Activity {
 		new AsyncProcessTask(this).execute(imageUrl, outputPath);
 	}
 
-	public void updateResults() {
+	public void updateResults(Boolean success) {
+		if (!success)
+			return;
 		try {
 			StringBuffer contents = new StringBuffer();
 
@@ -52,7 +54,7 @@ public class ResultsActivity extends Activity {
 		}
 	}
 	
-	private void displayMessage( String text )
+	public void displayMessage( String text )
 	{
 		tv.post( new MessagePoster( text ) );
 	}
