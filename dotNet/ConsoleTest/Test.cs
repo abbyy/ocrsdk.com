@@ -141,17 +141,7 @@ namespace ConsoleTest
             Console.WriteLine("Uploading..");
             Task task = restClient.ProcessImage(sourceFilePath, settings);
 
-            TaskId taskId = task.Id;
-
-            while (Task.IsTaskActive(task.Status))
-            {
-                task = restClient.GetTaskStatus(taskId);
-                if (!Task.IsTaskActive(task.Status))
-                    break;
-
-                Console.WriteLine(String.Format("Task status: {0}", task.Status));
-                System.Threading.Thread.Sleep(1000);
-            }
+            task = waitForTask(task);
 
             if (task.Status == TaskStatus.Completed)
             {
@@ -192,17 +182,9 @@ namespace ConsoleTest
 
             // Start task
             Console.WriteLine("Starting task..");
-            restClient.StartProcessingTask(task.Id, settings);
+            task = restClient.StartProcessingTask(task.Id, settings);
 
-            while (true)
-            {
-                task = restClient.GetTaskStatus(task.Id);
-                if (!Task.IsTaskActive(task.Status))
-                    break;
-
-                Console.WriteLine(String.Format("Task status: {0}", task.Status));
-                System.Threading.Thread.Sleep(1000);
-            }
+            task = waitForTask(task);
 
             if (task.Status == TaskStatus.Completed)
             {
@@ -226,15 +208,7 @@ namespace ConsoleTest
         /// </summary>
         private void waitAndDownload(Task task, string outputFilePath)
         {
-            while (task.IsTaskActive())
-            {
-                task = restClient.GetTaskStatus(task.Id);
-                if (!Task.IsTaskActive(task.Status))
-                    break;
-
-                Console.WriteLine("Waiting..");
-                System.Threading.Thread.Sleep(1000);
-            }
+            task = waitForTask(task);
 
             if (task.Status == TaskStatus.Completed)
             {
@@ -246,6 +220,25 @@ namespace ConsoleTest
             {
                 Console.WriteLine("Error while processing the task");
             }
+        }
+
+        private Task waitForTask(Task task)
+        {
+            Console.WriteLine(String.Format("Task status: {0}", task.Status));
+            while (task.IsTaskActive())
+            {
+                // Note: it's recommended that your application waits
+                // at least 2 seconds before making the first getTaskStatus request
+                // and also between such requests for the same task.
+                // Making requests more often will not improve your application performance.
+                // Note: if your application queues several files and waits for them
+                // it's recommended that you use listFinishedTasks instead (which is described
+                // at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+                System.Threading.Thread.Sleep(5000);
+                task = restClient.GetTaskStatus(task.Id);
+                Console.WriteLine(String.Format("Task status: {0}", task.Status));
+            }
+            return task;
         }
 
         public void ProcessTextField(string sourceFilePath, string outputFilePath, TextFieldProcessingSettings settings)
