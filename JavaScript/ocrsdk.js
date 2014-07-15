@@ -128,7 +128,7 @@ ocrsdk.prototype.waitForCompletion = function(taskId, userCallback) {
 	// it's recommended that you use listFinishedTasks instead (which is described
 	// at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 
-	if (taskId.indexOf('0000') > -1) {
+	if (taskId.indexOf('00000000') > -1) {
 		// A null Guid passed here usually means a logical error in the calling code
 		userCallback(new Error('Null id passed'), null);
 		return;
