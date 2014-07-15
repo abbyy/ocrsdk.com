@@ -135,7 +135,6 @@ ocrsdk.prototype.waitForCompletion = function(taskId, userCallback) {
 	}
 	var recognizer = this;
 	var waitTimeout = 5000;
-	setTimeout(waitFunction, waitTimeout);
 
 	function waitFunction() {
 		recognizer.getTaskStatus(taskId,
@@ -155,6 +154,7 @@ ocrsdk.prototype.waitForCompletion = function(taskId, userCallback) {
 				}
 			});
 	}
+	setTimeout(waitFunction, waitTimeout);
 }
 
 /**
