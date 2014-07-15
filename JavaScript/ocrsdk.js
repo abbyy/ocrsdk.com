@@ -103,6 +103,13 @@ ocrsdk.prototype.getTaskStatus = function(taskId, userCallback) {
 	req.end();
 }
 
+ocrsdk.prototype.isTaskActive = function(taskData) {
+	if (taskData.status == 'Queued' || taskData.status == 'InProgress') {
+		return true;
+	}
+	return false;
+}
+
 /**
  * Wait until task processing is finished. You need to check task status after
  * processing to see if you can download result.
@@ -111,30 +118,43 @@ ocrsdk.prototype.getTaskStatus = function(taskId, userCallback) {
  * @param {function(error, taskData)} callback 	The callback function.
  */
 ocrsdk.prototype.waitForCompletion = function(taskId, userCallback) {
-	// Call getTaskStatus every second until task is completed
+	// Call getTaskStatus every several seconds until task is completed
 
+	// Note: it's recommended that your application waits
+	// at least 2 seconds before making the first getTaskStatus request
+	// and also between such requests for the same task.
+	// Making requests more often will not improve your application performance.
+	// Note: if your application queues several files and waits for them
+	// it's recommended that you use listFinishedTasks instead (which is described
+	// at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+
+	if (taskId.indexOf('0000') > -1) {
+		// A null Guid passed here usually means a logical error in the calling code
+		userCallback(new Error('Null id passed'), null);
+		return;
+	}
 	var recognizer = this;
+	var waitTimeout = 5000;
+	setTimeout(waitFunction, waitTimeout);
 
 	function waitFunction() {
-		recognizer.getTaskStatus(taskId, function(error, taskData) {
-			if (error) {
-				userCallback(error, null);
-				return;
-			}
+		recognizer.getTaskStatus(taskId,
+			function(error, taskData) {
+				if (error) {
+					userCallback(error, null);
+					return;
+				}
 
-			console.log("Task status is " + taskData.status);
+				console.log("Task status is " + taskData.status);
 
-			if (taskData.status == 'Completed'
-					|| taskData.status == 'ProcessingFailed'
-					|| taskData.status == 'NotEnoughCredits') {
-				userCallback(null, taskData);
-			} else {
-				setTimeout(waitFunction, 1000);
-			}
-		});
+				if (recognizer.isTaskActive(taskData)) {
+					setTimeout(waitFunction, waitTimeout);
+				} else {
+
+					userCallback(null, taskData);
+				}
+			});
 	}
-
-	waitFunction();
 }
 
 /**
