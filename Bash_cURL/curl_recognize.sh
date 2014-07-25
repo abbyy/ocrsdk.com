@@ -106,15 +106,26 @@ fi
 echo "Uploaded, task id is '$taskId'"
 
 # Wait until image is processed
-taskStatus="Queued"
+# Note: it's recommended that your application waits
+# at least 2 seconds before making the first getTaskStatus request
+# and also between such requests for the same task.
+# Making requests more often will not improve your application performance.
+# Note: if your application queues several files and waits for them
+# it's recommended that you use listFinishedTasks instead (which is described
+# at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 echo -n "Waiting.."
-while [ $taskStatus != "Completed" ]
+while [ $taskStatus == "Queued" ] || [ $taskStatus == "InProgress" ]
 do
-    sleep 4
+    sleep 5
     echo -n "."
     response=`curl -s -S --user "$ApplicationId:$Password" $ServerUrl/getTaskStatus?taskId=$taskId`
     taskStatus=`echo $response | grep -o -E 'status="[^"]+"' | cut -d '"' -f 2`
 done
+
+if [ $taskStatus != "Completed" ]; then
+    echo "Unexpected task status $taskStatus"
+    exit 1
+fi
 
 echo
 
