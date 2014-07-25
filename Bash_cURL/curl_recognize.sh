@@ -28,7 +28,7 @@ fi;
 if [ -n "$ABBYY_PWD" ]; then
     Password="$ABBYY_PWD";
 elif [ -z $Password ]; then 
-    echo "No application password specified. Plese execute"
+    echo "No application password specified. Please execute"
     echo "\"export ABBYY_PWD=<your app password>\""
 	echo "The password should be sent to you after application was created."
     exit 1
