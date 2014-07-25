@@ -118,8 +118,10 @@ done
 
 echo
 
-# Get result url
+# Get result url by treating the returned XML as text
 resultUrl=`echo $response | grep -o -E 'resultUrl="[^"]+"' | cut -d '"' -f 2`
+# Now replace all occurences of "&amp;" with "&"
+resultUrl="${resultUrl//&amp;/&}"
 
 # Get result
 response=`curl -s -S -o $TargetFile $resultUrl`
