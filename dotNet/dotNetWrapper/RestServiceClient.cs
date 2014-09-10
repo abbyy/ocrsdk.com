@@ -134,6 +134,21 @@ namespace Abbyy.CloudOcrSdk
 	public class BasicRequestAuthSetup : IRequestAuthSetup {
 		public void Run( WebRequest request, String username, String password )
 		{
+            // Important note!!!
+            // Below is the optimal way to setup authentication.
+            // When using HttpClient do set
+            // HttpClient.DefaultRequestHeaders.Authorization instead.
+            // Settings .Credentials property (as well as setting
+            // HttpClientHandler.Credentials when using HttpClient)
+            // causes suboptimal application behavior, unneeded extra
+            // roundtrips and reduced performance.
+            // In details, if you set .Credentials then the request is first sent
+            // without authentication headers, gets rejected with HTTP 401
+            // and is resent. That would double the number of requests and reduce
+            // your application performance. The code below ensures that the
+            // right headers are sent every time and this gets better performance.
+            // It is highly recommended that you use Fiddler or equivalent software
+            // to validate how your application interacts with the service.
 			Encoding encoding = Encoding.GetEncoding("iso-8859-1");
             string toEncode = username + ":" + password;
             string baseEncoded = Convert.ToBase64String(encoding.GetBytes(toEncode));
@@ -211,8 +226,7 @@ namespace Abbyy.CloudOcrSdk
             try
             {
                 // Build post request
-                WebRequest request = WebRequest.Create(url);
-                setupPostRequest(url, request);
+                WebRequest request = createPostRequest(url);
                 writeFileToRequest(filePath, request);
 
                 XDocument response = performRequest(request);
@@ -285,8 +299,7 @@ namespace Abbyy.CloudOcrSdk
                 url = url + "?taskId=" + Uri.EscapeDataString(taskToAddFile.ToString());
 
             // Build post request
-            WebRequest request = WebRequest.Create(url);
-            setupPostRequest(url, request);
+            WebRequest request = createPostRequest(url);
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
@@ -307,8 +320,7 @@ namespace Abbyy.CloudOcrSdk
             }
 
             // Build get request
-            WebRequest request = WebRequest.Create(url);
-            setupGetRequest(url, request);
+            WebRequest request = createGetRequest(url);
             XDocument response = performRequest(request);
             Task serverTask = ServerXml.GetTaskStatus(response);
             return serverTask;
@@ -324,8 +336,7 @@ namespace Abbyy.CloudOcrSdk
             string url = String.Format("{0}/processTextField{1}", ServerUrl, settings.AsUrlParams);
 
             // Build post request
-            WebRequest request = WebRequest.Create(url);
-            setupPostRequest(url, request);
+            WebRequest request = createPostRequest(url);
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
@@ -344,8 +355,7 @@ namespace Abbyy.CloudOcrSdk
             string url = String.Format("{0}/processBarcodeField{1}", ServerUrl, settings.AsUrlParams);
 
             // Build post request
-            WebRequest request = WebRequest.Create(url);
-            setupPostRequest(url, request);
+            WebRequest request = createPostRequest(url);
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
@@ -359,8 +369,7 @@ namespace Abbyy.CloudOcrSdk
             string url = String.Format("{0}/processCheckmarkField{1}", ServerUrl, settings.AsUrlParams);
 
             // Build post request
-            WebRequest request = WebRequest.Create(url);
-            setupPostRequest(url, request);
+            WebRequest request = createPostRequest(url);
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
@@ -374,8 +383,7 @@ namespace Abbyy.CloudOcrSdk
             string url = String.Format("{0}/processBusinessCard?{1}", ServerUrl, settings.AsUrlParams);
 
             // Build post request
-            WebRequest request = WebRequest.Create(url);
-            setupPostRequest(url, request);
+            WebRequest request = createPostRequest(url);
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
@@ -395,8 +403,7 @@ namespace Abbyy.CloudOcrSdk
 
             string url = String.Format("{0}/processFields?taskId={1}", ServerUrl, task.Id);
 
-            WebRequest request = WebRequest.Create(url);
-            setupPostRequest(url, request);
+            WebRequest request = createPostRequest(url);
             writeFileToRequest(settingsPath, request);
 
             XDocument response = performRequest(request);
@@ -411,8 +418,7 @@ namespace Abbyy.CloudOcrSdk
         public Task ProcessMrz(string filePath)
         {
             string url = String.Format("{0}/processMRZ", ServerUrl);
-            WebRequest request = WebRequest.Create(url);
-            setupPostRequest(url, request);
+            WebRequest request = createPostRequest(url);
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
@@ -425,8 +431,7 @@ namespace Abbyy.CloudOcrSdk
             string url = String.Format("{0}/captureData?template={1}", ServerUrl, templateName);
 
             // Build post request
-            WebRequest request = WebRequest.Create(url);
-            setupPostRequest(url, request);
+            WebRequest request = createPostRequest(url);
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
@@ -439,8 +444,7 @@ namespace Abbyy.CloudOcrSdk
         {
             try
             {
-                WebRequest request = WebRequest.Create(url);
-                setupGetRequest(url, request);
+                WebRequest request = createGetRequest(url);
 
                 using (HttpWebResponse result = (HttpWebResponse) request.GetResponse())
                 {
@@ -497,8 +501,7 @@ namespace Abbyy.CloudOcrSdk
             string url = String.Format("{0}/getTaskStatus?taskId={1}", ServerUrl,
                 Uri.EscapeDataString(task.ToString()));
 
-            WebRequest request = WebRequest.Create(url);
-            setupGetRequest(url, request);
+            WebRequest request = createGetRequest(url);
             XDocument response = performRequest(request);
             Task serverTask = ServerXml.GetTaskStatus(response);
             return serverTask;
@@ -521,8 +524,7 @@ namespace Abbyy.CloudOcrSdk
             string url = String.Format("{0}/listTasks?fromDate={1}", ServerUrl, 
                 Uri.EscapeDataString(changedSince.ToUniversalTime().ToString("s")+"Z"));
 
-            WebRequest request = WebRequest.Create(url);
-            setupGetRequest(url, request);
+            WebRequest request = createGetRequest(url);
             XDocument response = performRequest(request);
 
             Task[] tasks = ServerXml.GetAllTasks(response);
@@ -537,8 +539,7 @@ namespace Abbyy.CloudOcrSdk
         public Task[] ListFinishedTasks()
         {
             string url = String.Format("{0}/listFinishedTasks", ServerUrl);
-            WebRequest request = WebRequest.Create(url);
-            setupGetRequest(url, request);
+            WebRequest request = createGetRequest(url);
             XDocument response = performRequest(request);
 
             Task[] tasks = ServerXml.GetAllTasks(response);
@@ -559,8 +560,7 @@ namespace Abbyy.CloudOcrSdk
             }
 
             string url = String.Format("{0}/deleteTask?taskId={1}", ServerUrl, Uri.EscapeDataString(task.Id.ToString()));
-            WebRequest request = WebRequest.Create(url);
-            setupGetRequest(url, request);
+            WebRequest request = createGetRequest(url);
 
             XDocument response = performRequest(request);
             Task serverTask = ServerXml.GetTaskStatus(response);
@@ -575,8 +575,7 @@ namespace Abbyy.CloudOcrSdk
         public string ActivateNewInstallation(string deviceId)
         {
             string url = String.Format("{0}/activateNewInstallation?deviceId={1}", ServerUrl, Uri.EscapeDataString(deviceId));
-            WebRequest request = WebRequest.Create(url);
-            setupGetRequest(url, request);
+            WebRequest request = createGetRequest(url);
 
             XDocument response = performRequest(request);
             string installationId = response.Root.Elements().First().Value;
@@ -607,32 +606,43 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
-        private void setupRequest(string serverUrl, WebRequest request)
+        HttpWebRequest createRequest(String url)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            setupRequest(url, request);
+            return request;
+        }
+
+        private void setupRequest(string serverUrl, HttpWebRequest request)
         {
             if (Proxy != null)
                 request.Proxy = Proxy;
 
             // Support authentication in case url is ABBYY SDK
+            // Warning! Please read the important note in BasicRequestAuthSetup.Run()
+            // before trying to reimplement Basic authentication
             if (serverUrl.StartsWith(ServerUrl, StringComparison.InvariantCultureIgnoreCase))
             {
 				RequestAuthSetup.Run(request, ApplicationId, Password);
             }
 
             // Set user agent string so that server is able to collect statistics
-            ((HttpWebRequest)request).UserAgent = ".Net Cloud OCR SDK client";
+            request.UserAgent = ".Net Cloud OCR SDK client";
         }
 
-        private void setupPostRequest(string serverUrl, WebRequest request)
+        private HttpWebRequest createPostRequest(string url)
         {
-            setupRequest(serverUrl, request);
+            HttpWebRequest request = createRequest(url);
             request.Method = "POST";
             request.ContentType = "application/octet-stream";
+            return request;
         }
 
-        private void setupGetRequest(string serverUrl, WebRequest request)
+        private HttpWebRequest createGetRequest(string url)
         {
-            setupRequest(serverUrl, request);
+            HttpWebRequest request = createRequest(url);
             request.Method = "GET";
+            return request;
         }
 
         private void writeFileToRequest( string filePath, WebRequest request )
