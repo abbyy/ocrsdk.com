@@ -137,7 +137,8 @@ namespace Abbyy.CloudOcrSdk
             // Important note!!!
             // Below is the optimal way to setup authentication.
             // When using HttpClient do set
-            // HttpClient.DefaultRequestHeaders.Authorization instead.
+            // HttpClient.DefaultRequestHeaders.Authorization instead as
+            // described here http://stackoverflow.com/a/23914662
             // Settings .Credentials property (as well as setting
             // HttpClientHandler.Credentials when using HttpClient)
             // causes suboptimal application behavior, unneeded extra
