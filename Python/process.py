@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Usage: recognize.py <input file> <output file> [-language <Language>] [-pdf|-txt|-rtf|-docx|-xml]
+# Usage: process.py <input file> <output file> [-language <Language>] [-pdf|-txt|-rtf|-docx|-xml]
 
 import argparse
 import base64
@@ -54,13 +54,13 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 	# it's recommended that you use listFinishedTasks instead (which is described
 	# at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 
-	while task.IsActive == True :
+	while task.IsActive() == True :
 		time.sleep( 5 )
 		sys.stdout.write( "." )
 		task = processor.GetTaskStatus( task )
 
 	print "Status = %s" % task.Status
-	
+
 	if task.Status == "Completed":
 		if task.DownloadUrl != None:
 			processor.DownloadResult( task, resultFilePath )
@@ -70,7 +70,7 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 
 
 
-	
+
 parser = argparse.ArgumentParser( description="Recognize a file via web service" )
 parser.add_argument( 'sourceFile' )
 parser.add_argument( 'targetFile' )
@@ -91,4 +91,4 @@ language = args.language
 outputFormat = args.format
 
 if os.path.isfile( sourceFile ):
-	recognizeFile( sourceFile, targetFile, language, outputFormat )	
+	recognizeFile( sourceFile, targetFile, language, outputFormat )
