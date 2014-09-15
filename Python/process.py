@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Usage: recognize.py <input file> <output file> [-language <Language>] [-pdf|-txt|-rtf|-docx|-xml]
+# Usage: process.py <input file> <output file> [-language <Language>] [-pdf|-txt|-rtf|-docx|-xml]
 
 import argparse
 import base64
