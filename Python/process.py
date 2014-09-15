@@ -54,7 +54,7 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 	# it's recommended that you use listFinishedTasks instead (which is described
 	# at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 
-	while task.IsActive == True :
+	while task.IsActive() == True :
 		time.sleep( 5 )
 		sys.stdout.write( "." )
 		task = processor.GetTaskStatus( task )
