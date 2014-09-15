@@ -95,10 +95,8 @@ class AbbyyOnlineSdk:
 			self.opener = urllib2.build_opener( MultipartPostHandler.MultipartPostHandler,
 			urllib2.HTTPHandler(debuglevel=self.enableDebugging))
 		else:
-			self.opener = urllib2.build_opener( 
-				self.Proxy, 
+			self.opener = urllib2.build_opener(
+				self.Proxy,
 				MultipartPostHandler.MultipartPostHandler,
 				urllib2.HTTPHandler(debuglevel=self.enableDebugging))
 		return self.opener
-
-

@@ -60,7 +60,7 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 		task = processor.GetTaskStatus( task )
 
 	print "Status = %s" % task.Status
-	
+
 	if task.Status == "Completed":
 		if task.DownloadUrl != None:
 			processor.DownloadResult( task, resultFilePath )
@@ -70,7 +70,7 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 
 
 
-	
+
 parser = argparse.ArgumentParser( description="Recognize a file via web service" )
 parser.add_argument( 'sourceFile' )
 parser.add_argument( 'targetFile' )
@@ -91,4 +91,4 @@ language = args.language
 outputFormat = args.format
 
 if os.path.isfile( sourceFile ):
-	recognizeFile( sourceFile, targetFile, language, outputFormat )	
+	recognizeFile( sourceFile, targetFile, language, outputFormat )
