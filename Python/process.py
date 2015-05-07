@@ -106,7 +106,8 @@ class OutputFormat(str):
 parser = argparse.ArgumentParser( description="Recognize a file via web service" )
 parser.add_argument( 'sourceFile' )
 parser.add_argument( 'targetDir' )
-parser.add_argument( '-l', '--language', default='English', help='Recognition language (default: %(default))' )
+parser.add_argument( '-l', '--language', default='English',
+                     help='Recognition language (default: %(default)s)' )
 parser.add_argument( '-f', '--format', action='append', default=[], type=OutputFormat.type )
 
 args = parser.parse_args()
