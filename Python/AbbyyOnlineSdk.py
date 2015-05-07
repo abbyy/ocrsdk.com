@@ -13,11 +13,11 @@ import time
 import urllib2
 import urllib
 import xml.dom.minidom
+import xml.sax.saxutils
 
 class ProcessingSettings:
 	Language = "English"
-	OutputFormat = "docx"
-
+	OutputFormats = ["docx"]
 
 class Task:
 	Status = "Unknown"
@@ -41,9 +41,10 @@ class AbbyyOnlineSdk:
 	enableDebugging = 0
 
 	def ProcessImage( self, filePath, settings ):
+                outputFormats = ','.join(settings.OutputFormats)
 		urlParams = urllib.urlencode({
 			"language" : settings.Language,
-			"exportFormat" : settings.OutputFormat
+			"exportFormat" : outputFormats
 			})
 		requestUrl = self.ServerUrl + "processImage?" + urlParams
 
@@ -66,14 +67,10 @@ class AbbyyOnlineSdk:
 		task = self.DecodeResponse( response )
 		return task
 
-	def DownloadResult( self, task, outputPath ):
-		getResultParams = urllib.urlencode( { "taskId" : task.Id } )
-		getResultUrl = self.ServerUrl + "getResult?" + getResultParams
-		request = urllib2.Request( getResultUrl, None, self.buildAuthInfo() )
-		fileResponse = self.getOpener().open( request ).read()
-		resultFile = open( outputPath, "wb" )
-		resultFile.write( fileResponse )
-
+        def DownloadResult( self, resultUrl, outputPath):
+                fileResponse = urllib2.urlopen(resultUrl).read()
+                resultFile = open( outputPath, "wb" )
+                resultFile.write( fileResponse )
 
 	def DecodeResponse( self, xmlResponse ):
 		""" Decode xml response of the server. Return Task object """
@@ -83,7 +80,12 @@ class AbbyyOnlineSdk:
 		task.Id = taskNode.getAttribute( "id" )
 		task.Status = taskNode.getAttribute( "status" )
 		if task.Status == "Completed":
-			task.DownloadUrl = taskNode.getAttribute( "resultUrl" )
+                        task.DownloadUrl = []
+                        for resultAttr in ('resultUrl', 'resultUrl2', 'resultUrl3'):
+                                result = taskNode.getAttribute(resultAttr)
+                                if result:
+                                        # xml escape needs to be unescaped
+                                        task.DownloadUrl.append(xml.sax.saxutils.unescape(result))
 		return task
 
 
@@ -95,10 +97,8 @@ class AbbyyOnlineSdk:
 			self.opener = urllib2.build_opener( MultipartPostHandler.MultipartPostHandler,
 			urllib2.HTTPHandler(debuglevel=self.enableDebugging))
 		else:
-			self.opener = urllib2.build_opener( 
-				self.Proxy, 
+			self.opener = urllib2.build_opener(
+				self.Proxy,
 				MultipartPostHandler.MultipartPostHandler,
 				urllib2.HTTPHandler(debuglevel=self.enableDebugging))
 		return self.opener
-
-

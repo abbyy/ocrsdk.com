@@ -12,6 +12,7 @@ import sys
 import time
 import urllib2
 import urllib
+import urlparse
 
 from AbbyyOnlineSdk import *
 
@@ -32,11 +33,11 @@ if "http_proxy" in os.environ:
 
 
 # Recognize a file at filePath and save result to resultFilePath
-def recognizeFile( filePath, resultFilePath, language, outputFormat ):
+def recognizeFile( filePath, resultFilePath, language, outputFormats ):
 	print "Uploading.."
 	settings = ProcessingSettings()
 	settings.Language = language
-	settings.OutputFormat = outputFormat
+	settings.OutputFormats = outputFormats
 	task = processor.ProcessImage( filePath, settings )
 	if task == None:
 		print "Error"
@@ -60,35 +61,65 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 		task = processor.GetTaskStatus( task )
 
 	print "Status = %s" % task.Status
-	
+
 	if task.Status == "Completed":
-		if task.DownloadUrl != None:
-			processor.DownloadResult( task, resultFilePath )
-			print "Result was written to %s" % resultFilePath
+                for i, url in enumerate(task.DownloadUrl):
+                        fmt = outputFormats[i]
+                        extension = OutputFormat.getExtension(fmt)
+                        outputBaseName = os.path.basename(urlparse.urlparse(url).path)
+                        outputFile = os.path.join(
+                                resultFilePath, outputBaseName + '.' + extension)
+                        processor.DownloadResult(url, outputFile)
+			# processor.DownloadResult( task, resultFilePath )
+			print "Result was written to %s" % outputFile
 	else:
 		print "Error processing task"
 
 
 
-	
+class OutputFormat(str):
+        _availableFormats = (
+                'txt', 'pdfSearchable', 'pdfTextAndImages', 'pdfa', 'rft',
+                'pptx', 'docx', 'xml', 'alto'
+        )
+        default = 'txt'
+        @classmethod
+        def type(cls, formatString):
+                if not formatString in cls._availableFormats:
+                        raise argparse.ArgumentTypeError(
+                                'invalid format {}'.format(formatString))
+                return formatString
+
+        @classmethod
+        def getExtension(cls, formatString):
+                return {
+                        'pdfSearchable': 'pdf',
+                        'pdfTextAndImages': 'pdf',
+                        'pdfa': 'pdf',
+                        'alto': 'xml'
+                        }.get(formatString, formatString)
+
+
+
+
+
 parser = argparse.ArgumentParser( description="Recognize a file via web service" )
 parser.add_argument( 'sourceFile' )
-parser.add_argument( 'targetFile' )
-
+parser.add_argument( 'targetDir' )
 parser.add_argument( '-l', '--language', default='English', help='Recognition language (default: %(default))' )
-group = parser.add_mutually_exclusive_group()
-group.add_argument( '-txt', action='store_const', const='txt', dest='format', default='txt' )
-group.add_argument( '-pdf', action='store_const', const='pdfSearchable', dest='format' )
-group.add_argument( '-rtf', action='store_const', const='rtf', dest='format' )
-group.add_argument( '-docx', action='store_const', const='docx', dest='format' )
-group.add_argument( '-xml', action='store_const', const='xml', dest='format' )
+parser.add_argument( '-f', '--format', action='append', default=[], type=OutputFormat.type )
 
 args = parser.parse_args()
+if not args.format:
+        args.format.append( OutputFormat.default )
+elif len( args.format ) > 3:
+        parser.error( 'use at most 3 output formats' )
+
 
 sourceFile = args.sourceFile
-targetFile = args.targetFile
+targetDir = args.targetDir
 language = args.language
-outputFormat = args.format
+outputFormats = args.format
 
 if os.path.isfile( sourceFile ):
-	recognizeFile( sourceFile, targetFile, language, outputFormat )	
+	recognizeFile( sourceFile, targetDir, language, outputFormats )
