@@ -17,7 +17,6 @@ namespace ConsoleTest
         ProcessTextField,
         ProcessFields,
         ProcessMrz,
-        CaptureData
     };
 
     class Test
@@ -264,14 +263,6 @@ namespace ConsoleTest
             Console.WriteLine("Uploading");
             Task task = restClient.ProcessMrz(sourceFilePath);
             Console.WriteLine("Processing..");
-
-            waitAndDownload(task, outputFilePath);
-        }
-
-        public void CaptureData(string sourceFilePath, string templateName, string outputFilePath)
-        {
-            Console.WriteLine("Uploading");
-            Task task = restClient.CaptureData(sourceFilePath, templateName);
 
             waitAndDownload(task, outputFilePath);
         }

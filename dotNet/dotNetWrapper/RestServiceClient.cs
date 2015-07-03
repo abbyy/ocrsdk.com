@@ -427,20 +427,6 @@ namespace Abbyy.CloudOcrSdk
             return serverTask;
         }
 
-        public Task CaptureData(string filePath, string templateName)
-        {
-            string url = String.Format("{0}/captureData?template={1}", ServerUrl, templateName);
-
-            // Build post request
-            WebRequest request = createPostRequest(url);
-            writeFileToRequest(filePath, request);
-
-            XDocument response = performRequest(request);
-            Task serverTask = ServerXml.GetTaskStatus(response);
-            return serverTask;
-        }
-       
-
         public void DownloadUrl(string url, string outputFile)
         {
             try

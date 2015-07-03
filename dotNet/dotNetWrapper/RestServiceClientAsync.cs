@@ -137,11 +137,6 @@ namespace Abbyy.CloudOcrSdk
                 {
                     task = _syncClient.ProcessBusinessCard(filePath, settings as BusCardProcessingSettings);
                 }
-                else if (settings is CaptureDataSettings)
-                {
-                    string templateName = (settings as CaptureDataSettings).TemplateName;
-                    task = _syncClient.CaptureData(filePath, templateName);
-                }
 
                 // Notify subscriber that upload completed
                 Task uploadedTask = new Task(task.Id, TaskStatus.Submitted);

@@ -59,7 +59,6 @@ Common options description:
                 { "asTextField", v => processingMode = ProcessingModeEnum.ProcessTextField},
                 { "asFields", v => processingMode = ProcessingModeEnum.ProcessFields},
                 { "asMRZ", var => processingMode = ProcessingModeEnum.ProcessMrz},
-                { "captureData", v => processingMode = ProcessingModeEnum.CaptureData},
                 { "out=", (string v) => outFormat = v },
                 { "profile=", (string v) => profile = v },
                 { "lang=", (string v) => language = v },
@@ -110,18 +109,6 @@ Common options description:
                         xmlPath = additionalArgs[1];
                         targetPath = additionalArgs[2];
                         break;
-
-                    case ProcessingModeEnum.CaptureData:
-                        if (additionalArgs.Count != 3)
-                        {
-                            displayHelp();
-                            return;
-                        }
-
-                        sourcePath = additionalArgs[0];
-                        templateName = additionalArgs[1];
-                        targetPath = additionalArgs[2];
-                        break;
                 }
 
                 if (!Directory.Exists(targetPath))
@@ -133,8 +120,7 @@ Common options description:
                 {
                     if (processingMode == ProcessingModeEnum.ProcessFields ||
                         processingMode == ProcessingModeEnum.ProcessTextField ||
-                        processingMode == ProcessingModeEnum.ProcessMrz ||
-                        processingMode == ProcessingModeEnum.CaptureData)
+                        processingMode == ProcessingModeEnum.ProcessMrz)
                         outFormat = "xml";
                     else
                         outFormat = "txt";
@@ -142,8 +128,7 @@ Common options description:
 
                 if (outFormat != "xml" &&
                     (processingMode == ProcessingModeEnum.ProcessFields ||
-                    processingMode == ProcessingModeEnum.ProcessTextField) ||
-                    processingMode == ProcessingModeEnum.CaptureData)
+                    processingMode == ProcessingModeEnum.ProcessTextField))
                 {
                     Console.WriteLine("Only xml is supported as output format for field-level recognition.");
                     outFormat = "xml";
@@ -168,11 +153,6 @@ Common options description:
                 else if (processingMode == ProcessingModeEnum.ProcessMrz)
                 {
                     tester.ProcessPath(sourcePath, targetPath, null, processingMode);
-                }
-                else if (processingMode == ProcessingModeEnum.CaptureData)
-                {
-                    string outputFilePath = Path.Combine(targetPath, Path.GetFileName(sourcePath) + ".xml");
-                    tester.CaptureData(sourcePath, templateName, outputFilePath);
                 }
 
 
