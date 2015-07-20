@@ -153,7 +153,7 @@ namespace Abbyy.CloudOcrSdk
 			Encoding encoding = Encoding.GetEncoding("iso-8859-1");
             string toEncode = username + ":" + password;
             string baseEncoded = Convert.ToBase64String(encoding.GetBytes(toEncode));
-			request.Headers.Add( "Authorization", "Basic: " + baseEncoded );
+			request.Headers.Add( "Authorization", "Basic " + baseEncoded );
 		}
 	}
 

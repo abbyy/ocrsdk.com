@@ -196,7 +196,7 @@ public class Client {
 	}
 
 	private void setupAuthorization(URLConnection connection) {
-		String authString = "Basic: " + encodeUserPassword();
+		String authString = "Basic " + encodeUserPassword();
 		authString = authString.replaceAll("\n", "");
 		connection.addRequestProperty("Authorization", authString);
 	}
