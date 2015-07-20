@@ -75,7 +75,7 @@
 	NSMutableURLRequest* processingRequest = [NSMutableURLRequest requestWithURL:processingURL];
 	
 	[processingRequest setHTTPMethod:@"POST"];
-	[processingRequest setValue:@"applicaton/octet-stream" forHTTPHeaderField:@"Content-Type"];
+	[processingRequest setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
 	[processingRequest setHTTPBody:UIImageJPEGRepresentation(image, 0.5)];
 	
 	[processingRequest setValue:[self authString] forHTTPHeaderField:@"Authorization"];

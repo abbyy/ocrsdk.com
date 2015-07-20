@@ -183,7 +183,7 @@ public class Client {
 		connection.setRequestMethod("POST");
 		setupAuthorization(connection);
 		connection
-				.setRequestProperty("Content-Type", "applicaton/octet-stream");
+				.setRequestProperty("Content-Type", "application/octet-stream");
 
 		return connection;
 	}
