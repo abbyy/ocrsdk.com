@@ -92,3 +92,5 @@ outputFormat = args.format
 
 if os.path.isfile( sourceFile ):
 	recognizeFile( sourceFile, targetFile, language, outputFormat )	
+else:
+	print "No such file: %s" % sourceFile
