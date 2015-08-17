@@ -137,6 +137,10 @@ namespace Abbyy.CloudOcrSdk
                 {
                     task = _syncClient.ProcessBusinessCard(filePath, settings as BusCardProcessingSettings);
                 }
+                else if (settings is ProcessMrzSettings)
+                {
+                    task = _syncClient.ProcessMrz(filePath);
+                }
 
                 // Notify subscriber that upload completed
                 Task uploadedTask = new Task(task.Id, TaskStatus.Submitted);
@@ -502,10 +506,9 @@ namespace Abbyy.CloudOcrSdk
             processFileAsync(filePath, settings, taskId);
         }
 
-        public void CaptureDataAsync(string filePath, string templateName, object taskId)
+        public void ProcessMrzAsync(string filePath, object taskId)
         {
-            CaptureDataSettings settings = new CaptureDataSettings();
-            settings.TemplateName = templateName;
+            var settings = new ProcessMrzSettings();
             processFileAsync(filePath, settings, taskId);
         }
 
@@ -583,14 +586,12 @@ namespace Abbyy.CloudOcrSdk
             workerDelegate.BeginInvoke(asyncOp, null, null);
         }
 
-        private class CaptureDataSettings : IProcessingSettings
+        private class ProcessMrzSettings : IProcessingSettings
         {
             public string AsUrlParams
             {
                 get { throw new NotImplementedException(); }
             }
-
-            public string TemplateName = "MRZ";
         }
     }
 }

@@ -80,7 +80,6 @@ Common options description:
             string sourcePath = null;
             string xmlPath = null;
             string targetPath = Directory.GetCurrentDirectory();
-            string templateName = null;
 
             switch (processingMode)
             {

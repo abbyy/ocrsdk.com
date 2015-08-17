@@ -191,7 +191,7 @@ namespace GuiTest
                     System.IO.Path.GetFileNameWithoutExtension(filePath) + ".xml");
 
                 _userTasks.Add(task);
-                restClientAsync.CaptureDataAsync(filePath, "MRZ", task);
+                restClientAsync.ProcessMrzAsync(filePath, task);
             }
         }
 
