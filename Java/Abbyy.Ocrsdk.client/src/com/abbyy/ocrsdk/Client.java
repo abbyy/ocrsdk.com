@@ -108,22 +108,6 @@ public class Client {
 		return postFileToUrl(filePath, url);
 	}
 	
-	/**
-	 * Create captureData task.
-	 * @param filePath 			File with image to process
-	 * @param templateName		Name of template. Possible values are: MRZ, more to come.
-	 * @return					Task created
-	 */
-	public Task captureData(String filePath, String templateName) throws Exception {
-		URL url = new URL(serverUrl + "/captureData?template=" + templateName );
-		return postFileToUrl(filePath, url);
-	}
-	
-	public Task createTemplate(String taskId, String templateName, String settingsFilePath) throws Exception {
-		URL url = new URL(serverUrl + "/createTemplate?taskId=" + taskId + "&template=" + templateName);
-		return postFileToUrl(settingsFilePath, url);
-	}
-
 	public Task getTaskStatus(String taskId) throws Exception {
 		URL url = new URL(serverUrl + "/getTaskStatus?taskId=" + taskId);
 

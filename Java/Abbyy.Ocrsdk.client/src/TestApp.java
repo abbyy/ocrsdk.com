@@ -48,10 +48,6 @@ public class TestApp {
 				performFieldsRecognition(argList);
 			} else if (mode.equalsIgnoreCase("MRZ")) {
 				performMrzRecognition(argList);
-			} else if (mode.equalsIgnoreCase("captureData")) {
-				performCaptureData(argList);
-			} else if( mode.equalsIgnoreCase("createTemplate")) {
-				createTemplate(argList);
 			} else {
 				System.out.println("Unknown mode: " + mode);
 				return;
@@ -104,7 +100,7 @@ public class TestApp {
 						+ "\n"
 						+ "For detailed help, call\n"
 						+ "  java TestApp help <mode>\n"
-						+ "where <mode> is one of: recognize, busCard, textField, barcode, checkmark, processFields, captureData, createTemplate");
+						+ "where <mode> is one of: recognize, busCard, textField, barcode, checkmark, processFields");
 	}
 
 	/**
@@ -123,10 +119,6 @@ public class TestApp {
 			displayProcessFieldsHelp();
 		} else if (mode.equalsIgnoreCase("MRZ")) {
 			displayProcessMrzHelp();
-		} else if (mode.equalsIgnoreCase("captureData")) {
-			displayCaptureDataHelp();
-		} else if (mode.equalsIgnoreCase("createTemplate")) {
-			displayCreateTemplateHelp();
 		} else {
 			System.out.println("Unknown processing mode.");
 		}
@@ -395,68 +387,6 @@ public class TestApp {
 		Task task = restClient.processMrz(argList.elementAt(0));
 
 		waitAndDownloadResult(task, outputPath);
-	}
-	
-	private static void displayCaptureDataHelp() {
-		System.out
-				.println("Recognize Machine-Readable Zones of official documents\n"
-						+ "Both 2 and 3-line MRZ are supported."
-						+ "\n" + "Usage:\n"
-						+ "java TestApp captureData <file> MRZ <output file>\n" + "\n"
-						+ "Examples:\n"
-						+ "java TestApp captureData image.tif MRZ result.xml\n");
-	}
-	
-	private static void performCaptureData(Vector<String> argList)
-			throws Exception {
-		String outputPath = argList.lastElement();
-		argList.remove(argList.size() - 1);
-		
-		String templateName = argList.lastElement();
-		argList.remove(argList.size()-1 );
-		
-		// argList now contains list of source images to process
-
-		if (argList.size() != 1) {
-			System.out.println("Invalid number of files to process.");
-			return;
-		}
-
-		System.out.println("Uploading..");
-		Task task = restClient.captureData(argList.elementAt(0), templateName);
-
-		waitAndDownloadResult(task, outputPath);
-	}
-	
-	private static void displayCreateTemplateHelp() {
-		System.out
-		.println("TODO\n");
-
-	}
-	
-	private static void createTemplate(Vector<String> argList) throws Exception {
-		if( argList.size() != 3) {
-			System.out.println( "Invalid number of arguments.");
-			return;
-		}
-		
-		String imagePath = argList.elementAt(0);
-		String templateName = argList.elementAt(1);
-		String settingsPath = argList.elementAt(2);
-
-		System.out.println("Uploading image..");
-		Task task = restClient.submitImage(imagePath, null);
-		
-		System.out.println("Creating template..");
-		task = restClient.createTemplate(task.Id, templateName, settingsPath);
-		System.out.println("Waiting..");
-		task = waitForCompletion(task);
-		
-		if( task.Status == Task.TaskStatus.Completed) {
-			System.out.println( "Done.");
-		} else {
-			System.out.println("Error creating template.");
-		}
 	}
 
 	/** 
