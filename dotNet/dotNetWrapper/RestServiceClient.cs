@@ -458,19 +458,29 @@ namespace Abbyy.CloudOcrSdk
 
         public void DownloadUrl(string url, string outputFile)
         {
+            if(File.Exists(outputFile)) 
+                File.Delete(outputFile);
+
+            using (var inputStream = DownloadUrl(url))
+            using (Stream outputStream = File.OpenWrite(outputFile))
+            {
+                copyStream(inputStream, outputStream);
+            }
+        }
+
+        public MemoryStream DownloadUrl(string url)
+        {
             try
             {
                 WebRequest request = createGetRequest(url);
 
-                using (HttpWebResponse result = (HttpWebResponse) request.GetResponse())
+                using (HttpWebResponse result = (HttpWebResponse)request.GetResponse())
                 {
+                    MemoryStream outputStream = new MemoryStream();
                     using (Stream stream = result.GetResponseStream())
                     {
-                        // Write result directly to file
-                        using (Stream file = File.OpenWrite(outputFile))
-                        {
-                            copyStream(stream, file);
-                        }
+                        copyStream(stream, outputStream);
+                        return outputStream;
                     }
                 }
             }
@@ -480,12 +490,26 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
+
         /// <summary>
         /// Download task that has finished processing and save it to given path
         /// </summary>
         /// <param name="task">Id of a task</param>
         /// <param name="outputFile">Path to save a file</param>
         public void DownloadResult(Task task, string outputFile)
+        {
+            using (var inputStream = DownloadResult(task))
+            using (Stream outputStream = File.OpenWrite(outputFile))
+            {
+                copyStream(inputStream, outputStream);
+            }
+        }
+
+        /// <summary>
+        /// Download task that has finished processing and save it to given path
+        /// </summary>
+        /// <param name="task">Id of a task</param>
+        public MemoryStream DownloadResult(Task task)
         {
             if (task.Status != TaskStatus.Completed)
             {
@@ -494,17 +518,14 @@ namespace Abbyy.CloudOcrSdk
 
             try
             {
-                if (File.Exists(outputFile))
-                    File.Delete(outputFile);
 
-               
                 if (task.DownloadUrls == null || task.DownloadUrls.Count == 0)
                 {
                     throw new ArgumentException("Cannot download task without download url");
                 }
 
                 string url = task.DownloadUrls[0];
-                DownloadUrl(url, outputFile);
+                return DownloadUrl(url);
             }
             catch (System.Net.WebException e)
             {
@@ -667,6 +688,7 @@ namespace Abbyy.CloudOcrSdk
             {
                 output.Write(buffer, 0, len);
             }
+            output.Seek(0, SeekOrigin.Begin);
         }
 
         private XDocument performRequest(WebRequest request)
