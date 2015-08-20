@@ -12,7 +12,7 @@ namespace Abbyy.CloudOcrSdk
 
     public enum RecognitionLanguage
     {
-        English, French, Italian, German, Spanish, Russian, ChinesePRC, Japanese, Korean
+        English, French, Italian, German, Spanish, Russian, ChinesePRC, Japanese, Korean, Norwegian, Swedish, Danish
     };
 
     public enum Profile
