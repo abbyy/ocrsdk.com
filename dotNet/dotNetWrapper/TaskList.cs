@@ -10,7 +10,7 @@ namespace Abbyy.CloudOcrSdk
     /// </summary>
     class TaskList
     {
-        private Dictionary<TaskId, Task> allTasks = new Dictionary<TaskId, Task>();
+        private Dictionary<TaskId, OcrSdkTask> allTasks = new Dictionary<TaskId, OcrSdkTask>();
         private RestServiceClient _restClient;
         private bool shouldStop = false;
 
@@ -50,11 +50,11 @@ namespace Abbyy.CloudOcrSdk
 
                     if (hasJobs)
                     {
-                        Task[] serverTasks = _restClient.ListTasks(lastCheckTime);
+                        OcrSdkTask[] serverTasks = _restClient.ListTasks(lastCheckTime);
 
                         lock (allTasks)
                         {
-                            foreach (Task task in serverTasks)
+                            foreach (OcrSdkTask task in serverTasks)
                             {
                                 //Console.WriteLine( String.Format( "{0}: {1}", task.Id, task.Status ) );
                                 if (allTasks.ContainsKey(task.Id))
@@ -69,7 +69,7 @@ namespace Abbyy.CloudOcrSdk
                             // This trick should work even if local time is incorrect
                             if (allTasks.Count > 0)
                                 lastCheckTime = allTasks.Values.First().StatusChangeTime;
-                            foreach (Task task in allTasks.Values)
+                            foreach (OcrSdkTask task in allTasks.Values)
                             {
                                 if (task.StatusChangeTime > lastCheckTime)
                                     lastCheckTime = task.StatusChangeTime;
@@ -100,7 +100,7 @@ namespace Abbyy.CloudOcrSdk
             shouldStop = true;
         }
 
-        public void AddTask(Task task)
+        public void AddTask(OcrSdkTask task)
         {
             lock (allTasks)
             {
@@ -125,7 +125,7 @@ namespace Abbyy.CloudOcrSdk
                 status = allTasks[taskId].Status;
             }
 
-            if (status == TaskStatus.Unknown || Task.IsTaskActive(status))
+            if (status == TaskStatus.Unknown || OcrSdkTask.IsTaskActive(status))
                 return false;
             else
                 return true;
@@ -139,7 +139,7 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
-        public Task GetTask(TaskId taskId)
+        public OcrSdkTask GetTask(TaskId taskId)
         {
             lock (allTasks)
             {

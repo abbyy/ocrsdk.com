@@ -15,15 +15,15 @@ namespace Abbyy.CloudOcrSdk
 {
     public class UploadCompletedEventArgs : ProgressChangedEventArgs
     {
-        private Task _task;
+        private OcrSdkTask _task;
 
-        public UploadCompletedEventArgs(Task task, object userState) :
+        public UploadCompletedEventArgs(OcrSdkTask task, object userState) :
             base(50, userState)
         {
             _task = task;
         }
 
-        public Task Result
+        public OcrSdkTask Result
         {
             get
             {
@@ -35,16 +35,16 @@ namespace Abbyy.CloudOcrSdk
 
     public class TaskEventArgs : AsyncCompletedEventArgs
     {
-        private Task _task;
+        private OcrSdkTask _task;
 
-        public TaskEventArgs(Task task,
+        public TaskEventArgs(OcrSdkTask task,
             Exception e, bool canceled, object state)
             : base(e, canceled, state)
         {
             _task = task;
         }
 
-        public Task Result
+        public OcrSdkTask Result
         {
             get
             {
@@ -75,7 +75,7 @@ namespace Abbyy.CloudOcrSdk
             BackgroundWorker w = new BackgroundWorker();
             w.DoWork += new DoWorkEventHandler((sender, e) =>
                 {
-                    Task task = null;
+                    OcrSdkTask task = null;
                     try
                     {
                         task = _syncClient.ProcessImage(filePath, settings);
@@ -118,7 +118,7 @@ namespace Abbyy.CloudOcrSdk
         /// Download file asynchronously
         /// Performs DownloadFileCompleted callback
         /// </summary>
-        public void DownloadFileAsync(Task task, string outputPath, object userState)
+        public void DownloadFileAsync(OcrSdkTask task, string outputPath, object userState)
         {
             BackgroundWorker w = new BackgroundWorker();
             w.DoWork += new DoWorkEventHandler((sender, e) =>
