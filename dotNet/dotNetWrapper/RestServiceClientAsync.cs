@@ -9,15 +9,15 @@ namespace Abbyy.CloudOcrSdk
 {
     public class UploadCompletedEventArgs : ProgressChangedEventArgs
     {
-        private Task _task;
+        private OcrTask _task;
 
-        public UploadCompletedEventArgs(Task task, object userState) :
+        public UploadCompletedEventArgs(OcrTask task, object userState) :
             base( 50, userState )
         {
             _task = task;
         }
 
-        public Task Result
+        public OcrTask Result
         {
             get
             {
@@ -29,16 +29,16 @@ namespace Abbyy.CloudOcrSdk
 
     public class TaskEventArgs : AsyncCompletedEventArgs
     {
-        private Task _task;
+        private OcrTask _task;
 
-        public TaskEventArgs(Task task,
+        public TaskEventArgs(OcrTask task,
             Exception e, bool canceled, object state)
             : base(e, canceled, state)
         {
             _task = task;
         }
 
-        public Task Result
+        public OcrTask Result
         {
             get
             {
@@ -50,16 +50,16 @@ namespace Abbyy.CloudOcrSdk
 
     public class ListTaskEventArgs : AsyncCompletedEventArgs
     {
-        private Task[] _tasks;
+        private OcrTask[] _tasks;
 
-        public ListTaskEventArgs( Task[] tasks,
+        public ListTaskEventArgs( OcrTask[] tasks,
             Exception e, bool canceled, object state)
             : base(e, canceled, state)
         {
             _tasks = tasks;
         }
 
-        public Task[] Result
+        public OcrTask[] Result
         {
             get
             {
@@ -79,7 +79,7 @@ namespace Abbyy.CloudOcrSdk
         private Dictionary<object, AsyncOperation> taskListJobs = new Dictionary<object, AsyncOperation>();
 
         // Delegates used to start execution on a worker thread
-        private delegate void downloadWorkerEventHandler(Task task, string filePath, AsyncOperation asyncOp);
+        private delegate void downloadWorkerEventHandler(OcrTask task, string filePath, AsyncOperation asyncOp);
         private delegate void processFileWorkerEventHandler(string filePath, IProcessingSettings settings, AsyncOperation asyncOp);
         private delegate void processFieldWorkerEventHandler(string filePath, IProcessingSettings settings, AsyncOperation asyncOp);
         private delegate void listTasksWorkerEventHandler(AsyncOperation asyncOp);
@@ -91,7 +91,7 @@ namespace Abbyy.CloudOcrSdk
         /// Enter infinite loop and wait for task to complete
         /// </summary>
         /// <returns>Details about completed task</returns>
-        private Task waitUntilTaskFinishes(Task task)
+        private OcrTask waitUntilTaskFinishes(OcrTask task)
         {
             
             while (true)
@@ -105,7 +105,7 @@ namespace Abbyy.CloudOcrSdk
                 TaskStatus taskStatus = _taskList.GetTaskStatus(task.Id);
                 if (_taskList.IsTaskFinished(task.Id))
                 {
-                    Task result = _taskList.GetTask(task.Id);
+                    OcrTask result = _taskList.GetTask(task.Id);
                     _taskList.DeleteTask(task.Id);
 
                     return result;
@@ -126,7 +126,7 @@ namespace Abbyy.CloudOcrSdk
             // The operation may have been canceled before
             // the thread was scheduled.
 
-            Task task = null;
+            OcrTask task = null;
             try
             {
                 if (settings is ProcessingSettings)
@@ -143,7 +143,7 @@ namespace Abbyy.CloudOcrSdk
                 }
 
                 // Notify subscriber that upload completed
-                Task uploadedTask = new Task(task.Id, TaskStatus.Submitted);
+                OcrTask uploadedTask = new OcrTask(task.Id, TaskStatus.Submitted);
                 UploadCompletedEventArgs uploadCompletedEventArgs = new UploadCompletedEventArgs(uploadedTask, asyncOp.UserSuppliedState);
                 asyncOp.Post(onUploadCompletedDelegate, uploadCompletedEventArgs);
 
@@ -166,7 +166,7 @@ namespace Abbyy.CloudOcrSdk
         {
             Exception e = null;
 
-            Task task = new Task();
+            OcrTask task = new OcrTask();
             try
             {
                 if (settings is TextFieldProcessingSettings)
@@ -187,7 +187,7 @@ namespace Abbyy.CloudOcrSdk
                 }
 
                 // Notify that upload was completed
-                Task uploadedTask = new Task(task.Id, TaskStatus.Submitted);
+                OcrTask uploadedTask = new OcrTask(task.Id, TaskStatus.Submitted);
                 UploadCompletedEventArgs uploadCompletedEventArgs = new UploadCompletedEventArgs(uploadedTask, asyncOp.UserSuppliedState);
                 asyncOp.Post(onUploadCompletedDelegate, uploadCompletedEventArgs);
 
@@ -217,7 +217,7 @@ namespace Abbyy.CloudOcrSdk
             asyncOp.PostOperationCompleted(onProcessingCompleteDelegate, ev);
         }
 
-        private void downloadFileWorker(Task task, string outputFilePath,
+        private void downloadFileWorker(OcrTask task, string outputFilePath,
             AsyncOperation asyncOp)
         {
             Exception e = null;
@@ -238,7 +238,7 @@ namespace Abbyy.CloudOcrSdk
         {
             Exception e = null;
 
-            Task[] tasks = null;
+            OcrTask[] tasks = null;
             try
             {
                 tasks = _syncClient.ListTasks();
@@ -265,7 +265,7 @@ namespace Abbyy.CloudOcrSdk
         // asynchronous behavior will invoke.  This will happen on
         // a worker thread
         private void processCompletionMethod(
-            Task task,
+            OcrTask task,
             Exception exception,
             bool canceled,
             AsyncOperation asyncOp)
@@ -293,7 +293,7 @@ namespace Abbyy.CloudOcrSdk
         }
 
         private void downloadCompletionMethod(
-            Task task,
+            OcrTask task,
             Exception exception,
             bool canceled,
             AsyncOperation asyncOp)
@@ -549,7 +549,7 @@ namespace Abbyy.CloudOcrSdk
         /// Download file asynchronously
         /// Performs DownloadFileCompleted callback
         /// </summary>
-        public void DownloadFileAsync(Task task, string outputPath, object userTaskId)
+        public void DownloadFileAsync(OcrTask task, string outputPath, object userTaskId)
         {
             AsyncOperation asyncOp = AsyncOperationManager.CreateOperation(userTaskId);
 

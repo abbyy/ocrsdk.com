@@ -50,18 +50,18 @@ namespace GuiTest
         }
 
         // Not completed tasks in left list
-        private ObservableCollection<UserTask> _userTasks = new ObservableCollection<UserTask>();
+        private ObservableCollection<UserOcrTask> _userTasks = new ObservableCollection<UserOcrTask>();
 
         // Completed and failed tasks in right list 
-        private ObservableCollection<UserTask> _completedTasks = new ObservableCollection<UserTask>();
+        private ObservableCollection<UserOcrTask> _completedTasks = new ObservableCollection<UserOcrTask>();
 
         // List of tasks on server
-        private ObservableCollection<UserTask> _serverTasks = new ObservableCollection<UserTask>();
+        private ObservableCollection<UserOcrTask> _serverTasks = new ObservableCollection<UserOcrTask>();
 
         // List of field-level tasks
-        private ObservableCollection<UserTask> _fieldLevelTasks = new ObservableCollection<UserTask>();
+        private ObservableCollection<UserOcrTask> _fieldLevelTasks = new ObservableCollection<UserOcrTask>();
 
-        public ObservableCollection<UserTask> UserTasks
+        public ObservableCollection<UserOcrTask> UserTasks
         {
             get
             {
@@ -69,7 +69,7 @@ namespace GuiTest
             }
         }
 
-        public ObservableCollection<UserTask> CompletedTasks
+        public ObservableCollection<UserOcrTask> CompletedTasks
         {
             get
             {
@@ -77,12 +77,12 @@ namespace GuiTest
             }
         }
 
-        public ObservableCollection<UserTask> ServerTasks
+        public ObservableCollection<UserOcrTask> ServerTasks
         {
             get { return _serverTasks; }
         }
 
-        public ObservableCollection<UserTask> FieldLevelTasks
+        public ObservableCollection<UserOcrTask> FieldLevelTasks
         {
             get { return _fieldLevelTasks; }
         }
@@ -139,7 +139,7 @@ namespace GuiTest
             {
                 ProcessingSettings settings = GetProcessingSettings();
 
-                UserTask task = new UserTask(filePath);
+                UserOcrTask task = new UserOcrTask(filePath);
                 task.TaskStatus = "Uploading";
                 task.OutputFilePath = System.IO.Path.Combine(
                     outputDir,
@@ -170,7 +170,7 @@ namespace GuiTest
                 }
 
 
-                UserTask task = new UserTask(filePath);
+                UserOcrTask task = new UserOcrTask(filePath);
                 task.TaskStatus = "Uploading";
                 task.OutputFilePath = System.IO.Path.Combine(
                     outputDir,
@@ -184,7 +184,7 @@ namespace GuiTest
             {
                 // Machine-readable zone recognition
 
-                UserTask task = new UserTask(filePath);
+                UserOcrTask task = new UserOcrTask(filePath);
                 task.TaskStatus = "Uploading";
                 task.OutputFilePath = System.IO.Path.Combine(
                     outputDir,
@@ -196,7 +196,7 @@ namespace GuiTest
         }
 
         // Move task from _userTasks to _completedTasks
-        void moveTaskToCompleted(UserTask task)
+        void moveTaskToCompleted(UserOcrTask task)
         {
             _userTasks.Remove(task);
             _completedTasks.Insert(0, task);
@@ -210,7 +210,7 @@ namespace GuiTest
         #region Async client callbacks
         private void UploadCompleted(object sender, UploadCompletedEventArgs e)
         {
-            UserTask task = e.UserState as UserTask;
+            UserOcrTask task = e.UserState as UserOcrTask;
             task.TaskStatus = "Processing";
 
             task.TaskId = e.Result.Id.ToString();
@@ -219,7 +219,7 @@ namespace GuiTest
 
         private void ProcessingCompleted(object sender, TaskEventArgs e)
         {
-            UserTask task = e.UserState as UserTask;
+            UserOcrTask task = e.UserState as UserOcrTask;
 
             if (task.SourceIsTempFile)
             {
@@ -259,7 +259,7 @@ namespace GuiTest
 
         private void DownloadCompleted(object sender, TaskEventArgs e)
         {
-            UserTask task = e.UserState as UserTask;
+            UserOcrTask task = e.UserState as UserOcrTask;
             if (e.Error != null)
             {
                 task.TaskStatus = "Downloading error";
@@ -282,15 +282,15 @@ namespace GuiTest
         {
             if (e.Error == null)
             {
-                Task[] serverTasks = e.Result;
+                OcrTask[] serverTasks = e.Result;
 
                 // move to ServerTasks collection
                 ServerTasks.Clear();
-                foreach (Task task in serverTasks.OrderByDescending(t => t.RegistrationTime))
+                foreach (OcrTask task in serverTasks.OrderByDescending(t => t.RegistrationTime))
                 {
-                    UserTask userTask = new UserTask(task);
+                    UserOcrTask ocrUserTask = new UserOcrTask(task);
 
-                    ServerTasks.Add(userTask);
+                    ServerTasks.Add(ocrUserTask);
                 }
             }
             else
@@ -375,7 +375,7 @@ namespace GuiTest
         {
             if( completedTaskList.SelectedItem == null )
                 return;
-            UserTask activeTaskItem = completedTaskList.SelectedItem as UserTask;
+            UserOcrTask activeTaskItem = completedTaskList.SelectedItem as UserOcrTask;
 
             if (System.IO.File.Exists(activeTaskItem.OutputFilePath))
             {
@@ -418,7 +418,7 @@ namespace GuiTest
 
             string outputDir = getOutputDir();
 
-            UserTask task = new UserTask(tempFilePath);
+            UserOcrTask task = new UserOcrTask(tempFilePath);
             task.TaskStatus = "Uploading";
             task.SourceIsTempFile = true;
             task.IsFieldLevel = true;
@@ -511,9 +511,9 @@ namespace GuiTest
     }
 
 
-    public class UserTask : INotifyPropertyChanged
+    public class UserOcrTask : INotifyPropertyChanged
     {
-        public UserTask(string filePath)
+        public UserOcrTask(string filePath)
         {
             SourceFilePath = filePath;
             TaskId = "<unknown>";
@@ -521,7 +521,7 @@ namespace GuiTest
             SourceIsTempFile = false;
         }
 
-        public UserTask(Task task)
+        public UserOcrTask(OcrTask task)
         {
             SourceFilePath = null;
             TaskId = task.Id.ToString();
