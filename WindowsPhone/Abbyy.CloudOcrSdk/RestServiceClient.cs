@@ -22,7 +22,7 @@ namespace Abbyy.CloudOcrSdk
         }
     }
 
-    public class Task
+    public class OcrSdkTask
     {
         public TaskId Id;
         public TaskStatus Status;
@@ -57,13 +57,13 @@ namespace Abbyy.CloudOcrSdk
         /// </summary>
         public string DownloadUrl = null;
 
-        public Task()
+        public OcrSdkTask()
         {
             Status = TaskStatus.Unknown;
             Id = new TaskId("<unknown>");
         }
 
-        public Task(TaskId id, TaskStatus status)
+        public OcrSdkTask(TaskId id, TaskStatus status)
         {
             Id = id;
             Status = status;
@@ -179,7 +179,7 @@ namespace Abbyy.CloudOcrSdk
         /// <param name="settings">Language and output format</param>
         /// <returns>Id of the task. Check task status to see if you have enough units to process the task</returns>
         /// <exception cref="ProcessingErrorException">thrown when something goes wrong</exception>
-        public Task ProcessImage(string filePath, ProcessingSettings settings)
+        public OcrSdkTask ProcessImage(string filePath, ProcessingSettings settings)
         {
             string url = String.Format("{0}/processImage?{1}", ServerUrl, settings.AsUrlParams);
 
@@ -196,7 +196,7 @@ namespace Abbyy.CloudOcrSdk
                 writeFileToRequest(filePath, request);
 
                 XDocument response = performRequest(request);
-                Task task = ServerXml.GetTaskStatus(response);
+                OcrSdkTask task = ServerXml.GetTaskStatus(response);
 
                 return task;
             }
@@ -206,7 +206,7 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
-        public Task GetTaskStatus(TaskId task)
+        public OcrSdkTask GetTaskStatus(TaskId task)
         {
             string url = String.Format("{0}/getTaskStatus?taskId={1}", ServerUrl,
                            Uri.EscapeDataString(task.ToString()));
@@ -214,11 +214,11 @@ namespace Abbyy.CloudOcrSdk
             WebRequest request = WebRequest.Create(url);
             setupGetRequest(url, request);
             XDocument response = performRequest(request);
-            Task serverTask = ServerXml.GetTaskStatus(response);
+            OcrSdkTask serverTask = ServerXml.GetTaskStatus(response);
             return serverTask;
         }
 
-        public void DownloadResult(Task task, string outputFile)
+        public void DownloadResult(OcrSdkTask task, string outputFile)
         {
             if (task.Status != TaskStatus.Completed)
             {
