@@ -18,7 +18,7 @@ namespace Abbyy.CloudOcrSdk
         }
     }
 
-    public class Task
+    public class OcrSdkTask
     {
         public TaskId Id;
         public TaskStatus Status;
@@ -58,13 +58,13 @@ namespace Abbyy.CloudOcrSdk
         /// </summary>
         public string Error = null;
 
-        public Task()
+        public OcrSdkTask()
         {
             Status = TaskStatus.Unknown;
             Id = new TaskId("<unknown>");
         }
 
-        public Task(TaskId id, TaskStatus status)
+        public OcrSdkTask(TaskId id, TaskStatus status)
         {
             Id = id;
             Status = status;
@@ -215,7 +215,7 @@ namespace Abbyy.CloudOcrSdk
         /// <param name="settings">Language and output format</param>
         /// <returns>Id of the task. Check task status to see if you have enough units to process the task</returns>
         /// <exception cref="ProcessingErrorException">thrown when something goes wrong</exception>
-        public Task ProcessImage(string filePath, ProcessingSettings settings)
+        public OcrSdkTask ProcessImage(string filePath, ProcessingSettings settings)
         {
             string url = String.Format("{0}/processImage?{1}", ServerUrl,  settings.AsUrlParams);
 
@@ -231,7 +231,7 @@ namespace Abbyy.CloudOcrSdk
                 writeFileToRequest(filePath, request);
 
                 XDocument response = performRequest(request);
-                Task task = ServerXml.GetTaskStatus(response);
+                OcrSdkTask task = ServerXml.GetTaskStatus(response);
 
                 return task;
             }
@@ -293,7 +293,7 @@ namespace Abbyy.CloudOcrSdk
         /// <param name="filePath">Path to an image to process</param>
         /// <param name="taskToAddFile">Id of multipage document. If null, a new document is created</param>
         /// <returns>Id of document to which image was added</returns>
-        public Task UploadAndAddFileToTask(string filePath, TaskId taskToAddFile )
+        public OcrSdkTask UploadAndAddFileToTask(string filePath, TaskId taskToAddFile )
         {
             string url = String.Format("{0}/submitImage", ServerUrl );
             if (taskToAddFile != null)
@@ -304,12 +304,12 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            Task task = ServerXml.GetTaskStatus(response);
+            OcrSdkTask task = ServerXml.GetTaskStatus(response);
 
             return task;
         }
 
-        public Task StartProcessingTask(TaskId taskId, ProcessingSettings settings)
+        public OcrSdkTask StartProcessingTask(TaskId taskId, ProcessingSettings settings)
         {
             string url = String.Format("{0}/processDocument?taskId={1}&{2}", ServerUrl, 
                 Uri.EscapeDataString( taskId.ToString() ),
@@ -323,7 +323,7 @@ namespace Abbyy.CloudOcrSdk
             // Build get request
             WebRequest request = createGetRequest(url);
             XDocument response = performRequest(request);
-            Task serverTask = ServerXml.GetTaskStatus(response);
+            OcrSdkTask serverTask = ServerXml.GetTaskStatus(response);
             return serverTask;
         }
 
@@ -332,7 +332,7 @@ namespace Abbyy.CloudOcrSdk
         /// Throws an exception if something goes wrong
         /// </summary>
         /// <returns>Id of created task</returns>
-        public Task ProcessTextField(string filePath, TextFieldProcessingSettings settings)
+        public OcrSdkTask ProcessTextField(string filePath, TextFieldProcessingSettings settings)
         {
             string url = String.Format("{0}/processTextField{1}", ServerUrl, settings.AsUrlParams);
 
@@ -341,7 +341,7 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            Task task = ServerXml.GetTaskStatus(response);
+            OcrSdkTask task = ServerXml.GetTaskStatus(response);
 
             return task;
         }
@@ -351,7 +351,7 @@ namespace Abbyy.CloudOcrSdk
         /// Throws an exception if something goes wrong
         /// </summary>
         /// <returns>Id of created task</returns>
-        public Task ProcessBarcodeField(string filePath, BarcodeFieldProcessingSettings settings)
+        public OcrSdkTask ProcessBarcodeField(string filePath, BarcodeFieldProcessingSettings settings)
         {
             string url = String.Format("{0}/processBarcodeField{1}", ServerUrl, settings.AsUrlParams);
 
@@ -360,12 +360,12 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            Task task = ServerXml.GetTaskStatus(response);
+            OcrSdkTask task = ServerXml.GetTaskStatus(response);
 
             return task;
         }
 
-        public Task ProcessCheckmarkField(string filePath, CheckmarkFieldProcessingSettings settings)
+        public OcrSdkTask ProcessCheckmarkField(string filePath, CheckmarkFieldProcessingSettings settings)
         {
             string url = String.Format("{0}/processCheckmarkField{1}", ServerUrl, settings.AsUrlParams);
 
@@ -374,12 +374,12 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            Task task = ServerXml.GetTaskStatus(response);
+            OcrSdkTask task = ServerXml.GetTaskStatus(response);
 
             return task;
         }
 
-        public Task ProcessBusinessCard(string filePath, BusCardProcessingSettings settings)
+        public OcrSdkTask ProcessBusinessCard(string filePath, BusCardProcessingSettings settings)
         {
             string url = String.Format("{0}/processBusinessCard?{1}", ServerUrl, settings.AsUrlParams);
 
@@ -388,7 +388,7 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            Task serverTask = ServerXml.GetTaskStatus(response);
+            OcrSdkTask serverTask = ServerXml.GetTaskStatus(response);
             return serverTask;
         }
 
@@ -397,7 +397,7 @@ namespace Abbyy.CloudOcrSdk
         /// </summary>
         /// <param name="task">Task created by UploadAndAddFileToTask method</param>
         /// <param name="settingsPath">Path to file with xml processing settings.</param>
-        public Task ProcessFields(Task task, string settingsPath)
+        public OcrSdkTask ProcessFields(OcrSdkTask task, string settingsPath)
         {
             if (!File.Exists(settingsPath))
                 throw new FileNotFoundException("Settings file doesn't exist.", settingsPath);
@@ -408,7 +408,7 @@ namespace Abbyy.CloudOcrSdk
             writeFileToRequest(settingsPath, request);
 
             XDocument response = performRequest(request);
-            Task result = ServerXml.GetTaskStatus(response);
+            OcrSdkTask result = ServerXml.GetTaskStatus(response);
 
             return result;
         }
@@ -416,14 +416,14 @@ namespace Abbyy.CloudOcrSdk
         /// <summary>
         /// Recognize Machine-Readable Zone of an official document (Passport, ID, Visa etc)
         /// </summary>
-        public Task ProcessMrz(string filePath)
+        public OcrSdkTask ProcessMrz(string filePath)
         {
             string url = String.Format("{0}/processMRZ", ServerUrl);
             WebRequest request = createPostRequest(url);
             writeFileToRequest(filePath, request);
 
             XDocument response = performRequest(request);
-            Task serverTask = ServerXml.GetTaskStatus(response);
+            OcrSdkTask serverTask = ServerXml.GetTaskStatus(response);
             return serverTask;
         }
 
@@ -456,7 +456,7 @@ namespace Abbyy.CloudOcrSdk
         /// </summary>
         /// <param name="task">Id of a task</param>
         /// <param name="outputFile">Path to save a file</param>
-        public void DownloadResult(Task task, string outputFile)
+        public void DownloadResult(OcrSdkTask task, string outputFile)
         {
             if (task.Status != TaskStatus.Completed)
             {
@@ -483,21 +483,21 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
-        public Task GetTaskStatus(TaskId task)
+        public OcrSdkTask GetTaskStatus(TaskId task)
         {
             string url = String.Format("{0}/getTaskStatus?taskId={1}", ServerUrl,
                 Uri.EscapeDataString(task.ToString()));
 
             WebRequest request = createGetRequest(url);
             XDocument response = performRequest(request);
-            Task serverTask = ServerXml.GetTaskStatus(response);
+            OcrSdkTask serverTask = ServerXml.GetTaskStatus(response);
             return serverTask;
         }
 
         /// <summary>
         /// List all tasks modified within last 7 days
         /// </summary>
-        public Task[] ListTasks()
+        public OcrSdkTask[] ListTasks()
         {
             DateTime now = DateTime.UtcNow;
             return ListTasks(now.AddDays(-7));
@@ -506,7 +506,7 @@ namespace Abbyy.CloudOcrSdk
         /// <summary>
         /// List all tasks which status changed since given UTC timestamp
         /// </summary>
-        public Task[] ListTasks( DateTime changedSince )
+        public OcrSdkTask[] ListTasks( DateTime changedSince )
         {
             string url = String.Format("{0}/listTasks?fromDate={1}", ServerUrl, 
                 Uri.EscapeDataString(changedSince.ToUniversalTime().ToString("s")+"Z"));
@@ -514,7 +514,7 @@ namespace Abbyy.CloudOcrSdk
             WebRequest request = createGetRequest(url);
             XDocument response = performRequest(request);
 
-            Task[] tasks = ServerXml.GetAllTasks(response);
+            OcrSdkTask[] tasks = ServerXml.GetAllTasks(response);
             return tasks;
         }
 
@@ -523,20 +523,20 @@ namespace Abbyy.CloudOcrSdk
         /// The tasks can be processed, failed, or not started becuase there is 
         /// not enough credits to process them.
         /// </summary>
-        public Task[] ListFinishedTasks()
+        public OcrSdkTask[] ListFinishedTasks()
         {
             string url = String.Format("{0}/listFinishedTasks", ServerUrl);
             WebRequest request = createGetRequest(url);
             XDocument response = performRequest(request);
 
-            Task[] tasks = ServerXml.GetAllTasks(response);
+            OcrSdkTask[] tasks = ServerXml.GetAllTasks(response);
             return tasks;
         }
 
         /// <summary>
         /// Delete task on a server. This function cannot delete tasks that are being processed.
         /// </summary>
-        public Task DeleteTask(Task task)
+        public OcrSdkTask DeleteTask(OcrSdkTask task)
         {
             switch (task.Status)
             {
@@ -550,7 +550,7 @@ namespace Abbyy.CloudOcrSdk
             WebRequest request = createGetRequest(url);
 
             XDocument response = performRequest(request);
-            Task serverTask = ServerXml.GetTaskStatus(response);
+            OcrSdkTask serverTask = ServerXml.GetTaskStatus(response);
             return serverTask;
         }
 
