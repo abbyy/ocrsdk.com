@@ -15,7 +15,7 @@ namespace Abbyy.CloudOcrSdk
             return new TaskId(id);
         }
 
-        public static Task GetTaskStatus(XDocument xml)
+        public static OcrTask GetTaskStatus(XDocument xml)
         {
             return getTaskInfo( xml.Root.Element("task") );
         }
@@ -43,13 +43,13 @@ namespace Abbyy.CloudOcrSdk
             }
         }
 
-        public static Task[] GetAllTasks(XDocument xml)
+        public static OcrTask[] GetAllTasks(XDocument xml)
         {
-            List<Task> result = new List<Task>();
+            List<OcrTask> result = new List<OcrTask>();
             XElement xResponse = xml.Root;
             foreach (XElement xTask in xResponse.Elements("task"))
             {
-                Task task = getTaskInfo(xTask);
+                OcrTask task = getTaskInfo(xTask);
                 result.Add(task);
             }
 
@@ -60,12 +60,12 @@ namespace Abbyy.CloudOcrSdk
         /// <summary>
         /// Get task data from xml node "task"
         /// </summary>
-        private static Task getTaskInfo(XElement xTask)
+        private static OcrTask getTaskInfo(XElement xTask)
         {
             TaskId id = new TaskId(xTask.Attribute("id").Value);
             TaskStatus status = statusFromString(xTask.Attribute("status").Value);
 
-            Task task = new Task();
+            OcrTask task = new OcrTask();
             task.Id = id;
             task.Status = status;
 

@@ -138,7 +138,7 @@ namespace ConsoleTest
         public void ProcessFile(string sourceFilePath, string outputFileBase, ProcessingSettings settings)
         {
             Console.WriteLine("Uploading..");
-            Task task = restClient.ProcessImage(sourceFilePath, settings);
+            OcrTask task = restClient.ProcessImage(sourceFilePath, settings);
 
             task = waitForTask(task);
 
@@ -170,7 +170,7 @@ namespace ConsoleTest
             Console.WriteLine(String.Format("Recognizing {0} images as a document",
                 sourceFiles.Length));
 
-            Task task = null;
+            OcrTask task = null;
             for (int fileIndex = 0; fileIndex < sourceFiles.Length; fileIndex++)
             {
                 string filePath = sourceFiles[fileIndex];
@@ -205,7 +205,7 @@ namespace ConsoleTest
         /// <summary>
         /// Wait until task finishes and download result
         /// </summary>
-        private void waitAndDownload(Task task, string outputFilePath)
+        private void waitAndDownload(OcrTask task, string outputFilePath)
         {
             task = waitForTask(task);
 
@@ -221,7 +221,7 @@ namespace ConsoleTest
             }
         }
 
-        private Task waitForTask(Task task)
+        private OcrTask waitForTask(OcrTask task)
         {
             Console.WriteLine(String.Format("Task status: {0}", task.Status));
             while (task.IsTaskActive())
@@ -243,7 +243,7 @@ namespace ConsoleTest
         public void ProcessTextField(string sourceFilePath, string outputFilePath, TextFieldProcessingSettings settings)
         {
             Console.WriteLine("Uploading..");
-            Task task = restClient.ProcessTextField(sourceFilePath, settings);
+            OcrTask task = restClient.ProcessTextField(sourceFilePath, settings);
 
             waitAndDownload(task, outputFilePath);
         }
@@ -251,7 +251,7 @@ namespace ConsoleTest
         public void ProcessFields(string sourceFilePath, string xmlSettingsPath, string outputFilePath)
         {
             Console.WriteLine("Uploading");
-            Task task = restClient.UploadAndAddFileToTask(sourceFilePath, null);
+            OcrTask task = restClient.UploadAndAddFileToTask(sourceFilePath, null);
             Console.WriteLine("Processing..");
             task = restClient.ProcessFields(task, xmlSettingsPath);
 
@@ -261,7 +261,7 @@ namespace ConsoleTest
         public void ProcessMrz(string sourceFilePath, string outputFilePath)
         {
             Console.WriteLine("Uploading");
-            Task task = restClient.ProcessMrz(sourceFilePath);
+            OcrTask task = restClient.ProcessMrz(sourceFilePath);
             Console.WriteLine("Processing..");
 
             waitAndDownload(task, outputFilePath);
