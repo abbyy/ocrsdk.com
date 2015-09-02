@@ -110,7 +110,7 @@ namespace CloudDemo
 
             // Download a file
             string outputPath = "result.txt";
-            Task task = e.Result;
+            OcrSdkTask task = e.Result;
             abbyyClient.DownloadFileAsync(task, outputPath, outputPath);
         }
 

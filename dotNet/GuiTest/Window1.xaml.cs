@@ -282,11 +282,11 @@ namespace GuiTest
         {
             if (e.Error == null)
             {
-                Task[] serverTasks = e.Result;
+                OcrSdkTask[] serverTasks = e.Result;
 
                 // move to ServerTasks collection
                 ServerTasks.Clear();
-                foreach (Task task in serverTasks.OrderByDescending(t => t.RegistrationTime))
+                foreach (OcrSdkTask task in serverTasks.OrderByDescending(t => t.RegistrationTime))
                 {
                     UserTask userTask = new UserTask(task);
 
@@ -521,7 +521,7 @@ namespace GuiTest
             SourceIsTempFile = false;
         }
 
-        public UserTask(Task task)
+        public UserTask(OcrSdkTask task)
         {
             SourceFilePath = null;
             TaskId = task.Id.ToString();
