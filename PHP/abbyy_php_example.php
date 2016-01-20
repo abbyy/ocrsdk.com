@@ -41,9 +41,13 @@
   curl_setopt($curlHandle, CURLOPT_POST, 1);
   curl_setopt($curlHandle, CURLOPT_USERAGENT, "PHP Cloud OCR SDK Sample");
   curl_setopt($curlHandle, CURLOPT_FAILONERROR, true);
-  $post_array = array(
-      "my_file"=>"@".$filePath,
-  );
+  $post_array = array();
+  if((version_compare(PHP_VERSION, '5.5') >= 0)) {
+    $post_array["my_file"] = new CURLFile($filePath);
+    curl_setopt($curlHandle, CURLOPT_SAFE_UPLOAD, true);
+  } else {
+    $post_array["my_file"] = "@".$filePath;
+  }
   curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $post_array); 
   $response = curl_exec($curlHandle);
   if($response == FALSE) {
