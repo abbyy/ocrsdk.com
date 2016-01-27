@@ -44,7 +44,6 @@
   $post_array = array();
   if((version_compare(PHP_VERSION, '5.5') >= 0)) {
     $post_array["my_file"] = new CURLFile($filePath);
-    curl_setopt($curlHandle, CURLOPT_SAFE_UPLOAD, true);
   } else {
     $post_array["my_file"] = "@".$filePath;
   }
