@@ -3,7 +3,7 @@ import java.util.*;
 
 public class CmdLineOptions {
 
-		/**
+	/**
 	 * Extract recognition language from command-line parameters. After
 	 * extraction parameter is removed
 	 * 
@@ -17,8 +17,8 @@ public class CmdLineOptions {
 			return lang;
 		}
 
-		System.out
-				.println("Warning! The document will be processed with English language.\n"
+		System.out.println(
+						"Warning! The document will be processed with English language.\n"
 						+ "To change this, specify --lang=<languages> option.\n");
 
 		return "English";
