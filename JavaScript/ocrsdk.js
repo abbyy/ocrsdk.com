@@ -234,7 +234,7 @@ ocrsdk.prototype._createTaskRequest = function(method, urlPath,
 			if (response.error != null) {
 				taskDataCallback(new Error(response.error.message), null);
 			} else {
-				taskDataCallback(new Error("Unknown server resonse"), null);
+				taskDataCallback(new Error("Unknown server response"), null);
 			}
 
 			return;
