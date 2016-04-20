@@ -208,7 +208,7 @@ ocrsdk.prototype._createTaskRequest = function(method, urlPath,
 	 * @param data	Server XML response.
 	 */
 	function parseXmlResponse(data) {
-		var response = new Object();
+		var response = null;
 
 		var parser = new xml2js.Parser({
 			explicitCharKey : false,
