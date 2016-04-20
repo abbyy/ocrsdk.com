@@ -232,7 +232,7 @@ ocrsdk.prototype._createTaskRequest = function(method, urlPath,
 		if (response.response == null || response.response.task == null
 				|| response.response.task[0] == null) {
 			if (response.error != null) {
-				taskDataCallback(new Error(response.error.message), null);
+				taskDataCallback(new Error(response.error.message[0]['_']), null);
 			} else {
 				taskDataCallback(new Error("Unknown server response"), null);
 			}
