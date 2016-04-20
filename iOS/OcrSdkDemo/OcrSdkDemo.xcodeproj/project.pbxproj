@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		35F7EBE81CC78E5400979EAD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35F7EBE71CC78E5400979EAD /* Default-568h@2x.png */; };
 		492386421640113700D178F6 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 4923863F1640113700D178F6 /* NSData+Base64.m */; };
 		492386431640113700D178F6 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 492386411640113700D178F6 /* NSString+Base64.m */; };
 		49A5F1B11700AC020052CF10 /* ActivationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A5F1B01700AC020052CF10 /* ActivationInfo.m */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		35F7EBE71CC78E5400979EAD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		4923863E1640113700D178F6 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		4923863F1640113700D178F6 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		492386401640113700D178F6 /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Base64.h"; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 		49B675A2148604A600F853E4 = {
 			isa = PBXGroup;
 			children = (
+				35F7EBE71CC78E5400979EAD /* Default-568h@2x.png */,
 				49B675B7148604A700F853E4 /* OcrSdkDemo */,
 				49B675B0148604A700F853E4 /* Frameworks */,
 				49B675AE148604A700F853E4 /* Products */,
@@ -215,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49B676071486614300F853E4 /* InfoPlist.strings in Resources */,
+				35F7EBE81CC78E5400979EAD /* Default-568h@2x.png in Resources */,
 				49B676081486614300F853E4 /* MainStoryboard.storyboard in Resources */,
 				49B676091486614300F853E4 /* sample.jpg in Resources */,
 			);
