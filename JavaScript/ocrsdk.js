@@ -182,7 +182,7 @@ ocrsdk.prototype.downloadResult = function(resultUrl, outputFilePath,
 		});
 	});
 
-	req.on('error', function(e) {
+	req.on('error', function(error) {
 		userCallback(error);
 	});
 
