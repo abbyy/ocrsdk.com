@@ -162,9 +162,8 @@ public class Client {
 		}
 
 		URL url = new URL(task.DownloadUrl);
-		URLConnection connection = url.openConnection(); // do not use
-															// authenticated
-															// connection
+		// do not use authenticated connection
+		URLConnection connection = url.openConnection();
 
 		BufferedInputStream reader = new BufferedInputStream(
 				connection.getInputStream());
@@ -187,9 +186,8 @@ public class Client {
 		}
 
 		URL url = new URL(task.DownloadUrl);
-		URLConnection connection = url.openConnection(); // do not use
-															// authenticated
-															// connection
+		// do not use authenticated connection
+		URLConnection connection = url.openConnection();
 
 		BufferedInputStream reader = new BufferedInputStream(
 				connection.getInputStream());
