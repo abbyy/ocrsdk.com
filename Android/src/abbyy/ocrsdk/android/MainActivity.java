@@ -6,16 +6,10 @@ import android.view.Menu;
 
 import android.net.*;
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.view.Menu;
 import android.view.View;
 
 public class MainActivity extends Activity {
