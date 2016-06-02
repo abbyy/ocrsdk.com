@@ -554,22 +554,6 @@ namespace Abbyy.CloudOcrSdk
             return serverTask;
         }
 
-        /// <summary>
-        /// Activate application on a new mobile device
-	    /// </summary>
-        /// <param name="deviceId">string that uniquely identifies current device</param>
-        /// <returns>string that should be added to application id for all API calls</returns>
-        public string ActivateNewInstallation(string deviceId)
-        {
-            string url = String.Format("{0}/activateNewInstallation?deviceId={1}", ServerUrl, Uri.EscapeDataString(deviceId));
-            WebRequest request = createGetRequest(url);
-
-            XDocument response = performRequest(request);
-            string installationId = response.Root.Elements().First().Value;
-
-            return installationId;
-        }
-
         #region Request management functions
 
         private static void copyStream(Stream input, Stream output)
