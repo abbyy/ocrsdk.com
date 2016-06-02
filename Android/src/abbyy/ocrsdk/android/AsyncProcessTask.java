@@ -6,7 +6,6 @@ import com.abbyy.ocrsdk.*;
 
 import android.app.*;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
@@ -54,27 +53,6 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 			restClient.applicationId = "<your app_id>";
 			// You should get e-mail from ABBYY Cloud OCR SDK service with the application password
 			restClient.password = "<your app_password>";
-			
-			// Obtain installation id when running the application for the first time
-			SharedPreferences settings = activity.getPreferences(Activity.MODE_PRIVATE);
-			String instIdName = "installationId";
-			if( !settings.contains(instIdName)) {
-				// Get installation id from server using device id
-				String deviceId = android.provider.Settings.Secure.getString(activity.getContentResolver(), 
-						android.provider.Settings.Secure.ANDROID_ID);
-				
-				// Obtain installation id from server
-				publishProgress( "First run: obtaining installation id..");
-				String installationId = restClient.activateNewInstallation(deviceId);
-				publishProgress( "Done. Installation id is '" + installationId + "'");
-				
-				SharedPreferences.Editor editor = settings.edit();
-				editor.putString(instIdName, installationId);
-				editor.commit();
-			} 
-			
-			String installationId = settings.getString(instIdName, "");
-			restClient.applicationId += installationId;
 			
 			publishProgress( "Uploading image...");
 			
