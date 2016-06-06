@@ -61,20 +61,6 @@ static NSString* MyPassword = @"my_password";
 	Client *client = [[Client alloc] initWithApplicationID:MyApplicationID password:MyPassword];
 	[client setDelegate:self];
 	
-	if([[NSUserDefaults standardUserDefaults] stringForKey:@"installationID"] == nil) {
-		NSString* deviceID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-		
-		NSLog(@"First run: obtaining installation ID..");
-		NSString* installationID = [client activateNewInstallation:deviceID];
-		NSLog(@"Done. Installation ID is \"%@\"", installationID);
-		
-		[[NSUserDefaults standardUserDefaults] setValue:installationID forKey:@"installationID"];
-	}
-	
-	NSString* installationID = [[NSUserDefaults standardUserDefaults] stringForKey:@"installationID"];
-	
-	client.applicationID = [client.applicationID stringByAppendingString:installationID];
-	
 	ProcessingParams* params = [[ProcessingParams alloc] init];
 	
 	[client processImage:image withParams:params];

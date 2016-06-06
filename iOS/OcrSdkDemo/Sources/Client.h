@@ -11,13 +11,11 @@
 @property (strong, nonatomic) NSString* applicationID;
 @property (strong, nonatomic) NSString* password;
 
-@property (strong, nonatomic) NSString* installationID;
 
 @property (assign) id<ClientDelegate> delegate;
 
 - (id)initWithApplicationID:(NSString*)applicationID password:(NSString*)password;
 
-- (NSString*)activateNewInstallation:(NSString*)deviceID;
 - (void)processImage:(UIImage*)image withParams:(ProcessingParams*)params;
 
 @end

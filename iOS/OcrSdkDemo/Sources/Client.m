@@ -1,15 +1,12 @@
 #import "Client.h"
 #import "ProcessingOperation.h"
 #import "Task.h"
-#import "ActivationInfo.h"
 #import "NSString+Base64.h"
 
 @implementation Client
 
 @synthesize applicationID = _applicationID;
 @synthesize password = _password;
-
-@synthesize installationID = _installationID;
 
 @synthesize delegate = _delegate;
 
@@ -35,35 +32,6 @@
 	NSString *encodedCredentials = [[NSString stringWithFormat:@"%@:%@", self.applicationID, self.password] base64EncodedString];
 	
 	return [NSString stringWithFormat:@"Basic %@", encodedCredentials];
-}
-
-- (NSString*)activateNewInstallation:(NSString*)deviceID
-{
-	NSString* installationID;
-	
-	NSURL* activationURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://cloud.ocrsdk.com/activateNewInstallation?deviceId=%@", deviceID]];
-	
-	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:activationURL];
-	[request setValue:[self authString] forHTTPHeaderField:@"Authorization"];
-	
-	NSError* error;
-	
-	NSData* responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:0 error:&error];
-	
-	if(error == nil) {
-		ActivationInfo* info = [[ActivationInfo alloc] initWithData:responseData];
-		installationID = info.installationID;
-	} else {
-		UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error"
-														message:[error localizedDescription]
-													   delegate:nil
-											  cancelButtonTitle:@"Ok"
-											  otherButtonTitles:nil, nil];
-		
-		[alert show];
-	}
-	
-	return installationID;
 }
 
 - (void)processImage:(UIImage*)image withParams:(ProcessingParams*)params
