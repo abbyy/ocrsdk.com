@@ -4,15 +4,6 @@
 @implementation ImageViewController
 @synthesize imageView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)didReceiveMemoryWarning
 {
     // Releases the view if it doesn't have a superview.
@@ -38,15 +29,6 @@
     [super viewDidLoad];
 }
 
-
-- (void)viewDidUnload
-{
-	[self setImageView:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
@@ -61,14 +43,14 @@
 
 	imagePicker.delegate = self;
 	
-	[self presentModalViewController:imagePicker animated:YES];
+	[self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
 	UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 	
-    [picker dismissModalViewControllerAnimated:YES];
+	[picker dismissViewControllerAnimated:YES completion:nil];
 	
 	self.imageView.image = image;
 	[(AppDelegate*)[[UIApplication sharedApplication] delegate] setImageToProcess:image];

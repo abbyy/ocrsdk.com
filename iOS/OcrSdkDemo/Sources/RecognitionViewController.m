@@ -32,16 +32,6 @@ static NSString* MyPassword = @"my_password";
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)viewDidUnload
-{
-	[self setTextView:nil];
-	[self setStatusLabel:nil];
-	[self setStatusIndicator:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
 	textView.hidden = YES;

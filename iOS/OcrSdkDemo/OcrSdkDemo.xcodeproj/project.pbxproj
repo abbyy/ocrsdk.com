@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,6 +23,8 @@
 		49B676071486614300F853E4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49B676031486614300F853E4 /* InfoPlist.strings */; };
 		49B676081486614300F853E4 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49B676041486614300F853E4 /* MainStoryboard.storyboard */; };
 		49B676091486614300F853E4 /* sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 49B676051486614300F853E4 /* sample.jpg */; };
+		4C7A4E131CFD9F1600DBC012 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C7A4E121CFD9F1600DBC012 /* Assets.xcassets */; };
+		4C7A4E151CFDA11500DBC012 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C7A4E141CFDA11500DBC012 /* LaunchScreen.storyboard */; };
 		E52F4996148666A000DB5C75 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E52F4995148666A000DB5C75 /* ImageViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +57,8 @@
 		49B676031486614300F853E4 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = Resources/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		49B676041486614300F853E4 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MainStoryboard.storyboard; path = Resources/MainStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
 		49B676051486614300F853E4 /* sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sample.jpg; path = Resources/sample.jpg; sourceTree = SOURCE_ROOT; };
+		4C7A4E121CFD9F1600DBC012 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4C7A4E141CFDA11500DBC012 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Resources/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		E52F4994148666A000DB5C75 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageViewController.h; path = Sources/ImageViewController.h; sourceTree = SOURCE_ROOT; };
 		E52F4995148666A000DB5C75 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageViewController.m; path = Sources/ImageViewController.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -124,9 +128,11 @@
 		49B675E8148647DD00F853E4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4C7A4E121CFD9F1600DBC012 /* Assets.xcassets */,
 				49B676021486614300F853E4 /* Info.plist */,
 				49B676031486614300F853E4 /* InfoPlist.strings */,
 				49B676041486614300F853E4 /* MainStoryboard.storyboard */,
+				4C7A4E141CFDA11500DBC012 /* LaunchScreen.storyboard */,
 				49B676051486614300F853E4 /* sample.jpg */,
 			);
 			name = Resources;
@@ -184,11 +190,11 @@
 		49B675A4148604A600F853E4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = ABBYY;
 			};
 			buildConfigurationList = 49B675A7148604A600F853E4 /* Build configuration list for PBXProject "OcrSdkDemo" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -210,7 +216,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				49B676071486614300F853E4 /* InfoPlist.strings in Resources */,
+				4C7A4E131CFD9F1600DBC012 /* Assets.xcassets in Resources */,
 				49B676081486614300F853E4 /* MainStoryboard.storyboard in Resources */,
+				4C7A4E151CFDA11500DBC012 /* LaunchScreen.storyboard in Resources */,
 				49B676091486614300F853E4 /* sample.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -243,12 +251,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -256,10 +273,15 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -268,14 +290,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -287,10 +321,16 @@
 		49B675CC148604A700F853E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sources/OcrSdkDemo-Prefix.pch";
 				INFOPLIST_FILE = Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abbyy.OcrSdkDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -298,10 +338,16 @@
 		49B675CD148604A700F853E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sources/OcrSdkDemo-Prefix.pch";
 				INFOPLIST_FILE = Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abbyy.OcrSdkDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
