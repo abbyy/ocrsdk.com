@@ -38,7 +38,7 @@
 {		
 	NSParameterAssert(image);
 	
-	NSURL* processingURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://cloud.ocrsdk.com/processImage?%@", [params urlString]]];
+	NSURL* processingURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://cloud.ocrsdk.com/processImage?%@", [params urlString]]];
 	
 	NSMutableURLRequest* processingRequest = [NSMutableURLRequest requestWithURL:processingURL];
 	
@@ -73,7 +73,7 @@
 		NSParameterAssert(task);
 		NSParameterAssert(task.ID);
 		
-		NSURL* processingURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://cloud.ocrsdk.com/getTaskStatus?taskId=%@", task.ID]];
+		NSURL* processingURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://cloud.ocrsdk.com/getTaskStatus?taskId=%@", task.ID]];
 		
 		NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:processingURL];
 		
