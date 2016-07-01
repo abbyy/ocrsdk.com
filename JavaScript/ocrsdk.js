@@ -1,4 +1,4 @@
-if (typeof process == 'undefined' || process.argv[0] != "node") {
+if (((typeof process) == 'undefined') || ((typeof window) != 'undefined')) {
 	throw new Error("This code must be run on server side under NodeJS");
 }
 
