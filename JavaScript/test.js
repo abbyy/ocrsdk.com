@@ -1,6 +1,6 @@
 // Demo sample using ABBYY Cloud OCR SDK from Node.js
 
-if (typeof process == 'undefined' || process.argv[0] != "node") {
+if (((typeof process) == 'undefined') || ((typeof window) != 'undefined')) {
 	throw new Error("This code must be run on server side under NodeJS");
 }
 
