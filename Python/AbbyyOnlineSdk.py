@@ -67,9 +67,11 @@ class AbbyyOnlineSdk:
 		return task
 
 	def DownloadResult( self, task, outputPath ):
-		getResultParams = urllib.urlencode( { "taskId" : task.Id } )
-		getResultUrl = self.ServerUrl + "getResult?" + getResultParams
-		request = urllib2.Request( getResultUrl, None, self.buildAuthInfo() )
+		getResultUrl = task.DownloadUrl
+		if getResultUrl == None :
+			print "No download URL found"
+			return
+		request = urllib2.Request( getResultUrl )
 		fileResponse = self.getOpener().open( request ).read()
 		resultFile = open( outputPath, "wb" )
 		resultFile.write( fileResponse )
