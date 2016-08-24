@@ -15,6 +15,8 @@
   $password = 'my_application_password';
   $fileName = 'myfile.jpg';
 
+  $serviceUrl = 'http://cloud.ocrsdk.com';
+
   // Get path to file that we are going to recognize
   $local_directory=dirname(__FILE__).'/images/';
   $filePath = $local_directory.'/'.$fileName;
@@ -31,7 +33,7 @@
   // You can use combination of languages like ?language=english,russian or
   // ?language=english,french,dutch
   // For details, see API reference for processImage method
-  $url = 'http://cloud.ocrsdk.com/processImage?language=english&exportFormat=rtf';
+  $url = $serviceUrl.'/processImage?language=english&exportFormat=rtf';
   
   // Send HTTP POST request and ret xml response
   $curlHandle = curl_init();
@@ -79,7 +81,7 @@
   // 5. If response contains "Completed" staus - extract url with result
   // 6. Download recognition result (text) and display it
 
-  $url = 'http://cloud.ocrsdk.com/getTaskStatus';
+  $url = $serviceUrl.'/getTaskStatus';
   $qry_str = "?taskid=$taskid";
 
   // Check task status in a loop until it is finished
