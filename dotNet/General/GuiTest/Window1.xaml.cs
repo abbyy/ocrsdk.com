@@ -245,9 +245,19 @@ namespace GuiTest
                 return;
             }
 
-            if (e.Result.Status != TaskStatus.Completed)
+            if (e.Result.Status == TaskStatus.ProcessingFailed)
             {
                 task.TaskStatus = "Internal server error";
+                task.OutputFilePath = "<error>";
+                task.ErrorMessage = e.Result.Error;
+                moveTaskToCompleted(task);
+                return;
+            }
+
+            if (e.Result.Status != TaskStatus.Completed)
+            {
+                task.TaskStatus = task.ErrorMessage = e.Result.Status.ToString();
+                task.OutputFilePath = "<error>";
                 moveTaskToCompleted(task);
                 return;
             }
