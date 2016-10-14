@@ -41,6 +41,10 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 	if task == None:
 		print "Error"
 		return
+	if task.Status == "NotEnoughCredits" :
+		print "Not enough credits to process the document. Please add more pages to your application's account."
+		return
+
 	print "Id = %s" % task.Id
 	print "Status = %s" % task.Status
 
