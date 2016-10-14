@@ -59,6 +59,11 @@ class AbbyyOnlineSdk:
 		return task
 
 	def GetTaskStatus( self, task ):
+		if task.Id.find( '00000000-0' ) != -1 :
+			#GUID_NULL is being passed. This may be caused by a logical error in the calling code
+			print "Null task id passed"
+			return None
+
 		urlParams = urllib.urlencode( { "taskId" : task.Id } )
 		statusUrl = self.ServerUrl + "getTaskStatus?" + urlParams
 		request = urllib2.Request( statusUrl, None, self.buildAuthInfo() )
