@@ -38,9 +38,9 @@
 {		
 	NSParameterAssert(image);
 	
-	NSURL* processingURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://cloud.ocrsdk.com/processImage?%@", [params urlString]]];
+	NSURL* processImageURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://cloud.ocrsdk.com/processImage?%@", [params urlString]]];
 	
-	NSMutableURLRequest* processingRequest = [NSMutableURLRequest requestWithURL:processingURL];
+	NSMutableURLRequest* processingRequest = [NSMutableURLRequest requestWithURL:processImageURL];
 	
 	[processingRequest setHTTPMethod:@"POST"];
 	[processingRequest setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
@@ -73,9 +73,9 @@
 		NSParameterAssert(task);
 		NSParameterAssert(task.ID);
 		
-		NSURL* processingURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://cloud.ocrsdk.com/getTaskStatus?taskId=%@", task.ID]];
+		NSURL* getTaskStatusURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://cloud.ocrsdk.com/getTaskStatus?taskId=%@", task.ID]];
 		
-		NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:processingURL];
+		NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:getTaskStatusURL];
 		
 		[request setValue:[self authString] forHTTPHeaderField:@"Authorization"];
 		
