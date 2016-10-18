@@ -5,8 +5,8 @@
 @interface HTTPOperation : NSObject<NSURLConnectionDelegate, NSURLConnectionDataDelegate> {
 	id _target;
 	SEL _action;
-	NSThread* _targetTherad;
-	NSMutableData* _recievedData;
+	NSThread* _targetThread;
+	NSMutableData* _receivedData;
 	
 	NSURLConnection* _connection;
 	
@@ -14,7 +14,7 @@
 }
 
 @property (strong) NSURLRequest* request;
-@property (strong, readonly) NSData* recievedData;
+@property (strong, readonly) NSData* receivedData;
 @property (strong, readonly) NSError* error;
 
 @property (readonly) BOOL isCanceled;

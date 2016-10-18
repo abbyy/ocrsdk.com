@@ -3,7 +3,7 @@
 @implementation HTTPOperation
 
 @synthesize request = _request;
-@synthesize recievedData = _recievedData;
+@synthesize receivedData = _receivedData;
 @synthesize error = _error;
 
 @synthesize isCanceled = _canceled;
@@ -18,12 +18,12 @@
 		self.request = request;
 	
 		_target = target;
-		_targetTherad = [NSThread currentThread];
+		_targetThread = [NSThread currentThread];
 		
 		_action = action;
 		
 		
-		_recievedData = [NSMutableData data];
+		_receivedData = [NSMutableData data];
 	}
 	
 	return self;
@@ -53,7 +53,7 @@
 	_error = error;
 	
 	if (!self.isCanceled) {
-		[_target performSelector:_action onThread:_targetTherad withObject:self waitUntilDone:NO];
+		[_target performSelector:_action onThread:_targetThread withObject:self waitUntilDone:NO];
 	}
 }
 
@@ -90,12 +90,12 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-	[_recievedData setLength:0];
+	[_receivedData setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-	[_recievedData appendData:data];
+	[_receivedData appendData:data];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection

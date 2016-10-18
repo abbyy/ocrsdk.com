@@ -68,7 +68,7 @@
 			[self.delegate clientDidFinishUpload:self];
 		}
 		
-		Task* task = [[Task alloc] initWithData:operation.recievedData];
+		Task* task = [[Task alloc] initWithData:operation.receivedData];
 		
 		NSParameterAssert(task);
 		NSParameterAssert(task.ID);
@@ -95,7 +95,7 @@
 			[self.delegate client:self didFailedWithError:operation.error];
 		}
 	} else {
-		Task* task = [[Task alloc] initWithData:operation.recievedData];
+		Task* task = [[Task alloc] initWithData:operation.receivedData];
 		
 		if ([self.delegate respondsToSelector:@selector(clientDidFinishProcessing:)]) {
 			[self.delegate clientDidFinishProcessing:self];
@@ -121,7 +121,7 @@
 			[self.delegate client:self didFailedWithError:operation.error];
 		}
 	} else if ([self.delegate respondsToSelector:@selector(client:didFinishDownloadData:)]) {
-		[self.delegate client:self didFinishDownloadData:operation.recievedData];
+		[self.delegate client:self didFinishDownloadData:operation.receivedData];
 	}
 }
 

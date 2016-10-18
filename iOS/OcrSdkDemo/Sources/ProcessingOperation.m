@@ -6,7 +6,7 @@
 - (void)finishWithError:(NSError*)error
 {		
 	if (error == nil) {
-		Task* task = [[Task alloc] initWithData:self.recievedData];
+		Task* task = [[Task alloc] initWithData:self.receivedData];
 	
 		if ([task isActive]) {
 			NSLog(@"Waiting for image processing complete...");
