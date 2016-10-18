@@ -290,7 +290,7 @@ ProcessingSettings.prototype.asUrlParams = function() {
 	}
 
 	if (this.customOptions.length != 0) {
-		result += '?' + this.customOptions;
+		result += '&' + this.customOptions;
 	}
 
 	return result;
