@@ -254,6 +254,12 @@ namespace Abbyy.CloudOcrSdk
                 {
                     // try extract the user-friendly text that might have been supplied
                     // by the service.
+                    if (result == null)
+                    {
+                        // This often indicates protocol level problems,
+                        // no response is such cases is usual.
+                        return null;
+                    }
                     try
                     {
                         using (Stream stream = result.GetResponseStream())
