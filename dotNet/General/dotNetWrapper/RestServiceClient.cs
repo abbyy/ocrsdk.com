@@ -262,15 +262,12 @@ namespace Abbyy.CloudOcrSdk
                     }
                     try
                     {
-                        using (Stream stream = result.GetResponseStream())
+                        XDocument responseXml = parseAsXml(result);
+                        XElement messageElement = responseXml.Root.Element("message");
+                        String serviceMessage = messageElement.Value;
+                        if (!String.IsNullOrEmpty(serviceMessage))
                         {
-                            XDocument responseXml = XDocument.Load( new XmlTextReader( stream ) );
-                            XElement messageElement = responseXml.Root.Element("message");
-                            String serviceMessage = messageElement.Value;
-                            if (!String.IsNullOrEmpty(serviceMessage))
-                            {
-                                return serviceMessage;
-                            }
+                            return serviceMessage;
                         }
                     } catch
                     {
@@ -291,6 +288,18 @@ namespace Abbyy.CloudOcrSdk
             {
             }
             return null;
+        }
+
+        private static XDocument parseAsXml(HttpWebResponse response)
+        {
+            using (Stream stream = response.GetResponseStream())
+            {
+                using (var reader = new XmlTextReader(stream))
+                {
+                    XDocument responseXml = XDocument.Load(reader);
+                    return responseXml;
+                }
+            }
         }
 
         /// <summary>
@@ -576,10 +585,7 @@ namespace Abbyy.CloudOcrSdk
         {
             using (HttpWebResponse result = (HttpWebResponse)request.GetResponse())
             {
-                using (Stream stream = result.GetResponseStream())
-                {
-                    return XDocument.Load( new XmlTextReader( stream ) );
-                }
+                return parseAsXml(result);
             }
         }
 
