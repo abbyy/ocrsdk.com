@@ -97,6 +97,24 @@
 	} else {
 		Task* task = [[Task alloc] initWithData:operation.receivedData];
 		
+		if (!task) {
+			NSError* error = [NSError errorWithDomain:@"ABBYYOcr" code:0 userInfo:@{NSLocalizedDescriptionKey:@"Response parse failed"}];
+			
+			if ([self.delegate respondsToSelector:@selector(client:didFailedWithError:)]) {
+				[self.delegate client:self didFailedWithError:error];
+			}
+			return;
+		}
+		
+		if (task.status != Completed) {
+			NSError* error = [NSError errorWithDomain:@"ABBYYOcr" code:0 userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Unexpected task state %d", task.status]}];
+			
+			if ([self.delegate respondsToSelector:@selector(client:didFailedWithError:)]) {
+				[self.delegate client:self didFailedWithError:error];
+			}
+			return;
+		}
+		
 		if ([self.delegate respondsToSelector:@selector(clientDidFinishProcessing:)]) {
 			[self.delegate clientDidFinishProcessing:self];
 		}
