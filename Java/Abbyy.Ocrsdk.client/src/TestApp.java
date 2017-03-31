@@ -48,6 +48,8 @@ public class TestApp {
 				performFieldsRecognition(argList);
 			} else if (mode.equalsIgnoreCase("MRZ")) {
 				performMrzRecognition(argList);
+			} else if (mode.equalsIgnoreCase("receipt")) {
+				performReceiptProcessing(argList);
 			} else {
 				System.out.println("Unknown mode: " + mode);
 				return;
@@ -98,9 +100,12 @@ public class TestApp {
 						+ "6. Machine-Readable Zones (MRZ) of Passports, ID cards, Visas and other official documents\n"
 						+ "  java TestApp MRZ image.jpg result.xml\n"
 						+ "\n"
+						+ "7. Receipts\n"
+						+ "  java TestApp receipt image.jpg result.xml\n"
+						+ "\n"
 						+ "For detailed help, call\n"
 						+ "  java TestApp help <mode>\n"
-						+ "where <mode> is one of: recognize, busCard, textField, barcode, checkmark, processFields");
+						+ "where <mode> is one of: recognize, busCard, textField, barcode, checkmark, processFields, MRZ, receipt");
 	}
 
 	/**
@@ -119,6 +124,8 @@ public class TestApp {
 			displayProcessFieldsHelp();
 		} else if (mode.equalsIgnoreCase("MRZ")) {
 			displayProcessMrzHelp();
+		} else if (mode.equalsIgnoreCase("receipt")) {
+			displayProcessReceiptHelp();
 		} else {
 			System.out.println("Unknown processing mode.");
 		}
@@ -232,6 +239,31 @@ public class TestApp {
 		System.out.println("Uploading..");
 		Task task = restClient.processBusinessCard(argList.elementAt(0),
 				settings);
+		waitAndDownloadResult(task, outputPath);
+	}
+	
+	/**
+	 * Perform receipt processing.
+	 * 
+	 * Recognized result will be saved as XML
+	 */
+	private static void performReceiptProcessing(Vector<String> argList)
+			throws Exception {
+		String receiptCountry = CmdLineOptions.extractReceiptCountry(argList);
+		String outputPath = argList.lastElement();
+		argList.remove(argList.size() - 1);
+		// argList now contains list of source images to process
+
+		ReceiptSettings settings = new ReceiptSettings();
+		settings.setReceiptCountry(receiptCountry);
+
+		if (argList.size() != 1) {
+			System.out.println("Invalid number of files to process.");
+			return;
+		}
+
+		System.out.println("Uploading..");
+		Task task = restClient.processReceipt(argList.elementAt(0), settings);
 		waitAndDownloadResult(task, outputPath);
 	}
 
@@ -370,6 +402,13 @@ public class TestApp {
 						+ "Both 2 and 3-line MRZ are supported."
 						+ "\n" + "Usage:\n"
 						+ "java TestApp MRZ <file> <output file.xml>\n" + "\n");
+	}
+	
+	private static void displayProcessReceiptHelp() {
+		System.out
+				.println("Process receipt\n"
+						+ "\n" + "Usage:\n"
+						+ "java TestApp receipt <file> <output file.xml>\n" + "\n");
 	}
 	
 	private static void performMrzRecognition(Vector<String> argList)
