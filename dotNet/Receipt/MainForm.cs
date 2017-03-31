@@ -1194,15 +1194,16 @@ namespace Sample
                         {
                             if (vendorNode.Name == "name")
                             {
-                                // classifiedValue has more priority
-                                if (String.IsNullOrEmpty(vendorNode["classifiedValue"].InnerText))
+                                // classifiedValue has higher priority
+                                XmlElement classifiedValueElement = vendorNode["classifiedValue"];
+                                if (classifiedValueElement == null || String.IsNullOrEmpty(classifiedValueElement.InnerText))
                                 {
                                     XmlNode vendorNameNode = vendorNode["recognizedValue"];
                                     vendorNameLabel.Text = vendorNameNode["text"].InnerText;
                                 }
                                 else
                                 {
-                                    vendorNameLabel.Text = vendorNode["classifiedValue"].InnerText;
+                                    vendorNameLabel.Text = classifiedValueElement.InnerText;
                                 }
                             }
                             else if (vendorNode.Name == "address")
