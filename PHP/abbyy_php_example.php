@@ -82,6 +82,14 @@
   // 6. Download recognition result (text) and display it
 
   $url = $serviceUrl.'/getTaskStatus';
+  // Note: a logical error in more complex surrounding code can cause
+  // a situation where the code below tries to prepare for getTaskStatus request
+  // while not having a valid task id. Such request would fail anyway.
+  // It's highly recommended that you have an explicit task id validity check
+  // right before preparing a getTaskStatus request.
+  if(empty($taskId) || (strpos($taskId, "00000000-0") !== false)) {
+    die("Invalid task id used when preparing getTaskStatus request");
+  }
   $qry_str = "?taskid=$taskid";
 
   // Check task status in a loop until it is finished

@@ -84,6 +84,14 @@ while task_status == "InProgress" or task_status == "Queued" do
     sleep(5)
   
     # Call the getTaskStatus function (see http://ocrsdk.com/documentation/apireference/getTaskStatus)
+
+    # Note: a logical error in more complex surrounding code can cause
+    # a situation where the code below tries to prepare for getTaskStatus request
+    # while not having a valid task id. Such request would fail anyway.
+    # It's highly recommended that you have an explicit task id validity check
+    # right before preparing a getTaskStatus request.
+    raise "Invalid task id used when preparing getTaskStatus request"\
+      if ((!(defined? task_id)) || task_id.nil? ||task_id.empty?|| (task_id.include? "00000000-0"))
     response = RestClient.get("#{BASE_URL}/getTaskStatus?taskid=#{task_id}")
   rescue RestClient::ExceptionWithResponse => e
     # Show getTaskStatus errors
