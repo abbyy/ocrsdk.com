@@ -87,7 +87,7 @@
   // while not having a valid task id. Such request would fail anyway.
   // It's highly recommended that you have an explicit task id validity check
   // right before preparing a getTaskStatus request.
-  if(empty($taskId) || (strpos($taskId, "00000000-0") !== false)) {
+  if(empty($taskid) || (strpos($taskid, "00000000-0") !== false)) {
     die("Invalid task id used when preparing getTaskStatus request");
   }
   $qry_str = "?taskid=$taskid";
