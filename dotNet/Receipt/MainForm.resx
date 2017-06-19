@@ -121,7 +121,7 @@
     <value>17, 17</value>
   </metadata>
   <data name="openFileDialog.Filter" xml:space="preserve">
-    <value>Common Image Files|*.bmp;*.gif;*.jb2;*.jfif;*.jpg;*.jpeg;*.jp2;*.png;*.tif;*.tiff|Bitmap Files|*.bmp|GIF Files|*.gif|JBIG2 Files|*.jb2|JPEG Files|*.jpg;*.jpeg;*.jfif|JPEG 2000 Files|*.jp2|PNG Files|*.png|TIFF Files|*.tif;*.tiff</value>
+    <value>Common Image Files|*.bmp;*.gif;*.jb2;*.jfif;*.jpg;*.jpeg;*.jp2;*.png;*.tif;*.tiff;*.pdf|Bitmap Files|*.bmp|GIF Files|*.gif|JBIG2 Files|*.jb2|JPEG Files|*.jpg;*.jpeg;*.jfif|JPEG 2000 Files|*.jp2|PNG Files|*.png|TIFF Files|*.tif;*.tiff|PDF Files|*.pdf</value>
   </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>64</value>
