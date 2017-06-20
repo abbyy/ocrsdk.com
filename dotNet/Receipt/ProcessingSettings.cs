@@ -7,6 +7,7 @@ namespace Sample
 {
     public enum CountryOfOrigin
     {
+        Australia,
         Brazil,
         China,
         France,
