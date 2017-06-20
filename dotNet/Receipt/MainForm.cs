@@ -889,20 +889,11 @@ namespace Sample
         private void initReceiptCountries()
         {
             receiptCountries = new Dictionary<String, CountryOfOrigin>();
-            receiptCountries.Add("UK", CountryOfOrigin.UK);
-            receiptCountries.Add("Usa", CountryOfOrigin.Usa);
-            receiptCountries.Add("Japan", CountryOfOrigin.Japan);
-            receiptCountries.Add("Germany", CountryOfOrigin.Germany);
-            receiptCountries.Add("Italy", CountryOfOrigin.Italy);
-            receiptCountries.Add("France", CountryOfOrigin.France);
-            receiptCountries.Add("Brazil", CountryOfOrigin.Brazil);
-            receiptCountries.Add("Russia", CountryOfOrigin.Russia);
-            receiptCountries.Add("China", CountryOfOrigin.China);
-            receiptCountries.Add("Korea", CountryOfOrigin.Korea);
-            receiptCountries.Add("Spain", CountryOfOrigin.Spain);
-            receiptCountries.Add("Singapore", CountryOfOrigin.Singapore);
-            receiptCountries.Add("Taiwan", CountryOfOrigin.Taiwan);
-            receiptCountries.Add("Netherlands", CountryOfOrigin.Netherlands);
+
+            var countryEnumValues = Enum.GetValues( typeof( CountryOfOrigin ) );
+            foreach( var enumValue in countryEnumValues ) {
+                receiptCountries.Add( enumValue.ToString(), (CountryOfOrigin)enumValue );
+            }
         }
 
         private void fillCountryComboBox()
