@@ -43,7 +43,7 @@ namespace Sample
         private int activeFieldIndex;
         private float sourceScaleToFit;
         private float receiptScaleToFit;
-        private Hashtable receiptCountries;
+        private Dictionary<String, CountryOfOrigin> receiptCountries;
         private Label vendorNameLabelTitle;
         private Label vendorNameLabel;
         private Label dateTimeLabelTitle;
@@ -888,7 +888,7 @@ namespace Sample
 
         private void initReceiptCountries()
         {
-            receiptCountries = new Hashtable();
+            receiptCountries = new Dictionary<String, CountryOfOrigin>();
             receiptCountries.Add("UK", CountryOfOrigin.UK);
             receiptCountries.Add("Usa", CountryOfOrigin.Usa);
             receiptCountries.Add("Japan", CountryOfOrigin.Japan);
@@ -909,7 +909,7 @@ namespace Sample
         {
             if( countryComboBox.Items.Count == 0 ) {
                 countryComboBox.Sorted = true;
-                foreach( DictionaryEntry entry in receiptCountries ) {
+                foreach( var entry in receiptCountries ) {
                     countryComboBox.Items.Add( entry.Key );
                 }
             }
@@ -996,7 +996,7 @@ namespace Sample
                     processor.ProgressChangedAction = progress.ShowProgress;
 
                     ProcessingSettings settings = new ProcessingSettings();
-                    settings.Country = (CountryOfOrigin)receiptCountries[countryComboBox.Text];
+                    settings.Country = receiptCountries[countryComboBox.Text];
                     settings.TreatAsPhoto = treatAsPhotoCheckBox.Checked;
 
                     string result = processor.Process( imageFileTextBox.Text, settings );
