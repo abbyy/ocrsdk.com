@@ -903,6 +903,9 @@ namespace Sample
             receiptCountries.Add("Singapore", CountryOfOrigin.Singapore);
             receiptCountries.Add("Taiwan", CountryOfOrigin.Taiwan);
             receiptCountries.Add("Netherlands", CountryOfOrigin.Netherlands);
+            receiptCountries.Add( "Australia", CountryOfOrigin.Australia );
+            receiptCountries.Add( "Tukey", CountryOfOrigin.Turkey );
+            receiptCountries.Add( "Canada", CountryOfOrigin.Canada );
         }
 
         private void fillCountryComboBox()

@@ -7,7 +7,7 @@ namespace Sample
 {
     public enum CountryOfOrigin
     {
-        UK, Usa, Japan, Germany, Italy, France, Brazil, Russia, China, Korea, Spain, Singapore, Taiwan, Netherlands
+        UK, Usa, Japan, Germany, Italy, France, Brazil, Russia, China, Korea, Spain, Singapore, Taiwan, Netherlands, Australia, Turkey, Canada
     };
 
     public class ProcessingSettings
