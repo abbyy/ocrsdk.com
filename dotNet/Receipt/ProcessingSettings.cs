@@ -21,6 +21,7 @@ namespace Sample
         Singapore,
         Spain,
         Taiwan,
+        Turkey,
         UK,
         Usa,
     };
