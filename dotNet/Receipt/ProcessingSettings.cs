@@ -9,6 +9,7 @@ namespace Sample
     {
         Australia,
         Brazil,
+        Canada,
         China,
         France,
         Germany,
