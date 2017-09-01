@@ -90,6 +90,10 @@ namespace GuiTest
         private void changeAppIdAndPwd()
         {
             CredentialsInputDialog dialog = new CredentialsInputDialog();
+            if (this.IsActive)
+            {
+                dialog.Owner = this;
+            }
             dialog.ShowDialog();
 
             if (dialog.DialogResult == true)
