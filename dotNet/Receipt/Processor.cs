@@ -28,10 +28,15 @@ namespace Sample
                 string[] lines = System.IO.File.ReadAllLines(configFileName);
                 foreach (string line in lines)
                 {
-                    if( line.Contains("ApplicationId") ) {
-                        restClient.ApplicationId = getValueByKey(line, "ApplicationId");
-                    } else if( line.Contains("Password") ) {
-                        restClient.Password = getValueByKey(line, "Password");
+                    const String appIdKey = "ApplicationId";
+                    const String passwordKey = "Password";
+                    if (line.Contains(appIdKey))
+                    {
+                        restClient.ApplicationId = getValueByKey(line, appIdKey);
+                    }
+                    else if (line.Contains(passwordKey))
+                    {
+                        restClient.Password = getValueByKey(line, passwordKey);
                     }
                 }
             }
