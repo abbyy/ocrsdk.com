@@ -23,7 +23,8 @@ namespace Sample
             restClient.ApplicationId = "";
             // Password should be sent to your e-mail after application was created
             restClient.Password = "";
-            string configFilePath = "..\\..\\Config.txt";
+            var currentModuleLocation = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string configFilePath = Path.Combine(currentModuleLocation, "Config.txt");
             if (File.Exists(configFilePath))
             {
                 string[] lines = System.IO.File.ReadAllLines(configFilePath);

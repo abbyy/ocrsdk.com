@@ -185,7 +185,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\arrow_30x30.png" />
-    <Content Include="Config.txt" />
+    <Content Include="Config.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="MainForm.ico" />
   </ItemGroup>
   <ItemGroup>
