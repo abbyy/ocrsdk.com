@@ -30,11 +30,11 @@ namespace Sample
                 {
                     const String appIdKey = "ApplicationId";
                     const String passwordKey = "Password";
-                    if (line.Contains(appIdKey))
+                    if (line.StartsWith(appIdKey))
                     {
                         restClient.ApplicationId = getValueByKey(line, appIdKey);
                     }
-                    else if (line.Contains(passwordKey))
+                    else if (line.StartsWith(passwordKey))
                     {
                         restClient.Password = getValueByKey(line, passwordKey);
                     }
