@@ -30,6 +30,7 @@ namespace Sample
                 {
                     const String appIdKey = "ApplicationId";
                     const String passwordKey = "Password";
+                    const String serviceUrlKey = "ServiceUrl";
                     if (line.StartsWith(appIdKey))
                     {
                         restClient.ApplicationId = getValueByKey(line, appIdKey);
@@ -37,6 +38,12 @@ namespace Sample
                     else if (line.StartsWith(passwordKey))
                     {
                         restClient.Password = getValueByKey(line, passwordKey);
+                    }
+                    else if (line.StartsWith(serviceUrlKey))
+                    {
+                        var serviceUrl = getValueByKey(line, serviceUrlKey);
+                        serviceUrl = checkAndNormalizeServiceUrl(serviceUrl);
+                        restClient.ServerUrl = serviceUrl;
                     }
                 }
             }
@@ -95,6 +102,17 @@ namespace Sample
                 value = keyValue[1].Trim();
             }
             return value;
+        }
+
+        private static string checkAndNormalizeServiceUrl(string serviceUrl)
+        {
+            Uri uriResult;
+            var parsedOkay = Uri.TryCreate(serviceUrl, UriKind.Absolute, out uriResult);
+            if (!parsedOkay || !(uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+            {
+                throw new Exception(String.Format("Service URL '{0}' is invalid", serviceUrl));
+            }
+            return uriResult.ToString();
         }
 
         private OcrSdkTask waitForTask(OcrSdkTask task)

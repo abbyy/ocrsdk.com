@@ -1,2 +1,3 @@
 ApplicationId =
 Password =
+ServiceUrl = https://cloud.ocrsdk.com
