@@ -23,9 +23,10 @@ namespace Sample
             restClient.ApplicationId = "";
             // Password should be sent to your e-mail after application was created
             restClient.Password = "";
-            string configFileName = "..\\..\\Config.txt";
-            if( File.Exists(configFileName) ) {
-                string[] lines = System.IO.File.ReadAllLines(configFileName);
+            string configFilePath = "..\\..\\Config.txt";
+            if (File.Exists(configFilePath))
+            {
+                string[] lines = System.IO.File.ReadAllLines(configFilePath);
                 foreach (string line in lines)
                 {
                     const String appIdKey = "ApplicationId";
@@ -46,6 +47,11 @@ namespace Sample
                         restClient.ServerUrl = serviceUrl;
                     }
                 }
+            }
+            else
+            {
+                throw new Exception(
+                    String.Format("Configuration file not found at path {0}", configFilePath));
             }
 
             // Display hint to provide credentials
