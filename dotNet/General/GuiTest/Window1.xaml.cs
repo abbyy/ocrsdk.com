@@ -235,6 +235,12 @@ namespace GuiTest
                 task.TaskStatus = "Processing error";
                 task.OutputFilePath = "<error>";
                 task.ErrorMessage = e.Error.Message;
+                if (task.IsFieldLevel)
+                {
+                    // ErrorMessage is not mapped into a column for
+                    // field level tasks
+                    task.RecognizedText = String.Format("<{0}>", task.ErrorMessage);
+                }
                 moveTaskToCompleted(task);
                 return;
             }
