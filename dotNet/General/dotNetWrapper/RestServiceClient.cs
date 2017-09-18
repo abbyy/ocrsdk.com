@@ -224,26 +224,14 @@ namespace Abbyy.CloudOcrSdk
                 url = url + "&description=" + Uri.EscapeDataString(settings.Description);
             }
 
-            try
-            {
-                // Build post request
-                WebRequest request = createPostRequest(url);
-                writeFileToRequest(filePath, request);
+            // Build post request
+            WebRequest request = createPostRequest(url);
+            writeFileToRequest(filePath, request);
 
-                XDocument response = performRequest(request);
-                OcrSdkTask task = ServerXml.GetTaskStatus(response);
+            XDocument response = performRequest(request);
+            OcrSdkTask task = ServerXml.GetTaskStatus(response);
 
-                return task;
-            }
-            catch (System.Net.WebException e )
-            {
-                String friendlyMessage = retrieveFriendlyMessage( e );
-				if (friendlyMessage != null)
-				{
-					throw new ProcessingErrorException(friendlyMessage, e);
-				}
-				throw new ProcessingErrorException("Cannot upload file", e);
-            }
+            return task;
         }
 
         private string retrieveFriendlyMessage( System.Net.WebException fromException )
@@ -583,9 +571,21 @@ namespace Abbyy.CloudOcrSdk
 
         private XDocument performRequest(WebRequest request)
         {
-            using (HttpWebResponse result = (HttpWebResponse)request.GetResponse())
+            try
             {
-                return parseAsXml(result);
+                using (var result = (HttpWebResponse)request.GetResponse())
+                {
+                    return parseAsXml(result);
+                }
+            }
+            catch (System.Net.WebException e)
+            {
+                String friendlyMessage = retrieveFriendlyMessage(e);
+                if (friendlyMessage != null)
+                {
+                    throw new ProcessingErrorException(friendlyMessage, e);
+                }
+                throw new ProcessingErrorException("Cannot upload file", e);
             }
         }
 
