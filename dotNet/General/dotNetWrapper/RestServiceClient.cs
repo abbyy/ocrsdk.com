@@ -573,9 +573,9 @@ namespace Abbyy.CloudOcrSdk
         {
             try
             {
-                using (var result = (HttpWebResponse)request.GetResponse())
+                using (var response = request.GetResponse())
                 {
-                    return parseAsXml(result);
+                    return parseAsXml((HttpWebResponse)response);
                 }
             }
             catch (System.Net.WebException e)
