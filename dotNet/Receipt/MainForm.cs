@@ -1160,7 +1160,8 @@ namespace Sample
                 {
                     continue;
                 }
-                string totalText = node["total"]["normalizedValue"].InnerText;
+                var totalElement = node["total"];
+                string totalText = (totalElement == null) ? "" : totalElement["normalizedValue"].InnerText;
                 int row = lineItemsPanel.RowCount;
                 addLineItemRow( row.ToString(), itemName, totalText, false, row );
                 lineItemsPanel.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Absolute, 20F ) );
