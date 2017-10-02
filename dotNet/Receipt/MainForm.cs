@@ -1241,10 +1241,10 @@ namespace Sample
                     }
                     else if (node.Name == "payment")
                     {
-                        tenderLabel.Text = node.Attributes["type"].InnerText;
-                        if (tenderLabel.Text == "Card")
+                        var paymentTypeText = node.Attributes["type"].InnerText;
+                        tenderLabel.Text = paymentTypeText;
+                        if (paymentTypeText == "Card")
                         {
-                            tenderLabel.Text = "Card";
                             bankCardLabel.Text = "<" + node.Attributes["cardType"].InnerText + ">";
                             XmlNode bankCardNode = node["cardNumber"];
                             if (bankCardNode != null)
