@@ -43,6 +43,7 @@ namespace Sample
         private float sourceScaleToFit;
         private float receiptScaleToFit;
         private Dictionary<String, CountryOfOrigin> receiptCountries;
+        private Dictionary<Label, KeyValuePair<Label, Label>> labelPairs;
         private Label vendorNameLabelTitle;
         private Label vendorNameLabel;
         private Label dateTimeLabelTitle;
@@ -867,6 +868,7 @@ namespace Sample
             try {
                 activeFieldColor = Color.FromArgb( 50, Color.Blue );
 
+                initLabelPairs();
                 initReceiptCountries();
                 fillCountryComboBox();
                 processor = new Processor();
@@ -892,6 +894,31 @@ namespace Sample
             var countryEnumValues = Enum.GetValues( typeof( CountryOfOrigin ) );
             foreach( var enumValue in countryEnumValues ) {
                 receiptCountries.Add( enumValue.ToString(), (CountryOfOrigin)enumValue );
+            }
+        }
+
+        private void initLabelPairs()
+        {
+            Label[,] labelsMapping = {
+                { vendorNameLabelTitle, vendorNameLabel },
+                { dateTimeLabelTitle, dateTimeLabel },
+                { phoneFaxLabelTitle, phoneFaxLabel },
+                { addressLabelTitle, addressLabel },
+                { totalSumLabelTitle, totalSumLabel },
+                { subtotalLabelTitle, subtotalLabel },
+                { totalTaxLabelTitle, totalTaxLabel },
+                { tenderLabelTitle, tenderLabel },
+                { bankCardLabelTitle, bankCardLabel }
+            };
+
+            labelPairs = new Dictionary<Label, KeyValuePair<Label,Label>>();
+            int mappingLength = labelsMapping.GetLength( 0 );
+            for( int mappingLine = 0; mappingLine < mappingLength; mappingLine++ ) {
+                var fieldTitle = labelsMapping[mappingLine, 0];
+                var fieldValue = labelsMapping[mappingLine, 1];
+                var pair = new KeyValuePair<Label, Label>( fieldTitle, fieldValue );
+                labelPairs.Add( fieldTitle, pair );
+                labelPairs.Add( fieldValue, pair );
             }
         }
 
@@ -1275,24 +1302,12 @@ namespace Sample
             Color labelTitleColor = System.Drawing.SystemColors.ControlDarkDark;
             Color labelColor = System.Drawing.SystemColors.ControlText;
 
-            vendorNameLabelTitle.ForeColor = labelTitleColor;
-            vendorNameLabel.ForeColor = labelColor;
-            dateTimeLabelTitle.ForeColor = labelTitleColor;
-            dateTimeLabel.ForeColor = labelColor;
-            phoneFaxLabelTitle.ForeColor = labelTitleColor;
-            phoneFaxLabel.ForeColor = labelColor;
-            addressLabelTitle.ForeColor = labelTitleColor;
-            addressLabel.ForeColor = labelColor;
-            totalSumLabelTitle.ForeColor = labelTitleColor;
-            totalSumLabel.ForeColor = labelColor;
-            subtotalLabelTitle.ForeColor = labelTitleColor;
-            subtotalLabel.ForeColor = labelColor;
-            totalTaxLabelTitle.ForeColor = labelTitleColor;
-            totalTaxLabel.ForeColor = labelColor;
-            tenderLabelTitle.ForeColor = labelTitleColor;
-            tenderLabel.ForeColor = labelColor;
-            bankCardLabelTitle.ForeColor = labelTitleColor;
-            bankCardLabel.ForeColor = labelColor;
+            // Each label is contained in two pairs, so its color will be set twice.
+            // This should not have any observable bad effects.
+            foreach( var pair in labelPairs.Values ) {
+                pair.Key.ForeColor = labelTitleColor;
+                pair.Value.ForeColor = labelColor;
+            }
         }
 
         private void fieldLabel_Click( object sender, EventArgs e )
@@ -1303,41 +1318,10 @@ namespace Sample
                     Color color = activeFieldColor;
                     restoreDefaultLabelsColors();
 
-                    if( label.Name.Contains( "vendor" ) ) {
-                        vendorNameLabelTitle.ForeColor = color;
-                        vendorNameLabel.ForeColor = color;
-                    }
-                    if( label.Name.Contains( "date" ) ) {
-                        dateTimeLabelTitle.ForeColor = color;
-                        dateTimeLabel.ForeColor = color;
-                    }
-                    if( label.Name.Contains( "phone" ) ) {
-                        phoneFaxLabelTitle.ForeColor = color;
-                        phoneFaxLabel.ForeColor = color;
-                    }
-                    if( label.Name.Contains( "address" ) ) {
-                        addressLabelTitle.ForeColor = color;
-                        addressLabel.ForeColor = color;
-                    }
-                    if( label.Name.Contains( "totalSum" ) ) {
-                        totalSumLabelTitle.ForeColor = color;
-                        totalSumLabel.ForeColor = color;
-                    }
-                    if( label.Name.Contains( "subtotal" ) ) {
-                        subtotalLabelTitle.ForeColor = color;
-                        subtotalLabel.ForeColor = color;
-                    }
-                    if( label.Name.Contains( "totalTax" ) ) {
-                        totalTaxLabelTitle.ForeColor = color;
-                        totalTaxLabel.ForeColor = color;
-                    }
-                    if( label.Name.Contains( "tender" ) ) {
-                        tenderLabelTitle.ForeColor = color;
-                        tenderLabel.ForeColor = color;
-                    }
-                    if( label.Name.Contains( "bankCard" ) ) {
-                        bankCardLabelTitle.ForeColor = color;
-                        bankCardLabel.ForeColor = color;
+                    KeyValuePair<Label, Label> pair;
+                    if( labelPairs.TryGetValue( label, out pair ) ) {
+                        pair.Key.ForeColor = color;
+                        pair.Value.ForeColor = color;
                     }
                     refreshReceipt();
                 }
