@@ -40,7 +40,6 @@ namespace Sample
         private Label promptLabel;
         private OpenFileDialog openFileDialog;
         private Processor processor;
-        private int activeFieldIndex;
         private float sourceScaleToFit;
         private float receiptScaleToFit;
         private Dictionary<String, CountryOfOrigin> receiptCountries;
@@ -1016,7 +1015,6 @@ namespace Sample
         {
             restoreDefaultLabelsColors();
 
-            activeFieldIndex = 0;
             vendorNameLabelTitle.ForeColor = activeFieldColor;
             vendorNameLabel.ForeColor = activeFieldColor;
         }
@@ -1306,47 +1304,38 @@ namespace Sample
                     restoreDefaultLabelsColors();
 
                     if( label.Name.Contains( "vendor" ) ) {
-                        activeFieldIndex = 0;
                         vendorNameLabelTitle.ForeColor = color;
                         vendorNameLabel.ForeColor = color;
                     }
                     if( label.Name.Contains( "date" ) ) {
-                        activeFieldIndex = 1;
                         dateTimeLabelTitle.ForeColor = color;
                         dateTimeLabel.ForeColor = color;
                     }
                     if( label.Name.Contains( "phone" ) ) {
-                        activeFieldIndex = 2;
                         phoneFaxLabelTitle.ForeColor = color;
                         phoneFaxLabel.ForeColor = color;
                     }
                     if( label.Name.Contains( "address" ) ) {
-                        activeFieldIndex = 3;
                         addressLabelTitle.ForeColor = color;
                         addressLabel.ForeColor = color;
                     }
                     if( label.Name.Contains( "totalSum" ) ) {
-                        activeFieldIndex = 5;
                         totalSumLabelTitle.ForeColor = color;
                         totalSumLabel.ForeColor = color;
                     }
                     if( label.Name.Contains( "subtotal" ) ) {
-                        activeFieldIndex = 6;
                         subtotalLabelTitle.ForeColor = color;
                         subtotalLabel.ForeColor = color;
                     }
                     if( label.Name.Contains( "totalTax" ) ) {
-                        activeFieldIndex = 7;
                         totalTaxLabelTitle.ForeColor = color;
                         totalTaxLabel.ForeColor = color;
                     }
                     if( label.Name.Contains( "tender" ) ) {
-                        activeFieldIndex = 8;
                         tenderLabelTitle.ForeColor = color;
                         tenderLabel.ForeColor = color;
                     }
                     if( label.Name.Contains( "bankCard" ) ) {
-                        activeFieldIndex = 9;
                         bankCardLabelTitle.ForeColor = color;
                         bankCardLabel.ForeColor = color;
                     }
