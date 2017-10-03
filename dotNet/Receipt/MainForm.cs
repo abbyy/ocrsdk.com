@@ -72,6 +72,14 @@ namespace Sample
         private Label taxFieldsLabel;
         private TableLayoutPanel lineItemsPanel;
         private Label lineItemsLabel;
+        private Label receiptNumberLabelTitle;
+        private Label receiptNumberLabel;
+        private Label vendorStoreNumberLabel;
+        private Label vendorStoreNumberLabelTitle;
+        private Label cashRegisterNumberLabel;
+        private Label cashRegisterNumberLabelTitle;
+        private Label cashRegisterIdLabel;
+        private Label cashRegisterIdLabelTitle;
         private IContainer components = null;
 
         public MainForm()
@@ -128,6 +136,14 @@ namespace Sample
             this.receiptTopPanel = new System.Windows.Forms.Panel();
             this.receiptLabel = new System.Windows.Forms.Label();
             this.textPanel = new System.Windows.Forms.Panel();
+            this.cashRegisterNumberLabel = new System.Windows.Forms.Label();
+            this.cashRegisterNumberLabelTitle = new System.Windows.Forms.Label();
+            this.cashRegisterIdLabel = new System.Windows.Forms.Label();
+            this.cashRegisterIdLabelTitle = new System.Windows.Forms.Label();
+            this.vendorStoreNumberLabel = new System.Windows.Forms.Label();
+            this.vendorStoreNumberLabelTitle = new System.Windows.Forms.Label();
+            this.receiptNumberLabel = new System.Windows.Forms.Label();
+            this.receiptNumberLabelTitle = new System.Windows.Forms.Label();
             this.taxFieldsLabel = new System.Windows.Forms.Label();
             this.taxFieldsPanel = new System.Windows.Forms.TableLayoutPanel();
             this.lineItemsLabel = new System.Windows.Forms.Label();
@@ -423,6 +439,14 @@ namespace Sample
             // 
             this.textPanel.BackColor = System.Drawing.Color.White;
             this.textPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textPanel.Controls.Add(this.cashRegisterNumberLabel);
+            this.textPanel.Controls.Add(this.cashRegisterNumberLabelTitle);
+            this.textPanel.Controls.Add(this.cashRegisterIdLabel);
+            this.textPanel.Controls.Add(this.cashRegisterIdLabelTitle);
+            this.textPanel.Controls.Add(this.vendorStoreNumberLabel);
+            this.textPanel.Controls.Add(this.vendorStoreNumberLabelTitle);
+            this.textPanel.Controls.Add(this.receiptNumberLabel);
+            this.textPanel.Controls.Add(this.receiptNumberLabelTitle);
             this.textPanel.Controls.Add(this.taxFieldsLabel);
             this.textPanel.Controls.Add(this.taxFieldsPanel);
             this.textPanel.Controls.Add(this.lineItemsLabel);
@@ -453,6 +477,106 @@ namespace Sample
             this.textPanel.Size = new System.Drawing.Size(267, 647);
             this.textPanel.TabIndex = 0;
             this.textPanel.Resize += new System.EventHandler(this.textPanel_Resize);
+            // 
+            // cashRegisterNumberLabel
+            // 
+            this.cashRegisterNumberLabel.AutoSize = true;
+            this.cashRegisterNumberLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cashRegisterNumberLabel.Location = new System.Drawing.Point(106, 150);
+            this.cashRegisterNumberLabel.Name = "cashRegisterNumberLabel";
+            this.cashRegisterNumberLabel.Size = new System.Drawing.Size(105, 13);
+            this.cashRegisterNumberLabel.TabIndex = 15;
+            this.cashRegisterNumberLabel.Text = "cash register number";
+            this.cashRegisterNumberLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cashRegisterNumberLabel.Click += new System.EventHandler(this.fieldLabel_Click);
+            // 
+            // cashRegisterNumberLabelTitle
+            // 
+            this.cashRegisterNumberLabelTitle.AutoSize = true;
+            this.cashRegisterNumberLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cashRegisterNumberLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.cashRegisterNumberLabelTitle.Location = new System.Drawing.Point(10, 150);
+            this.cashRegisterNumberLabelTitle.Name = "cashRegisterNumberLabelTitle";
+            this.cashRegisterNumberLabelTitle.Size = new System.Drawing.Size(97, 13);
+            this.cashRegisterNumberLabelTitle.TabIndex = 14;
+            this.cashRegisterNumberLabelTitle.Text = "Cash register #:";
+            this.cashRegisterNumberLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cashRegisterNumberLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
+            // 
+            // cashRegisterIdLabel
+            // 
+            this.cashRegisterIdLabel.AutoSize = true;
+            this.cashRegisterIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cashRegisterIdLabel.Location = new System.Drawing.Point(106, 130);
+            this.cashRegisterIdLabel.Name = "cashRegisterIdLabel";
+            this.cashRegisterIdLabel.Size = new System.Drawing.Size(78, 13);
+            this.cashRegisterIdLabel.TabIndex = 13;
+            this.cashRegisterIdLabel.Text = "cash register id";
+            this.cashRegisterIdLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cashRegisterIdLabel.Click += new System.EventHandler(this.fieldLabel_Click);
+            // 
+            // cashRegisterIdLabelTitle
+            // 
+            this.cashRegisterIdLabelTitle.AutoSize = true;
+            this.cashRegisterIdLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cashRegisterIdLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.cashRegisterIdLabelTitle.Location = new System.Drawing.Point(10, 130);
+            this.cashRegisterIdLabelTitle.Name = "cashRegisterIdLabelTitle";
+            this.cashRegisterIdLabelTitle.Size = new System.Drawing.Size(99, 13);
+            this.cashRegisterIdLabelTitle.TabIndex = 12;
+            this.cashRegisterIdLabelTitle.Text = "Cash register id:";
+            this.cashRegisterIdLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cashRegisterIdLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
+            // 
+            // vendorStoreNumberLabel
+            // 
+            this.vendorStoreNumberLabel.AutoSize = true;
+            this.vendorStoreNumberLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.vendorStoreNumberLabel.Location = new System.Drawing.Point(106, 70);
+            this.vendorStoreNumberLabel.Name = "vendorStoreNumberLabel";
+            this.vendorStoreNumberLabel.Size = new System.Drawing.Size(66, 13);
+            this.vendorStoreNumberLabel.TabIndex = 7;
+            this.vendorStoreNumberLabel.Text = "vendor store";
+            this.vendorStoreNumberLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.vendorStoreNumberLabel.Click += new System.EventHandler(this.fieldLabel_Click);
+            // 
+            // vendorStoreNumberLabelTitle
+            // 
+            this.vendorStoreNumberLabelTitle.AutoSize = true;
+            this.vendorStoreNumberLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.vendorStoreNumberLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.vendorStoreNumberLabelTitle.Location = new System.Drawing.Point(10, 70);
+            this.vendorStoreNumberLabelTitle.Name = "vendorStoreNumberLabelTitle";
+            this.vendorStoreNumberLabelTitle.Size = new System.Drawing.Size(95, 13);
+            this.vendorStoreNumberLabelTitle.TabIndex = 6;
+            this.vendorStoreNumberLabelTitle.Text = "Vendor store #:";
+            this.vendorStoreNumberLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.vendorStoreNumberLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
+            // 
+            // receiptNumberLabel
+            // 
+            this.receiptNumberLabel.AutoSize = true;
+            this.receiptNumberLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.receiptNumberLabel.Location = new System.Drawing.Point(106, 90);
+            this.receiptNumberLabel.Name = "receiptNumberLabel";
+            this.receiptNumberLabel.Size = new System.Drawing.Size(77, 13);
+            this.receiptNumberLabel.TabIndex = 9;
+            this.receiptNumberLabel.Text = "receipt number";
+            this.receiptNumberLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.receiptNumberLabel.Click += new System.EventHandler(this.fieldLabel_Click);
+            // 
+            // receiptNumberLabelTitle
+            // 
+            this.receiptNumberLabelTitle.AutoSize = true;
+            this.receiptNumberLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.receiptNumberLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.receiptNumberLabelTitle.Location = new System.Drawing.Point(10, 90);
+            this.receiptNumberLabelTitle.Name = "receiptNumberLabelTitle";
+            this.receiptNumberLabelTitle.Size = new System.Drawing.Size(67, 13);
+            this.receiptNumberLabelTitle.TabIndex = 8;
+            this.receiptNumberLabelTitle.Text = "Receipt #:";
+            this.receiptNumberLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.receiptNumberLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
             // 
             // taxFieldsLabel
             // 
@@ -516,10 +640,10 @@ namespace Sample
             this.bankCardLabel.AutoSize = true;
             this.bankCardLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.bankCardLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bankCardLabel.Location = new System.Drawing.Point(106, 285);
+            this.bankCardLabel.Location = new System.Drawing.Point(106, 270);
             this.bankCardLabel.Name = "bankCardLabel";
             this.bankCardLabel.Size = new System.Drawing.Size(55, 13);
-            this.bankCardLabel.TabIndex = 0;
+            this.bankCardLabel.TabIndex = 27;
             this.bankCardLabel.Text = "bank card";
             this.bankCardLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.bankCardLabel.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -530,10 +654,10 @@ namespace Sample
             this.bankCardLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.bankCardLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.bankCardLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.bankCardLabelTitle.Location = new System.Drawing.Point(10, 285);
+            this.bankCardLabelTitle.Location = new System.Drawing.Point(10, 270);
             this.bankCardLabelTitle.Name = "bankCardLabelTitle";
             this.bankCardLabelTitle.Size = new System.Drawing.Size(69, 13);
-            this.bankCardLabelTitle.TabIndex = 0;
+            this.bankCardLabelTitle.TabIndex = 26;
             this.bankCardLabelTitle.Text = "Bank card:";
             this.bankCardLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.bankCardLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -543,11 +667,11 @@ namespace Sample
             this.purchaseTypeLabel.AutoSize = true;
             this.purchaseTypeLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.purchaseTypeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.purchaseTypeLabel.Location = new System.Drawing.Point(106, 225);
+            this.purchaseTypeLabel.Location = new System.Drawing.Point(106, 230);
             this.purchaseTypeLabel.Name = "purchaseTypeLabel";
-            this.purchaseTypeLabel.Size = new System.Drawing.Size(76, 13);
-            this.purchaseTypeLabel.TabIndex = 0;
-            this.purchaseTypeLabel.Text = "PurchaseType";
+            this.purchaseTypeLabel.Size = new System.Drawing.Size(74, 13);
+            this.purchaseTypeLabel.TabIndex = 23;
+            this.purchaseTypeLabel.Text = "purchase type";
             this.purchaseTypeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.purchaseTypeLabel.Click += new System.EventHandler(this.fieldLabel_Click);
             // 
@@ -557,10 +681,10 @@ namespace Sample
             this.purchaseTypeLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.purchaseTypeLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.purchaseTypeLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.purchaseTypeLabelTitle.Location = new System.Drawing.Point(10, 225);
+            this.purchaseTypeLabelTitle.Location = new System.Drawing.Point(10, 230);
             this.purchaseTypeLabelTitle.Name = "purchaseTypeLabelTitle";
             this.purchaseTypeLabelTitle.Size = new System.Drawing.Size(92, 13);
-            this.purchaseTypeLabelTitle.TabIndex = 0;
+            this.purchaseTypeLabelTitle.TabIndex = 22;
             this.purchaseTypeLabelTitle.Text = "Purchase type:";
             this.purchaseTypeLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.purchaseTypeLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -570,10 +694,10 @@ namespace Sample
             this.tenderLabel.AutoSize = true;
             this.tenderLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.tenderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tenderLabel.Location = new System.Drawing.Point(106, 255);
+            this.tenderLabel.Location = new System.Drawing.Point(106, 250);
             this.tenderLabel.Name = "tenderLabel";
             this.tenderLabel.Size = new System.Drawing.Size(37, 13);
-            this.tenderLabel.TabIndex = 0;
+            this.tenderLabel.TabIndex = 25;
             this.tenderLabel.Text = "tender";
             this.tenderLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.tenderLabel.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -584,10 +708,10 @@ namespace Sample
             this.tenderLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.tenderLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tenderLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.tenderLabelTitle.Location = new System.Drawing.Point(10, 255);
+            this.tenderLabelTitle.Location = new System.Drawing.Point(10, 250);
             this.tenderLabelTitle.Name = "tenderLabelTitle";
             this.tenderLabelTitle.Size = new System.Drawing.Size(51, 13);
-            this.tenderLabelTitle.TabIndex = 0;
+            this.tenderLabelTitle.TabIndex = 24;
             this.tenderLabelTitle.Text = "Tender:";
             this.tenderLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.tenderLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -597,10 +721,10 @@ namespace Sample
             this.totalTaxLabel.AutoSize = true;
             this.totalTaxLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.totalTaxLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.totalTaxLabel.Location = new System.Drawing.Point(106, 195);
+            this.totalTaxLabel.Location = new System.Drawing.Point(106, 210);
             this.totalTaxLabel.Name = "totalTaxLabel";
             this.totalTaxLabel.Size = new System.Drawing.Size(44, 13);
-            this.totalTaxLabel.TabIndex = 0;
+            this.totalTaxLabel.TabIndex = 21;
             this.totalTaxLabel.Text = "total tax";
             this.totalTaxLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.totalTaxLabel.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -611,10 +735,10 @@ namespace Sample
             this.totalTaxLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.totalTaxLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.totalTaxLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.totalTaxLabelTitle.Location = new System.Drawing.Point(10, 195);
+            this.totalTaxLabelTitle.Location = new System.Drawing.Point(10, 210);
             this.totalTaxLabelTitle.Name = "totalTaxLabelTitle";
             this.totalTaxLabelTitle.Size = new System.Drawing.Size(61, 13);
-            this.totalTaxLabelTitle.TabIndex = 0;
+            this.totalTaxLabelTitle.TabIndex = 20;
             this.totalTaxLabelTitle.Text = "Total tax:";
             this.totalTaxLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.totalTaxLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -624,10 +748,10 @@ namespace Sample
             this.subtotalLabel.AutoSize = true;
             this.subtotalLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.subtotalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.subtotalLabel.Location = new System.Drawing.Point(106, 165);
+            this.subtotalLabel.Location = new System.Drawing.Point(106, 190);
             this.subtotalLabel.Name = "subtotalLabel";
             this.subtotalLabel.Size = new System.Drawing.Size(44, 13);
-            this.subtotalLabel.TabIndex = 0;
+            this.subtotalLabel.TabIndex = 19;
             this.subtotalLabel.Text = "subtotal";
             this.subtotalLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.subtotalLabel.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -638,10 +762,10 @@ namespace Sample
             this.subtotalLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.subtotalLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.subtotalLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.subtotalLabelTitle.Location = new System.Drawing.Point(10, 165);
+            this.subtotalLabelTitle.Location = new System.Drawing.Point(10, 190);
             this.subtotalLabelTitle.Name = "subtotalLabelTitle";
             this.subtotalLabelTitle.Size = new System.Drawing.Size(58, 13);
-            this.subtotalLabelTitle.TabIndex = 0;
+            this.subtotalLabelTitle.TabIndex = 18;
             this.subtotalLabelTitle.Text = "Subtotal:";
             this.subtotalLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.subtotalLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -651,10 +775,10 @@ namespace Sample
             this.totalSumLabel.AutoSize = true;
             this.totalSumLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.totalSumLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.totalSumLabel.Location = new System.Drawing.Point(106, 135);
+            this.totalSumLabel.Location = new System.Drawing.Point(106, 170);
             this.totalSumLabel.Name = "totalSumLabel";
             this.totalSumLabel.Size = new System.Drawing.Size(27, 13);
-            this.totalSumLabel.TabIndex = 0;
+            this.totalSumLabel.TabIndex = 17;
             this.totalSumLabel.Text = "total";
             this.totalSumLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.totalSumLabel.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -665,10 +789,10 @@ namespace Sample
             this.totalSumLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.totalSumLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.totalSumLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.totalSumLabelTitle.Location = new System.Drawing.Point(10, 135);
+            this.totalSumLabelTitle.Location = new System.Drawing.Point(10, 170);
             this.totalSumLabelTitle.Name = "totalSumLabelTitle";
             this.totalSumLabelTitle.Size = new System.Drawing.Size(40, 13);
-            this.totalSumLabelTitle.TabIndex = 0;
+            this.totalSumLabelTitle.TabIndex = 16;
             this.totalSumLabelTitle.Text = "Total:";
             this.totalSumLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.totalSumLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -678,10 +802,10 @@ namespace Sample
             this.phoneFaxLabel.AutoSize = true;
             this.phoneFaxLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.phoneFaxLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.phoneFaxLabel.Location = new System.Drawing.Point(106, 75);
+            this.phoneFaxLabel.Location = new System.Drawing.Point(106, 50);
             this.phoneFaxLabel.Name = "phoneFaxLabel";
             this.phoneFaxLabel.Size = new System.Drawing.Size(62, 13);
-            this.phoneFaxLabel.TabIndex = 0;
+            this.phoneFaxLabel.TabIndex = 5;
             this.phoneFaxLabel.Text = "phone / fax";
             this.phoneFaxLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.phoneFaxLabel.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -692,10 +816,10 @@ namespace Sample
             this.phoneFaxLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.phoneFaxLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.phoneFaxLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.phoneFaxLabelTitle.Location = new System.Drawing.Point(10, 75);
+            this.phoneFaxLabelTitle.Location = new System.Drawing.Point(10, 50);
             this.phoneFaxLabelTitle.Name = "phoneFaxLabelTitle";
             this.phoneFaxLabelTitle.Size = new System.Drawing.Size(81, 13);
-            this.phoneFaxLabelTitle.TabIndex = 0;
+            this.phoneFaxLabelTitle.TabIndex = 4;
             this.phoneFaxLabelTitle.Text = "Phone / Fax:";
             this.phoneFaxLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.phoneFaxLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -705,10 +829,10 @@ namespace Sample
             this.addressLabel.AutoSize = true;
             this.addressLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.addressLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.addressLabel.Location = new System.Drawing.Point(106, 105);
+            this.addressLabel.Location = new System.Drawing.Point(106, 30);
             this.addressLabel.Name = "addressLabel";
             this.addressLabel.Size = new System.Drawing.Size(44, 13);
-            this.addressLabel.TabIndex = 0;
+            this.addressLabel.TabIndex = 3;
             this.addressLabel.Text = "address";
             this.addressLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addressLabel.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -719,10 +843,10 @@ namespace Sample
             this.addressLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.addressLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.addressLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.addressLabelTitle.Location = new System.Drawing.Point(10, 105);
+            this.addressLabelTitle.Location = new System.Drawing.Point(10, 30);
             this.addressLabelTitle.Name = "addressLabelTitle";
             this.addressLabelTitle.Size = new System.Drawing.Size(56, 13);
-            this.addressLabelTitle.TabIndex = 0;
+            this.addressLabelTitle.TabIndex = 2;
             this.addressLabelTitle.Text = "Address:";
             this.addressLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addressLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -732,10 +856,10 @@ namespace Sample
             this.dateTimeLabel.AutoSize = true;
             this.dateTimeLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dateTimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dateTimeLabel.Location = new System.Drawing.Point(106, 45);
+            this.dateTimeLabel.Location = new System.Drawing.Point(106, 110);
             this.dateTimeLabel.Name = "dateTimeLabel";
             this.dateTimeLabel.Size = new System.Drawing.Size(58, 13);
-            this.dateTimeLabel.TabIndex = 0;
+            this.dateTimeLabel.TabIndex = 11;
             this.dateTimeLabel.Text = "date / time";
             this.dateTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.dateTimeLabel.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -746,10 +870,10 @@ namespace Sample
             this.dateTimeLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dateTimeLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dateTimeLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.dateTimeLabelTitle.Location = new System.Drawing.Point(10, 45);
+            this.dateTimeLabelTitle.Location = new System.Drawing.Point(10, 110);
             this.dateTimeLabelTitle.Name = "dateTimeLabelTitle";
             this.dateTimeLabelTitle.Size = new System.Drawing.Size(75, 13);
-            this.dateTimeLabelTitle.TabIndex = 0;
+            this.dateTimeLabelTitle.TabIndex = 10;
             this.dateTimeLabelTitle.Text = "Date / time:";
             this.dateTimeLabelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.dateTimeLabelTitle.Click += new System.EventHandler(this.fieldLabel_Click);
@@ -759,11 +883,11 @@ namespace Sample
             this.vendorNameLabel.AutoSize = true;
             this.vendorNameLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.vendorNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.vendorNameLabel.Location = new System.Drawing.Point(106, 15);
+            this.vendorNameLabel.Location = new System.Drawing.Point(106, 10);
             this.vendorNameLabel.Name = "vendorNameLabel";
-            this.vendorNameLabel.Size = new System.Drawing.Size(33, 13);
-            this.vendorNameLabel.TabIndex = 0;
-            this.vendorNameLabel.Text = "name";
+            this.vendorNameLabel.Size = new System.Drawing.Size(69, 13);
+            this.vendorNameLabel.TabIndex = 1;
+            this.vendorNameLabel.Text = "vendor name";
             this.vendorNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.vendorNameLabel.Click += new System.EventHandler(this.fieldLabel_Click);
             // 
@@ -773,7 +897,7 @@ namespace Sample
             this.vendorNameLabelTitle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.vendorNameLabelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.vendorNameLabelTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.vendorNameLabelTitle.Location = new System.Drawing.Point(10, 15);
+            this.vendorNameLabelTitle.Location = new System.Drawing.Point(10, 10);
             this.vendorNameLabelTitle.Name = "vendorNameLabelTitle";
             this.vendorNameLabelTitle.Size = new System.Drawing.Size(85, 13);
             this.vendorNameLabelTitle.TabIndex = 0;
@@ -909,7 +1033,11 @@ namespace Sample
                 { totalTaxLabelTitle, totalTaxLabel },
                 { tenderLabelTitle, tenderLabel },
                 { purchaseTypeLabelTitle, purchaseTypeLabel },
-                { bankCardLabelTitle, bankCardLabel }
+                { bankCardLabelTitle, bankCardLabel },
+                { receiptNumberLabelTitle, receiptNumberLabel },
+                { vendorStoreNumberLabelTitle, vendorStoreNumberLabel },
+                { cashRegisterNumberLabelTitle, cashRegisterNumberLabel },
+                { cashRegisterIdLabelTitle, cashRegisterIdLabel },
             };
 
             labelPairs = new Dictionary<Label, KeyValuePair<Label,Label>>();
@@ -1233,6 +1361,14 @@ namespace Sample
                             }
                         }
                     }
+                    else if (node.Name == "vendorStoreNumber")
+                    {
+                        vendorStoreNumberLabel.Text = node["normalizedValue"].InnerText;
+                    }
+                    else if (node.Name == "receiptNumber")
+                    {
+                        receiptNumberLabel.Text = node["normalizedValue"].InnerText;
+                    }
                     else if (node.Name == "date")
                     {
                         dateTimeLabel.Text = node["normalizedValue"].InnerText + dateTimeLabel.Text;
@@ -1240,6 +1376,14 @@ namespace Sample
                     else if (node.Name == "time")
                     {
                         dateTimeLabel.Text += " / " + node["normalizedValue"].InnerText;
+                    }
+                    else if (node.Name == "cashRegisterId")
+                    {
+                        cashRegisterIdLabel.Text = node["normalizedValue"].InnerText;
+                    }
+                    else if (node.Name == "cashRegisterNumber")
+                    {
+                        cashRegisterNumberLabel.Text = node["normalizedValue"].InnerText;
                     }
                     else if (node.Name == "subTotal")
                     {
