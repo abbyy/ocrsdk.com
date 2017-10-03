@@ -1112,16 +1112,11 @@ namespace Sample
 
         void clearPreviousResults()
         {
-            vendorNameLabel.Text = "";
-            dateTimeLabel.Text = "";
-            phoneFaxLabel.Text = "";
-            addressLabel.Text = "";
-            totalSumLabel.Text = "";
-            subtotalLabel.Text = "";
-            totalTaxLabel.Text = "";
-            purchaseTypeLabel.Text = "";
-            tenderLabel.Text = "";
-            bankCardLabel.Text = "";
+            // Each label is contained in two pairs, so its color will be set twice.
+            // This should not have any observable bad effects.
+            foreach( var pair in labelPairs.Values ) {
+                pair.Value.Text = "";
+            }
 
             taxFieldsPanel.Controls.Clear();
             taxFieldsPanel.RowStyles.Clear();
