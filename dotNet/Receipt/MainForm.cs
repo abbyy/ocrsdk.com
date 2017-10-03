@@ -908,6 +908,7 @@ namespace Sample
                 { subtotalLabelTitle, subtotalLabel },
                 { totalTaxLabelTitle, totalTaxLabel },
                 { tenderLabelTitle, tenderLabel },
+                { purchaseTypeLabelTitle, purchaseTypeLabel },
                 { bankCardLabelTitle, bankCardLabel }
             };
 
