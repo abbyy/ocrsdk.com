@@ -609,8 +609,18 @@ namespace Abbyy.CloudOcrSdk
 				RequestAuthSetup.Run(request, ApplicationId, Password);
             }
 
-            // Set user agent string so that server is able to collect statistics
-            request.UserAgent = ".Net Cloud OCR SDK client";
+            // Set user agent string so that the service is able to collect statistics
+            {
+                var userAgentStoredSetting = System.Configuration.ConfigurationManager.AppSettings["HttpClientUserAgent"];
+                if (String.IsNullOrEmpty(userAgentStoredSetting))
+                {
+                    request.UserAgent = ".NET Cloud OCR SDK Client";
+                }
+                else
+                {
+                    request.UserAgent = userAgentStoredSetting;
+                }
+            }
         }
 
         private HttpWebRequest createPostRequest(string url)

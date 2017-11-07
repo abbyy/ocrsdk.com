@@ -191,6 +191,7 @@
     <Content Include="MainForm.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
