@@ -34,9 +34,9 @@ namespace Sample
         public DateTime StatusChangeTime;
 
         /// <summary>
-        /// Number of pages in task
+        /// Number of files in the task
         /// </summary>
-        public int PagesCount = 1;
+        public int FilesCount = 1;
 
         /// <summary>
         /// Task cost in credits
