@@ -85,12 +85,12 @@ namespace Abbyy.CloudOcrSdk
                     task.StatusChangeTime = time;
             }
 
-            XAttribute xPagesCount = xTask.Attribute("filesCount");
-            if (xPagesCount != null)
+            XAttribute xFilesCount = xTask.Attribute("filesCount");
+            if (xFilesCount != null)
             {
-                int pagesCount;
-                if (Int32.TryParse(xPagesCount.Value, out pagesCount))
-                    task.PagesCount = pagesCount;
+                int filesCount;
+                if (Int32.TryParse(xFilesCount.Value, out filesCount))
+                    task.FilesCount = filesCount;
             }
 
             XAttribute xCredits = xTask.Attribute("credits");

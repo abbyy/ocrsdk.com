@@ -245,8 +245,8 @@
                             
                             <GridViewColumn Width="100" Header="Created"
                                             DisplayMemberBinding="{Binding RegistrationTime}" />
-                            <GridViewColumn Width="100" Header="Pages"
-                                            DisplayMemberBinding="{Binding PagesCount}" />
+                            <GridViewColumn Width="100" Header="Files"
+                                            DisplayMemberBinding="{Binding FilesCount}" />
                             <GridViewColumn Width="100" Header="Description"
                                             DisplayMemberBinding="{Binding Description}" />
                             </GridView>

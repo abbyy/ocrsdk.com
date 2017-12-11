@@ -546,7 +546,7 @@ namespace GuiTest
             SourceFilePath = null;
             TaskId = task.Id.ToString();
             TaskStatus = task.Status.ToString();
-            PagesCount = task.PagesCount;
+            FilesCount = task.FilesCount;
             Description = task.Description;
             RegistrationTime = task.RegistrationTime;
             StatusChangeTime = task.StatusChangeTime;
@@ -622,10 +622,10 @@ namespace GuiTest
             }
         }
 
-        public int PagesCount
+        public int FilesCount
         {
-            get { return _pagesCount; }
-            set { _pagesCount = value; NotifyPropertyChanged("PagesCount"); }
+            get { return _filesCount; }
+            set { _filesCount = value; NotifyPropertyChanged("FilesCount"); }
         }
 
         public string Description
@@ -694,7 +694,7 @@ namespace GuiTest
         private string _taskStatus;
         private string _outputFilePath;
 
-        private int _pagesCount;
+        private int _filesCount;
         private string _description;
 
 
