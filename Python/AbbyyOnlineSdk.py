@@ -78,8 +78,9 @@ class AbbyyOnlineSdk:
 			return
 		request = urllib2.Request( getResultUrl )
 		fileResponse = self.getOpener().open( request ).read()
-		resultFile = open( outputPath, "wb" )
-		resultFile.write( fileResponse )
+		with open( outputPath, "wb" ) as resultFile:
+			resultFile.write( fileResponse )
+
 
 
 	def DecodeResponse( self, xmlResponse ):
