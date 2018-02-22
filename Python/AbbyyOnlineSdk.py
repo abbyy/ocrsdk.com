@@ -50,8 +50,7 @@ class AbbyyOnlineSdk:
 		bodyParams = { "file" : open( filePath, "rb" )  }
 		request = urllib2.Request( requestUrl, None, self.buildAuthInfo() )
 		response = self.getOpener().open(request, bodyParams).read()
-		if response.find( '<Error>' ) != -1 :
-			return None
+		
 		# Any response other than HTTP 200 means error - in this case exception will be thrown
 
 		# parse response xml and extract task ID
