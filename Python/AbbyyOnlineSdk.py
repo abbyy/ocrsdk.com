@@ -60,7 +60,7 @@ class AbbyyOnlineSdk:
 	def get_task_status(self, task):
 		if task.Id.find('00000000-0') != -1:
 			# GUID_NULL is being passed. This may be caused by a logical error in the calling code
-			print "Null task id passed"
+			print("Null task id passed")
 			return None
 
 		url_params = {"taskId": task.Id}
@@ -74,7 +74,7 @@ class AbbyyOnlineSdk:
 	def download_result(self, task, output_path):
 		get_result_url = task.DownloadUrl
 		if get_result_url is None:
-			print "No download URL found"
+			print("No download URL found")
 			return
 
 		file_response = requests.get(get_result_url, stream=True, proxies=self.Proxies)
