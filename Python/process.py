@@ -10,33 +10,34 @@ import time
 from AbbyyOnlineSdk import *
 
 
-processor = AbbyyOnlineSdk()
+processor = None
 
-if "ABBYY_APPID" in os.environ:
-	processor.ApplicationId = os.environ["ABBYY_APPID"]
+def setup_processor():
+	if "ABBYY_APPID" in os.environ:
+		processor.ApplicationId = os.environ["ABBYY_APPID"]
 
-if "ABBYY_PWD" in os.environ:
-	processor.Password = os.environ["ABBYY_PWD"]
+	if "ABBYY_PWD" in os.environ:
+		processor.Password = os.environ["ABBYY_PWD"]
 
-# Proxy settings
-if "http_proxy" in os.environ:
-	proxyString = os.environ["http_proxy"]
-	print "Using http proxy at %s" % proxyString
-	processor.Proxies["http"] = proxyString
+	# Proxy settings
+	if "http_proxy" in os.environ:
+		proxy_string = os.environ["http_proxy"]
+		print "Using http proxy at %s" % proxy_string
+		processor.Proxies["http"] = proxy_string
 
-if "https_proxy" in os.environ:
-	proxyString = os.environ["https_proxy"]
-	print "Using https proxy at %s" % proxyString
-	processor.Proxies["https"] = proxyString
+	if "https_proxy" in os.environ:
+		proxy_string = os.environ["https_proxy"]
+		print "Using https proxy at %s" % proxy_string
+		processor.Proxies["https"] = proxy_string
 
 
 # Recognize a file at filePath and save result to resultFilePath
-def recognizeFile( filePath, resultFilePath, language, outputFormat ):
+def recognize_file(file_path, result_file_path, language, output_format):
 	print "Uploading.."
 	settings = ProcessingSettings()
 	settings.Language = language
-	settings.OutputFormat = outputFormat
-	task = processor.process_image( filePath, settings )
+	settings.OutputFormat = output_format
+	task = processor.process_image(file_path, settings)
 	if task == None:
 		print "Error"
 		return
@@ -48,7 +49,7 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 	print "Status = %s" % task.Status
 
 	# Wait for the task to be completed
-	sys.stdout.write( "Waiting.." )
+	sys.stdout.write("Waiting..")
 	# Note: it's recommended that your application waits at least 2 seconds
 	# before making the first getTaskStatus request and also between such requests
 	# for the same task. Making requests more often will not improve your
@@ -58,42 +59,54 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 	# at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 
 	while task.is_active() == True :
-		time.sleep( 5 )
-		sys.stdout.write( "." )
-		task = processor.get_task_status( task )
+		time.sleep(5)
+		sys.stdout.write(".")
+		task = processor.get_task_status(task)
 
 	print "Status = %s" % task.Status
 	
 	if task.Status == "Completed":
 		if task.DownloadUrl != None:
-			processor.download_result( task, resultFilePath )
-			print "Result was written to %s" % resultFilePath
+			processor.download_result(task, result_file_path)
+			print "Result was written to %s" % result_file_path
 	else:
 		print "Error processing task"
 
 
+def create_parser():
+	parser = argparse.ArgumentParser(description="Recognize a file via web service")
+	parser.add_argument('source_file')
+	parser.add_argument('target_file')
 
-	
-parser = argparse.ArgumentParser( description="Recognize a file via web service" )
-parser.add_argument( 'sourceFile' )
-parser.add_argument( 'targetFile' )
+	parser.add_argument('-l', '--language', default='English', help='Recognition language (default: %(default))')
+	group = parser.add_mutually_exclusive_group()
+	group.add_argument('-txt', action='store_const', const='txt', dest='format', default='txt')
+	group.add_argument('-pdf', action='store_const', const='pdfSearchable', dest='format')
+	group.add_argument('-rtf', action='store_const', const='rtf', dest='format')
+	group.add_argument('-docx', action='store_const', const='docx', dest='format')
+	group.add_argument('-xml', action='store_const', const='xml', dest='format')
 
-parser.add_argument( '-l', '--language', default='English', help='Recognition language (default: %(default))' )
-group = parser.add_mutually_exclusive_group()
-group.add_argument( '-txt', action='store_const', const='txt', dest='format', default='txt' )
-group.add_argument( '-pdf', action='store_const', const='pdfSearchable', dest='format' )
-group.add_argument( '-rtf', action='store_const', const='rtf', dest='format' )
-group.add_argument( '-docx', action='store_const', const='docx', dest='format' )
-group.add_argument( '-xml', action='store_const', const='xml', dest='format' )
+	return parser
 
-args = parser.parse_args()
 
-sourceFile = args.sourceFile
-targetFile = args.targetFile
-language = args.language
-outputFormat = args.format
+def main():
+	global processor
+	processor = AbbyyOnlineSdk()
 
-if os.path.isfile( sourceFile ):
-	recognizeFile( sourceFile, targetFile, language, outputFormat )	
-else:
-	print "No such file: %s" % sourceFile
+	setup_processor()
+
+	args = create_parser().parse_args()
+
+	source_file = args.source_file
+	target_file = args.target_file
+	language = args.language
+	output_format = args.format
+
+	if os.path.isfile(source_file):
+		recognize_file(source_file, target_file, language, output_format)
+	else:
+		print "No such file: %s" % source_file
+
+
+if __name__ == "__main__":
+	main()
