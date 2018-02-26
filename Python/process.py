@@ -3,15 +3,9 @@
 # Usage: process.py <input file> <output file> [-language <Language>] [-pdf|-txt|-rtf|-docx|-xml]
 
 import argparse
-import base64
-import getopt
-import MultipartPostHandler
 import os
-import re
 import sys
 import time
-import urllib2
-import urllib
 
 from AbbyyOnlineSdk import *
 
@@ -27,8 +21,13 @@ if "ABBYY_PWD" in os.environ:
 # Proxy settings
 if "http_proxy" in os.environ:
 	proxyString = os.environ["http_proxy"]
-	print "Using proxy at %s" % proxyString
-	processor.Proxy = urllib2.ProxyHandler( { "http" : proxyString })
+	print "Using http proxy at %s" % proxyString
+	processor.Proxies["http"] = proxyString
+
+if "https_proxy" in os.environ:
+	proxyString = os.environ["https_proxy"]
+	print "Using https proxy at %s" % proxyString
+	processor.Proxies["https"] = proxyString
 
 
 # Recognize a file at filePath and save result to resultFilePath
@@ -37,7 +36,7 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 	settings = ProcessingSettings()
 	settings.Language = language
 	settings.OutputFormat = outputFormat
-	task = processor.ProcessImage( filePath, settings )
+	task = processor.process_image( filePath, settings )
 	if task == None:
 		print "Error"
 		return
@@ -58,16 +57,16 @@ def recognizeFile( filePath, resultFilePath, language, outputFormat ):
 	# it's recommended that you use listFinishedTasks instead (which is described
 	# at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 
-	while task.IsActive() == True :
+	while task.is_active() == True :
 		time.sleep( 5 )
 		sys.stdout.write( "." )
-		task = processor.GetTaskStatus( task )
+		task = processor.get_task_status( task )
 
 	print "Status = %s" % task.Status
 	
 	if task.Status == "Completed":
 		if task.DownloadUrl != None:
-			processor.DownloadResult( task, resultFilePath )
+			processor.download_result( task, resultFilePath )
 			print "Result was written to %s" % resultFilePath
 	else:
 		print "Error processing task"
