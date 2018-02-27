@@ -4,8 +4,14 @@
 
 import shutil
 
-import requests
 import xml.dom.minidom
+try:
+	import requests
+except ImportError:
+	print("You need the requests library to be installed in order to use this sample.")
+	print("Run 'pip install requests' to fix it.")
+
+	exit()
 
 
 class ProcessingSettings:
