@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Usage: process.py <input file> <output file> [-language <Language>] [-pdf|-txt|-rtf|-docx|-xml]
+# Usage: process.py <input file> <output file> [-l <Language>] [-pdf|-txt|-rtf|-docx|-xml]
 
 import shutil
 
