@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Usage: process.py <input file> <output file> [-language <Language>] [-pdf|-txt|-rtf|-docx|-xml]
+# Usage: process.py <input file> <output file> [-l <Language>] [-pdf|-txt|-rtf|-docx|-xml]
 
 import argparse
 import os
@@ -77,7 +77,7 @@ def create_parser():
 	parser.add_argument('source_file')
 	parser.add_argument('target_file')
 
-	parser.add_argument('-l', '--language', default='English', help='Recognition language (default: %(default))')
+	parser.add_argument('-l', '--language', default='English', help='Recognition language (default: %(default)s)')
 	group = parser.add_mutually_exclusive_group()
 	group.add_argument('-txt', action='store_const', const='txt', dest='format', default='txt')
 	group.add_argument('-pdf', action='store_const', const='pdfSearchable', dest='format')
