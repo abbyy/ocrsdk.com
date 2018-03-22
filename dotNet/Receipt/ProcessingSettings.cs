@@ -17,6 +17,7 @@ namespace Sample
         Japan,
         Korea,
         Netherlands,
+        Poland,
         Russia,
         Singapore,
         Spain,
