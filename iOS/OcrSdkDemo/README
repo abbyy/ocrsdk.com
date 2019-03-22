@@ -8,8 +8,8 @@ Please modify Sources\RecognitionViewController.m before running the program
 
 You need to provide your credentials to connect to Cloud OCR SDK service.
 See MyApplicationID and MyPassword variables
-To create an application and obtain a password, register at http://cloud.ocrsdk.com/Account/Register
-More info on getting your application id and password at http://ocrsdk.com/documentation/faq/#faq3
+To create an application and obtain a password, register at https://cloud.ocrsdk.com/Account/Register
+More info on getting your application id and password at https://ocrsdk.com/documentation/faq/#faq3
 
 == Recognition language ==
 

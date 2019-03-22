@@ -29,7 +29,7 @@ exports.ProcessingSettings = ProcessingSettings;
  * {string} resultUrl
  * 
  * It is mapped from xml described at
- * http://ocrsdk.com/documentation/specifications/status-codes/
+ * https://ocrsdk.com/documentation/specifications/status-codes/
  */
 
 /**
@@ -39,9 +39,9 @@ exports.ProcessingSettings = ProcessingSettings;
  * @param {string} applicationId 	Application Id.
  * @param {string} password 		Password for the application you received in e-mail.
  * To create an application and obtain a password,
- * register at http://cloud.ocrsdk.com/Account/Register
+ * register at https://cloud.ocrsdk.com/Account/Register
  * More info on getting your application id and password at
- * http://ocrsdk.com/documentation/faq/#faq3
+ * https://ocrsdk.com/documentation/faq/#faq3
  */
 function ocrsdk(applicationId, password) {
 	this.appId = applicationId;
@@ -126,7 +126,7 @@ ocrsdk.prototype.waitForCompletion = function(taskId, userCallback) {
 	// Making requests more often will not improve your application performance.
 	// Note: if your application queues several files and waits for them
 	// it's recommended that you use listFinishedTasks instead (which is described
-	// at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+	// at https://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 
 	if (taskId.indexOf('00000000') > -1) {
 		// A null Guid passed here usually means a logical error in the calling code

@@ -210,7 +210,7 @@ public class ProcessManyFiles {
 			+ "\n"
 			+ "--country \n"
 			+ "  Set the country where receipt was printed. You can set any country listed at"
-			+ " http://ocrsdk.com/documentation/apireference/processReceipt/ or set comma-separated combination of them.\n"
+			+ " https://ocrsdk.com/documentation/apireference/processReceipt/ or set comma-separated combination of them.\n"
 			+ "  Default country is Usa\n"
 			+ "\n"
 			+ "Examples:\n"

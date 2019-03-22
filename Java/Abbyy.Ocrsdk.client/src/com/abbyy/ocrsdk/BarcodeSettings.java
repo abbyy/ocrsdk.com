@@ -7,7 +7,7 @@ package com.abbyy.ocrsdk;
  * Barcode recognition settings.
  * 
  * For all possible parameters see
- * http://ocrsdk.com/documentation/apireference/processBarcodeField/
+ * https://ocrsdk.com/documentation/apireference/processBarcodeField/
  */
 public class BarcodeSettings {
 

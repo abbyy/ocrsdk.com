@@ -6,13 +6,13 @@ package com.abbyy.ocrsdk;
 public class TextFieldSettings {
 	public String asUrlParams() {
 		// For all possible parameters, see documentation at
-		// http://ocrsdk.com/documentation/apireference/processTextField/
+		// https://ocrsdk.com/documentation/apireference/processTextField/
 		return String.format("language=%s&textType=%s", language, textType);
 	}
 
 	/*
 	 * Set recognition language. You can set any language listed at
-	 * http://ocrsdk.com/documentation/specifications/recognition-languages/ or
+	 * https://ocrsdk.com/documentation/specifications/recognition-languages/ or
 	 * set comma-separated combination of them.
 	 * 
 	 * Examples: English English,ChinesePRC English,French,German

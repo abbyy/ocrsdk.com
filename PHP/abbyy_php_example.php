@@ -6,9 +6,9 @@
 
   !!! Please provide your application id and password and remove this line !!!
   // To create an application and obtain a password,
-  // register at http://cloud.ocrsdk.com/Account/Register
+  // register at https://cloud.ocrsdk.com/Account/Register
   // More info on getting your application id and password at
-  // http://ocrsdk.com/documentation/faq/#faq3
+  // https://ocrsdk.com/documentation/faq/#faq3
   // Name of application you created
   $applicationId = 'my_application_id';
   // Password should be sent to your e-mail after application was created
@@ -100,7 +100,7 @@
   // Making requests more often will not improve your application performance.
   // Note: if your application queues several files and waits for them
   // it's recommended that you use listFinishedTasks instead (which is described
-  // at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+  // at https://ocrsdk.com/documentation/apireference/listFinishedTasks/).
   while(true)
   {
     sleep(5);

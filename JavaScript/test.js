@@ -6,9 +6,9 @@ if (((typeof process) == 'undefined') || ((typeof window) != 'undefined')) {
 
 !!! Please provide your application id and password and remove this line !!!
 // To create an application and obtain a password,
-// register at http://cloud.ocrsdk.com/Account/Register
+// register at https://cloud.ocrsdk.com/Account/Register
 // More info on getting your application id and password at
-// http://ocrsdk.com/documentation/faq/#faq3
+// https://ocrsdk.com/documentation/faq/#faq3
 
 // Name of application you created
 var appId = '';
@@ -83,7 +83,7 @@ try {
 	// Set your own recognition language and output format here
 	settings.language = "English"; // Can be comma-separated list, e.g. "German,French".
 	settings.exportFormat = "txt"; // All possible values are listed in 'exportFormat' parameter description 
-                                   // at http://ocrsdk.com/documentation/apireference/processImage/
+                                   // at https://ocrsdk.com/documentation/apireference/processImage/
 
 	console.log("Uploading image..");
 	ocrsdk.processImage(imagePath, settings, uploadCompleted);

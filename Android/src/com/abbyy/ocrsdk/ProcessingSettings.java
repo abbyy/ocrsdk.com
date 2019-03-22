@@ -21,7 +21,7 @@ public class ProcessingSettings {
 
 	/*
 	 * Set recognition language. You can set any language listed at
-	 * http://ocrsdk.com/documentation/specifications/recognition-languages/ or
+	 * https://ocrsdk.com/documentation/specifications/recognition-languages/ or
 	 * set comma-separated combination of them.
 	 * 
 	 * Examples: English English,ChinesePRC English,French,German

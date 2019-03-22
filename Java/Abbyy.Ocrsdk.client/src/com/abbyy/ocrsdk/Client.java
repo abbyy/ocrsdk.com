@@ -91,7 +91,7 @@ public class Client {
 	 * Recognize multiple text, barcode and checkmark fields at one call.
 	 * 
 	 * For details see
-	 * http://ocrsdk.com/documentation/apireference/processFields/
+	 * https://ocrsdk.com/documentation/apireference/processFields/
 	 * 
 	 * @param settingsPath
 	 *            path to xml file describing processing settings
@@ -107,7 +107,7 @@ public class Client {
 	 * Process and parse Machine-Readable Zone (MRZ) of Passport, ID card, Visa etc
 	 * 
 	 * For details see
-	 * http://ocrsdk.com/documentation/apireference/processMRZ/
+	 * https://ocrsdk.com/documentation/apireference/processMRZ/
 	 * 
 	 */
 	public Task processMrz(String filePath ) throws Exception {

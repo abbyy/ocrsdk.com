@@ -346,7 +346,7 @@ public class TestApp {
 						+ "java TestApp processFields <file1> [file2 ..] <settings.xml> <output file>\n"
 						+ "\n"
 						+ "For details how to create xml settings see\n"
-						+ "http://ocrsdk.com/documentation/specifications/xml-scheme-field-settings/\n"
+						+ "https://ocrsdk.com/documentation/specifications/xml-scheme-field-settings/\n"
 						+ "\n"
 						+ "Examples:\n"
 						+ "java TestApp processFields image1.tif settings.xml result.xml\n"
@@ -357,7 +357,7 @@ public class TestApp {
 	 * Perform field-level recognition using processFields call.
 	 * 
 	 * For details see
-	 * http://ocrsdk.com/documentation/apireference/processFields/
+	 * https://ocrsdk.com/documentation/apireference/processFields/
 	 */
 	private static void performFieldsRecognition(Vector<String> argList)
 			throws Exception {
@@ -438,7 +438,7 @@ public class TestApp {
 		// Making requests more often will not improve your application performance.
 		// Note: if your application queues several files and waits for them
 		// it's recommended that you use listFinishedTasks instead (which is described
-		// at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+		// at https://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 		while (task.isTaskActive()) {
 
 			Thread.sleep(5000);

@@ -82,7 +82,7 @@ public class Client {
 	 * Recognize multiple text, barcode and checkmark fields at one call.
 	 * 
 	 * For details see
-	 * http://ocrsdk.com/documentation/apireference/processFields/
+	 * https://ocrsdk.com/documentation/apireference/processFields/
 	 * 
 	 * @param settingsPath
 	 *            path to xml file describing processing settings

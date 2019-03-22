@@ -1,5 +1,5 @@
 # OCR SDK Ruby sample
-# Documentation available on http://ocrsdk.com/documentation/
+# Documentation available on https://ocrsdk.com/documentation/
 
 require "rubygems"
 
@@ -13,9 +13,9 @@ require "rexml/document"
 # IMPORTANT!
 !!! Please provide your application id and password and remove this line !!!
 # To create an application and obtain a password,
-# register at http://cloud.ocrsdk.com/Account/Register
+# register at https://cloud.ocrsdk.com/Account/Register
 # More info on getting your application id and password at
-# http://ocrsdk.com/documentation/faq/#faq3
+# https://ocrsdk.com/documentation/faq/#faq3
 
 # CGI.escape is needed to escape whitespaces, slashes and other symbols
 # that could invalidate the URI if any
@@ -30,7 +30,7 @@ FILE_NAME = "/path/to/my/image.jpg"
 
 # IMPORTANT!
 # Specify recognition languages of document. For full list of available languaes see
-# http://ocrsdk.com/documentation/apireference/processImage/
+# https://ocrsdk.com/documentation/apireference/processImage/
 # Examples: 
 #   English
 #   English,German
@@ -42,13 +42,13 @@ BASE_URL = "http://#{APPLICATION_ID}:#{PASSWORD}@cloud.ocrsdk.com"
 
 # Routine for OCR SDK error output
 def output_response_error(response)
-  # Parse response xml (see http://ocrsdk.com/documentation/specifications/status-codes)
+  # Parse response xml (see https://ocrsdk.com/documentation/specifications/status-codes)
   xml_data = REXML::Document.new(response)
   error_message = xml_data.elements["error/message"]
   puts "Error: #{error_message.text}" if error_message
 end
 
-# Upload and process the image (see http://ocrsdk.com/documentation/apireference/processImage)
+# Upload and process the image (see https://ocrsdk.com/documentation/apireference/processImage)
 puts "Image will be recognized with #{LANGUAGE} language."
 puts "Uploading file.."
 begin
@@ -79,11 +79,11 @@ while task_status == "InProgress" or task_status == "Queued" do
     # Making requests more often will not improve your application performance.
     # Note: if your application queues several files and waits for them
     # it's recommended that you use listFinishedTasks instead (which is described
-    # at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+    # at https://ocrsdk.com/documentation/apireference/listFinishedTasks/).
     # Wait a bit
     sleep(5)
   
-    # Call the getTaskStatus function (see http://ocrsdk.com/documentation/apireference/getTaskStatus)
+    # Call the getTaskStatus function (see https://ocrsdk.com/documentation/apireference/getTaskStatus)
 
     # Note: a logical error in more complex surrounding code can cause
     # a situation where the code below tries to prepare for getTaskStatus request
@@ -108,7 +108,7 @@ end
 # Check if there were errors ..
 raise "The task hasn't been processed because an error occurred" if task_status == "ProcessingFailed"
   
-# .. or you don't have enough credits (see http://ocrsdk.com/documentation/specifications/task-statuses for other statuses)
+# .. or you don't have enough credits (see https://ocrsdk.com/documentation/specifications/task-statuses for other statuses)
 raise "You don't have enough money on your account to process the task" if task_status == "NotEnoughCredits"
 
 # Get the result download link

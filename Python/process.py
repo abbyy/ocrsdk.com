@@ -55,7 +55,7 @@ def recognize_file(file_path, result_file_path, language, output_format):
 	# application performance.
 	# Note: if your application queues several files and waits for them
 	# it's recommended that you use listFinishedTasks instead (which is described
-	# at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+	# at https://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 
 	while task.is_active():
 		time.sleep(5)
