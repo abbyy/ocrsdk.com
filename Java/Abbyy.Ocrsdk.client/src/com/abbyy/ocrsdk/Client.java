@@ -14,8 +14,7 @@ import org.xml.sax.InputSource;
 public class Client {
 	public String applicationId;
 	public String password;
-
-	public String serverUrl = "http://cloud.ocrsdk.com";
+	public String serverUrl;
 
 	/*
 	 * Upload image to server and optionally append it to existing task. If

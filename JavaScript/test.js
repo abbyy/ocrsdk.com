@@ -10,6 +10,9 @@ if (((typeof process) == 'undefined') || ((typeof window) != 'undefined')) {
 // More info on getting your application id and password at
 // https://ocrsdk.com/documentation/faq/#faq3
 
+// Change to http://cloud-westus.ocrsdk.com for applications created in US location
+// Change to https for secure connection
+var serviceUrl = 'http://cloud-eu.ocrsdk.com';
 // Name of application you created
 var appId = '';
 // Password should be sent to your e-mail after application was created
@@ -22,8 +25,7 @@ try {
 	console.log("ABBYY Cloud OCR SDK Sample for Node.js");
 
 	var ocrsdkModule = require('./ocrsdk.js');
-	var ocrsdk = ocrsdkModule.create(appId, password);
-	ocrsdk.serverUrl = "http://cloud.ocrsdk.com"; // change to https for secure connection
+	var ocrsdk = ocrsdkModule.create(appId, password, serviceUrl);
 
 	if (appId.length == 0 || password.length == 0) {
 		throw new Error("Please provide your application id and password!");

@@ -14,8 +14,9 @@
   // Password should be sent to your e-mail after application was created
   $password = 'my_application_password';
   $fileName = 'myfile.jpg';
-
-  $serviceUrl = 'http://cloud.ocrsdk.com';
+  // URL of the processing service. Change to http://cloud-westus.ocrsdk.com
+  // if you created your application in US location
+  $serviceUrl = 'http://cloud-eu.ocrsdk.com';
 
   // Get path to file that we are going to recognize
   $local_directory=dirname(__FILE__).'/images/';

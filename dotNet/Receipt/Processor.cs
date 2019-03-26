@@ -33,6 +33,10 @@ namespace Sample
                     const String appIdKey = "ApplicationId";
                     const String passwordKey = "Password";
                     const String serviceUrlKey = "ServiceUrl";
+                    if (line.StartsWith("//"))
+                    {
+                        continue;
+                    }
                     if (line.StartsWith(appIdKey))
                     {
                         restClient.ApplicationId = getValueByKey(line, appIdKey);

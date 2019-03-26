@@ -6,7 +6,8 @@
 # before calling this script, set ABBYY_APPID and ABBYY_PWD environment variables
 # do not forget to set http_proxy and https_proxy variables if necessary
 
-ServerUrl='http://cloud.ocrsdk.com'
+# Change to 'cloud-westus.ocrsdk.com' if you created your application in US location
+ServerUrl='http://cloud-eu.ocrsdk.com'
 # To create an application and obtain a password,
 # register at https://cloud.ocrsdk.com/Account/Register
 # More info on getting your application id and password at

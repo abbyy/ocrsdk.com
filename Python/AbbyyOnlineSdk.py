@@ -33,7 +33,8 @@ class Task:
 
 class AbbyyOnlineSdk:
 	# Warning! This is for easier out-of-the box usage of the sample only. Change to https:// for production use
-	ServerUrl = "http://cloud.ocrsdk.com/"
+	# Change to http://cloud-westus.ocrsdk.com if you created your application in US location	
+	ServerUrl = "http://cloud-eu.ocrsdk.com/"
 
 	# To create an application and obtain a password,
 	# register at https://cloud.ocrsdk.com/Account/Register

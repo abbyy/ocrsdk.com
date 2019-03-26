@@ -1,3 +1,4 @@
 ApplicationId =
 Password =
-ServiceUrl = https://cloud.ocrsdk.com
+// Change to https://cloud-westus.ocrsdk.com if your application was created in US region
+ServiceUrl = https://cloud-eu.ocrsdk.com

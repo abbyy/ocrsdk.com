@@ -23,6 +23,9 @@ require "rexml/document"
 APPLICATION_ID = CGI.escape("my_application_id")
 # Password should be sent to your e-mail after application was created
 PASSWORD = CGI.escape("my_password")
+# OCR SDK base url with application id and password
+# Change to cloud-eu.ocrsdk.com if the application was created in US location
+BASE_URL = "http://#{APPLICATION_ID}:#{PASSWORD}@cloud-eu.ocrsdk.com"
 
 # IMPORTANT!
 # Specify path to image file you want to recognize
@@ -36,9 +39,6 @@ FILE_NAME = "/path/to/my/image.jpg"
 #   English,German
 #   English,German,Spanish
 LANGUAGE = "English"
-
-# OCR SDK base url with application id and password
-BASE_URL = "http://#{APPLICATION_ID}:#{PASSWORD}@cloud.ocrsdk.com"
 
 # Routine for OCR SDK error output
 def output_response_error(response)

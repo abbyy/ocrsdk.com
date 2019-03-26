@@ -19,8 +19,9 @@ public class ProcessManyFiles {
 		ClientSettings.setupProxy();
 
 		restClient = new Client();
-		// replace with 'https://cloud.ocrsdk.com' to enable secure connection
-		restClient.serverUrl = "http://cloud.ocrsdk.com";
+		// replace with 'https://cloud-eu.ocrsdk.com' to enable secure connection
+		// replace with 'https://cloud-westus.ocrsdk.com' if your application is created in US location
+		restClient.serverUrl = "http://cloud-eu.ocrsdk.com";
 		restClient.applicationId = ClientSettings.APPLICATION_ID;
 		restClient.password = ClientSettings.PASSWORD;
 

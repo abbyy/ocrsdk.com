@@ -51,6 +51,9 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 			
 			// Name of application you created
 			restClient.applicationId = "<your app_id>";
+			// URL of the processing service. Change to https://cloud-westus.ocrsdk.com
+			// if you created your application in US location
+			restClient.serverUrl = https://cloud-eu.ocrsdk.com
 			// You should get e-mail from ABBYY Cloud OCR SDK service with the application password
 			restClient.password = "<your app_password>";
 			

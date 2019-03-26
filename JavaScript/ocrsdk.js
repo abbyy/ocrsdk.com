@@ -43,13 +43,11 @@ exports.ProcessingSettings = ProcessingSettings;
  * More info on getting your application id and password at
  * https://ocrsdk.com/documentation/faq/#faq3
  */
-function ocrsdk(applicationId, password) {
+function ocrsdk(applicationId, password, serviceUrl) {
 	this.appId = applicationId;
 	this.password = password;
 
-	this.serverUrl = "http://cloud.ocrsdk.com"; // You can change it to
-												// https://cloud.ocrsdk.com if
-												// you need secure channel
+	this.serverUrl = serviceUrl;
 }
 
 /**
