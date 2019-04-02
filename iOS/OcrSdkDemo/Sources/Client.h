@@ -10,11 +10,12 @@
 
 @property (strong, nonatomic) NSString* applicationID;
 @property (strong, nonatomic) NSString* password;
+@property (strong, nonatomic) NSString* serviceUrl;
 
 
 @property (assign) id<ClientDelegate> delegate;
 
-- (id)initWithApplicationID:(NSString*)applicationID password:(NSString*)password;
+- (id)initWithApplicationID:(NSString*)applicationID password:(NSString*)password serviceUrl:(NSString*)serviceUrl;
 
 - (void)processImage:(UIImage*)image withParams:(ProcessingParams*)params;
 

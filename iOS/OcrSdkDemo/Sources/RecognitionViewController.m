@@ -7,6 +7,9 @@
 // More info on getting your application id and password at
 // https://ocrsdk.com/documentation/faq/#faq3
 
+// Url of processing service. Change to https://cloud-westus.ocrsdk.com
+// if your application was created in US location
+static NSString* ProcessingServiceUrl = @"https://cloud-eu.ocrsdk.com";
 // Name of application you created
 static NSString* MyApplicationID = @"my_app_id";
 // Password should be sent to your e-mail after application was created
@@ -48,7 +51,7 @@ static NSString* MyPassword = @"my_password";
 	
 	UIImage* image = [(AppDelegate*)[[UIApplication sharedApplication] delegate] imageToProcess];
 	
-	Client *client = [[Client alloc] initWithApplicationID:MyApplicationID password:MyPassword];
+	Client *client = [[Client alloc] initWithApplicationID:MyApplicationID password:MyPassword serviceUrl:ProcessingServiceUrl];
 	[client setDelegate:self];
 	
 	ProcessingParams* params = [[ProcessingParams alloc] init];

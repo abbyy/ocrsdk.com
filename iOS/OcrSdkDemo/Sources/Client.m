@@ -7,21 +7,23 @@
 
 @synthesize applicationID = _applicationID;
 @synthesize password = _password;
+@synthesize serviceUrl = _serviceUrl;
 
 @synthesize delegate = _delegate;
 
 - (id)init
 {
-	return [self initWithApplicationID:nil password:nil];
+	return [self initWithApplicationID:nil password:nil serviceUrl:nil];
 }
 
-- (id)initWithApplicationID:(NSString *)applicationID password:(NSString *)password
+- (id)initWithApplicationID:(NSString *)applicationID password:(NSString *)password serviceUrl:(NSString*)serviceUrl
 {
 	self = [super init];
 	
 	if (self) {
 		_applicationID = applicationID;
 		_password = password;
+		_serviceUrl = serviceUrl;
 	}
 	
 	return self;
@@ -38,7 +40,7 @@
 {		
 	NSParameterAssert(image);
 	
-	NSURL* processImageURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://cloud.ocrsdk.com/processImage?%@", [params urlString]]];
+	NSURL* processImageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/processImage?%@", self.serviceUrl, [params urlString]]];
 	
 	NSMutableURLRequest* processingRequest = [NSMutableURLRequest requestWithURL:processImageURL];
 	
@@ -73,7 +75,7 @@
 		NSParameterAssert(task);
 		NSParameterAssert(task.ID);
 		
-		NSURL* getTaskStatusURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://cloud.ocrsdk.com/getTaskStatus?taskId=%@", task.ID]];
+		NSURL* getTaskStatusURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/getTaskStatus?taskId=%@", self.serviceUrl, task.ID]];
 		
 		NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:getTaskStatusURL];
 		
