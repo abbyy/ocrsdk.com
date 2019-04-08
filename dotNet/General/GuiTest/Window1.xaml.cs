@@ -94,6 +94,10 @@ namespace GuiTest
             {
                 dialog.Owner = this;
             }
+            else
+            {
+                dialog.ShowInTaskbar = true;
+            }
             dialog.ShowDialog();
 
             if (dialog.DialogResult == true)
