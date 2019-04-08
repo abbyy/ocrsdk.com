@@ -22,6 +22,7 @@ namespace GuiTest
         {
             InitializeComponent();
 
+            ServiceUrl.Text = Properties.Settings.Default.ServerAddress;
             ApplicationId.Text = Properties.Settings.Default.ApplicationId;
             Password.Text = Properties.Settings.Default.Password;
         }

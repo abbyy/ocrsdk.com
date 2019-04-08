@@ -12,7 +12,7 @@
       <Value Profile="(Default)">Results</Value>
     </Setting>
     <Setting Name="ServerAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://cloud.ocrsdk.com</Value>
+      <Value Profile="(Default)">https://cloud-eu.ocrsdk.com</Value>
     </Setting>
     <Setting Name="CheckmarkOptions" Type="System.String" Scope="User">
       <Value Profile="(Default)">checkmarkType=empty</Value>

@@ -61,7 +61,7 @@ namespace GuiTest.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://cloud.ocrsdk.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://cloud-eu.ocrsdk.com")]
         public string ServerAddress {
             get {
                 return ((string)(this["ServerAddress"]));

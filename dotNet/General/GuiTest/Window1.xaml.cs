@@ -36,6 +36,7 @@ namespace GuiTest
             }
 
 
+            restClient.ServerUrl = Properties.Settings.Default.ServerAddress;
             restClient.ApplicationId = Properties.Settings.Default.ApplicationId;
             restClient.Password = Properties.Settings.Default.Password;
 
@@ -102,12 +103,14 @@ namespace GuiTest
 
             if (dialog.DialogResult == true)
             {
+                Properties.Settings.Default.ServerAddress = dialog.ServiceUrl.Text;
                 Properties.Settings.Default.ApplicationId = dialog.ApplicationId.Text;
                 Properties.Settings.Default.Password = dialog.Password.Text;
                 Properties.Settings.Default.Save();
 
                 restClient.ApplicationId = Properties.Settings.Default.ApplicationId;
                 restClient.Password = Properties.Settings.Default.Password;
+                restClient.ServerUrl = Properties.Settings.Default.ServerAddress;
             }
         }
 

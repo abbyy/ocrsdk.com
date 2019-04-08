@@ -41,6 +41,9 @@ namespace ConsoleTest
             restClient.Password = "<your password>";
              */
 
+            // Change to https://cloud-westus.ocrsdk.com if your application was created in US region
+            restClient.ServerUrl = "https://cloud-eu.ocrsdk.com/";
+
             // Display hint to provide credentials
             if (String.IsNullOrEmpty(restClient.ApplicationId) ||
                 String.IsNullOrEmpty(restClient.Password))

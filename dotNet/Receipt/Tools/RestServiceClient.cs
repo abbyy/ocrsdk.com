@@ -161,7 +161,7 @@ namespace Sample
     {
         public RestServiceClient()
         {
-            ServerUrl = "http://cloud.ocrsdk.com/";
+            ServerUrl = "https://cloud-eu.ocrsdk.com/";
             Proxy = WebRequest.DefaultWebProxy;
 			RequestAuthSetup = new BasicRequestAuthSetup();
         }
