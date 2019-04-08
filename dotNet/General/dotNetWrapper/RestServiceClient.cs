@@ -162,37 +162,24 @@ namespace Abbyy.CloudOcrSdk
         public RestServiceClient()
         {
             ServerUrl = "http://cloud.ocrsdk.com/";
-            IsSecureConnection = false;
             Proxy = WebRequest.DefaultWebProxy;
 			RequestAuthSetup = new BasicRequestAuthSetup();
         }
 
         /// <summary>
         /// Url of the server
-        /// On set, IsSecureConnection property is changed url contains protocol (http:// or https://)
         /// </summary>
         public string ServerUrl
         {
             get
             {
-                if (IsSecureConnection)
-                    return "https://" + _serverAddress;
-                else
-                    return "http://" + _serverAddress;
+                return _serverAddress;
             }
             set
             {
-                if (value.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    IsSecureConnection = false;
-                }
-                else if (value.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    IsSecureConnection = true;
-                }
-
-                // Trim http(s):// from the beginning
-                _serverAddress = System.Text.RegularExpressions.Regex.Replace(value, "^https?://", "");
+                // validate and normalize the URL
+                Uri uri = new Uri(value);
+                _serverAddress = uri.ToString();
             }
         }
 
@@ -202,11 +189,6 @@ namespace Abbyy.CloudOcrSdk
         public IWebProxy Proxy { get; set; }
 
 		public IRequestAuthSetup RequestAuthSetup { get; set; }
-
-        /// <summary>
-        /// Does the connection use SSL or not. Set this property after ServerUrl
-        /// </summary>
-        public bool IsSecureConnection { get; set; }
 
         /// <summary>
         /// Upload a file to service synchronously and start processing
