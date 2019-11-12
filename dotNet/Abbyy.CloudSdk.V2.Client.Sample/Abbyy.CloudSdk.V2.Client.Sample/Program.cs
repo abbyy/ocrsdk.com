@@ -139,7 +139,7 @@ namespace Abbyy.CloudSdk.V2.Client.Sample
 				ExportFormats = new[] {ExportFormat.Docx, ExportFormat.Txt,},
 				Language = "English,French",
 			};
-			const string filePath = "New Image.jpg";
+			const string filePath = "processImage.jpg";
 
 			using (var fileStream = new FileStream(filePath, FileMode.Open))
 			{
@@ -174,8 +174,8 @@ namespace Abbyy.CloudSdk.V2.Client.Sample
 		private static async Task<Guid> UploadFilesAsync(IOcrClient ocrClient)
 		{
 			ImageSubmittingParams submitParams;
-			var firstFilePath = "New Image.jpg";
-			var secondFilePath = "Picture_003.jpg";
+			var firstFilePath = "processImage.jpg";
+			var secondFilePath = "processDocument.jpg";
 
 			// First file
 			using (var fileStream = new FileStream(firstFilePath, FileMode.Open))
