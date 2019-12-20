@@ -1,0 +1,3 @@
+# Disable sign-off checking for members of ABBYY GitHub organization
+require:
+  members: false
