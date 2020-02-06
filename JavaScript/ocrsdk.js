@@ -16,8 +16,8 @@ try {
 	throw new Error("xml2js module not found. Please install it with 'npm install xml2js'");
 }
 
-exports.create = function(applicationId, password) {
-	return new ocrsdk(applicationId, password);
+exports.create = function(applicationId, password, serviceUrl) {
+	return new ocrsdk(applicationId, password, serviceUrl);
 }
 
 exports.ProcessingSettings = ProcessingSettings;
@@ -38,6 +38,7 @@ exports.ProcessingSettings = ProcessingSettings;
  * @constructor
  * @param {string} applicationId 	Application Id.
  * @param {string} password 		Password for the application you received in e-mail.
+ * @param {string} serviceUrl 		Service url to use.
  * To create an application and obtain a password,
  * register at https://cloud.ocrsdk.com/Account/Register
  * More info on getting your application id and password at
