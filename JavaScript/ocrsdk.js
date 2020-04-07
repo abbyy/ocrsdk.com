@@ -5,7 +5,6 @@ if (((typeof process) == 'undefined') || ((typeof window) != 'undefined')) {
 var http = require("http");
 var https = require("https");
 var url = require("url");
-var sys = require("sys");
 var events = require("events");
 var fs = require('fs');
 
