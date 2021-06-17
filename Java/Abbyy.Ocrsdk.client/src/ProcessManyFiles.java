@@ -38,8 +38,6 @@ public class ProcessManyFiles {
 				performRecognition(argList);
 			} else if (mode.equalsIgnoreCase("remote")) {
 				performRemoteFileRecognition(argList);
-			} else if (mode.equalsIgnoreCase("receipt")) {
-				performReceiptRecognition(argList);
 			}
 		} catch (Exception e) {
 			System.out.println("Exception occured: " + e.getMessage());
@@ -75,12 +73,10 @@ public class ProcessManyFiles {
 			"    java ProcessManyFiles remote <imageUrl> <resultDir>\n" +
 			"  3. Recognize many files from urls in a file (experimental):\n" +
 			"    java ProcessManyFiles remote <urlFilePath> <resultDir>\n" +
-			"  4. Recognize all receipts from a directory:\n" +
-			"    java ProcessManyFiles receipt <receiptsDir> <resultDir>\n" +
 			"\n" +
 			"For detailed help, call\n" +
 			"  java ProcessManyFiles help <mode>\n" +
-			"where <mode> is one of: recognize, remote, receipt"
+			"where <mode> is one of: recognize, remote"
 		);
 	}
 
@@ -89,8 +85,6 @@ public class ProcessManyFiles {
 			displayRecognizeHelp();
 		} else if (mode.equalsIgnoreCase("remote")) {
 			displayRemoteHelp();
-		} else if (mode.equalsIgnoreCase("receipt")) {
-			displayReceiptHelp();
 		}
 	}
 
@@ -202,56 +196,6 @@ public class ProcessManyFiles {
 		waitAndDownloadResults( taskIds );
 	}
 
-	private static void displayReceiptHelp() {
-		System.out.println(
-			"Recognize all receipts from a directory.\n"
-			+ "\n"
-			+ "Usage:\n"
-			+ "  java ProcessManyFiles receipt [--country=<countryNames>] <directory> <output dir>\n"
-			+ "\n"
-			+ "--country \n"
-			+ "  Set the country where receipt was printed. You can set any country listed at"
-			+ " https://ocrsdk.com/documentation/apireference/processReceipt/ or set comma-separated combination of them.\n"
-			+ "  Default country is Usa\n"
-			+ "\n"
-			+ "Examples:\n"
-			+ "java ProcessManyFiles receipt --country=Usa,Spain ~/myReceipts ~/text\n");
-	}
-
-	private static void performReceiptRecognition(Vector<String> argList)
-		throws Exception {
-		
-		ReceiptSettings settings = new ReceiptSettings();
-		settings.setReceiptCountry( CmdLineOptions.extractReceiptCountry(argList) );
-	
-		if (argList.size() < 2 ) {
-			displayReceiptHelp();
-			return;
-		}
-
-		String sourceDirPath = argList.get(0);
-		String targetDirPath = argList.get(1);
-		setOutputPath( targetDirPath );
-
-		File sourceDir = new File(sourceDirPath);
-
-		File[] listOfFiles = sourceDir.listFiles();
-
-		Vector<String> filesToProcess = new Vector<String>();
-
-		for (int i = 0; i < listOfFiles.length; i++) {
-			File file = listOfFiles[i];
-			if (file.isFile()) {
-				String fullPath = file.getAbsolutePath();
-				filesToProcess.add(fullPath);
-			} 		
-		}
-
-		Map<String,String> taskIds = submitAllReceipts(filesToProcess, settings);
-
-		waitAndDownloadResults( taskIds );
-	}
-
 	/**
 	* Submit all files for recognition
 	*
@@ -274,27 +218,6 @@ public class ProcessManyFiles {
 			System.out.println( filePath );
 			Task task = restClient.processImage( filePath, settings );
 			taskIds.put(task.Id, fileBase + settings.getOutputFileExt());	
-		}
-		return taskIds;
-	}
-
-	private static Map<String,String> submitAllReceipts(Vector<String> fileList, ReceiptSettings settings) throws Exception {
-		System.out.println( String.format( "Uploading %d receipts..", fileList.size() ));
-
-		Map<String,String> taskIds = new HashMap<String, String>();
-
-		for (int fileIndex = 0; fileIndex < fileList.size(); fileIndex++ ) {
-			String filePath = fileList.get(fileIndex);
-
-			File file = new File(filePath);
-			String fileBase = file.getName();
-			if (fileBase.indexOf(".") > 0) {
-				fileBase = fileBase.substring(0, fileBase.lastIndexOf("."));
-			}
-
-			System.out.println( filePath );
-			Task task = restClient.processReceipt( filePath, settings );
-			taskIds.put(task.Id, fileBase +".xml");	
 		}
 		return taskIds;
 	}

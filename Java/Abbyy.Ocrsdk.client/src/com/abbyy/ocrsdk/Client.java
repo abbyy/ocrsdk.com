@@ -60,13 +60,6 @@ public class Client {
 		return postFileToUrl(filePath, url);
 	}
 
-	public Task processReceipt(String filePath, ReceiptSettings settings)
-			throws Exception {
-		URL url = new URL(serverUrl + "/processReceipt?"
-				+ settings.asUrlParams());
-		return postFileToUrl(filePath, url);
-	}
-
 	public Task processTextField(String filePath, TextFieldSettings settings)
 			throws Exception {
 		URL url = new URL(serverUrl + "/processTextField?"

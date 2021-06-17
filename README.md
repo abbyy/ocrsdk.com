@@ -16,7 +16,6 @@ For more information about the product visit [ABBYY Cloud OCR SDK website](https
 - Document conversion
   - convert image/PDF to searchable PDF, PDF/A and Microsoft Word, Excel, PowerPoint
 - Data extraction
-  - Receipt recognition
   - Barcode recognition 
   - Business card recognition
   - ID recognition (MRZ)

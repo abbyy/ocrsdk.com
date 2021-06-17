@@ -54,21 +54,6 @@ public class CmdLineOptions {
 		}
 	}
 
-	public static String extractReceiptCountry(Vector<String> args) {
-		// Receipt country has form --country=<countryNames>
-
-		String lang = extractParameterValue("country", args);
-		if (lang != null) {
-			return lang;
-		}
-
-		System.out.println(
-						"Warning! The receipt will be treated as receipt from USA.\n"
-						+ "To change this, specify --country=<countryNames> option.\n");
-
-		return "Usa";
-	}
-
 	/**
 	 * Extract value of given parameter from command-line parameters. Parameter
 	 * is removed after extraction
