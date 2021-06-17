@@ -463,6 +463,8 @@ public class TestApp {
 			return ProcessingSettings.OutputFormat.docx;
 		} else if (ext.equals(".rtf")) {
 			return ProcessingSettings.OutputFormat.rtf;
+		} else if (ext.equals(".xlsx")) {
+			return ProcessingSettings.OutputFormat.xlsx;
 		} else {
 			System.out
 					.println("Unknown output extension. Plain text will be used.");
