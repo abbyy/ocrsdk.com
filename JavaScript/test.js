@@ -31,7 +31,7 @@ try {
 		throw new Error("Please provide your application id and password!");
 	}
 	
-	if( imagePath == 'myFile.jpg') {
+	if( imagePath != 'myFile.jpg') {
 		throw new Error( "Please provide path to your image!")
 	}
 
