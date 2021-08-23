@@ -24,12 +24,6 @@ def setup_processor():
 		print("Using http proxy at {}".format(proxy_string))
 		processor.Proxies["http"] = proxy_string
 
-	if "https_proxy" in os.environ:
-		proxy_string = os.environ["https_proxy"]
-		print("Using https proxy at {}".format(proxy_string))
-		processor.Proxies["https"] = proxy_string
-
-
 # Recognize a file at filePath and save result to resultFilePath
 def recognize_file(file_path, result_file_path, language, output_format):
 	print("Uploading..")
